@@ -24,23 +24,17 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public List<CompanyTo> findAllCompanies() {
-		return companyRepository.findAll().stream()
-				.map(entity -> mapper.map(entity, CompanyTo.class))
-				.collect(Collectors.toList());
+		return mapList(companyRepository.findAll());
 	}
 
 	@Override
 	public List<CompanyTo> findCompaniesByName(String name) {
-		return companyRepository.findByName(name).stream()
-				.map(entity -> mapper.map(entity, CompanyTo.class))
-				.collect(Collectors.toList());
+		return mapList(companyRepository.findByName(name));
 	}
 
 	@Override
 	public List<CompanyTo> findCompaniesByNameFragment(String nameFragment) {
-		return companyRepository.findByNameFragment(nameFragment).stream()
-				.map(entity -> mapper.map(entity, CompanyTo.class))
-				.collect(Collectors.toList());
+		return mapList(companyRepository.findByNameFragment(nameFragment));
 	}
 
 	@Override
@@ -52,7 +46,11 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public CompanyTo save(CompanyTo company) {
 		if (company.getId() != null) {
-			throw new IllegalStateException("Id of new company should be null.");
+			throw new IllegalArgumentException("Id of new company should be null.");
+		}
+		if (companyRepository.findByName(company.getName()).isEmpty() == false) {
+			throw new IllegalArgumentException(
+					"Name of a company should be unique. There exists one already in the database");
 		}
 		return mapper.map(companyRepository.save(mapper.map(company, CompanyEntity.class)),
 				CompanyTo.class);
@@ -62,7 +60,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public CompanyTo update(CompanyTo company) {
 		if (company.getId() == null) {
-			throw new IllegalStateException("Company id should be set befor updating.");
+			throw new IllegalArgumentException("Company id should be set before updating.");
 		}
 		return mapper.map(companyRepository.save(mapper.map(company, CompanyEntity.class)),
 				CompanyTo.class);
@@ -81,5 +79,10 @@ public class CompanyServiceImpl implements CompanyService {
 		CompanyTo company = mapper.map(companyRepository.findOne(id), CompanyTo.class);
 		companyRepository.delete(id);
 		return company;
+	}
+
+	private List<CompanyTo> mapList(List<CompanyEntity> entities) {
+		return entities.stream().map(entity -> mapper.map(entity, CompanyTo.class))
+				.collect(Collectors.toList());
 	}
 }

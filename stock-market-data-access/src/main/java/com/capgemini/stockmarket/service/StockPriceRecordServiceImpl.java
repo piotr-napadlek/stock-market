@@ -1,16 +1,25 @@
 package com.capgemini.stockmarket.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import org.dozer.Mapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
+import com.capgemini.stockmarket.entity.StockPriceRecordEntity;
+import com.capgemini.stockmarket.entity.StockPriceRecordPK;
 import com.capgemini.stockmarket.repository.StockPriceRecordRepository;
 
+@Service
+@Transactional(readOnly = true)
 public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 
 	@Inject
@@ -22,86 +31,111 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 
 	@Override
 	public List<StockPriceRecordTo> findAllRecords() {
-		// TODO Auto-generated method stub
-		return null;
+		return mapList(sprRepository.findAll());
 	}
 
 	@Override
 	public List<StockPriceRecordTo> findByDate(Date date) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapList(sprRepository.findByDate(date));
 	}
 
 	@Override
 	public List<StockPriceRecordTo> findTillDate(Date tillDate) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapList(sprRepository.findAllTillDate(tillDate));
 	}
 
 	@Override
 	public List<StockPriceRecordTo> findBetweenDates(Date fromDate, Date tillDate) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapList(sprRepository.findBetweenDates(fromDate, tillDate));
 	}
 
 	@Override
 	public List<StockPriceRecordTo> findByCompanyName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapList(sprRepository.findByCompanyName(name));
 	}
 
 	@Override
 	public List<StockPriceRecordTo> findByCompanyId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapList(sprRepository.findByCompanyId(id));
 	}
 
 	@Override
 	public List<StockPriceRecordTo> findByCompanyNameBetweenDates(String companyName,
 			Date fromDate, Date tillDate) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapList(
+				sprRepository.findByCompanyNameBetweenDates(companyName, fromDate, tillDate));
 	}
 
 	@Override
 	public StockPriceRecordTo findByCompanyNameAndExactDay(String companyName, Date date) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.map(
+				sprRepository.findByCompanyNameBetweenDates(companyName, date, date).get(0),
+				StockPriceRecordTo.class);
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public StockPriceRecordTo saveOne(StockPriceRecordTo spr) {
-		// TODO Auto-generated method stub
-		return null;
+		if (sprRepository.findByCompanyNameBetweenDates(spr.getCompany().getName(),
+				spr.getDate(), spr.getDate()).size() > 0) {
+			throw new IllegalArgumentException(
+					"There is already a record with this date and company");
+		}
+		
+		CompanyTo company = spr.getCompany();
+		if (company.getId() == null) {
+			List<CompanyTo> matched = companyService.findCompaniesByName(company.getName());
+			if (matched.isEmpty()) {
+				company = companyService.save(company);
+			} else if (matched.size() == 1) {
+				company.setId(matched.get(0).getId());
+			} else {
+				throw new IllegalStateException(
+						"Database error: there are two companies with the exact name and different Id in database.");
+			}
+		}
+		return mapper.map(sprRepository.save(mapper.map(spr, StockPriceRecordEntity.class)),
+				StockPriceRecordTo.class);
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public List<StockPriceRecordTo> saveAll(List<StockPriceRecordTo> spr) {
-		// TODO Auto-generated method stub
-		return null;
+		List<StockPriceRecordTo> sprs = new ArrayList<>(spr.size());
+		spr.forEach(sprTo -> sprs.add(saveOne(sprTo)));
+		return sprs;
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public StockPriceRecordTo deleteOne(StockPriceRecordTo spr) {
-		// TODO Auto-generated method stub
-		return null;
+		sprRepository.delete(mapper.map(spr, StockPriceRecordEntity.class));
+		return spr;
 	}
 
+	@Transactional(readOnly = false)
 	@Override
-	public StockPriceRecordTo deleteOne(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public StockPriceRecordTo deleteOne(StockPriceRecordPK id) {
+		StockPriceRecordEntity sprEntity = sprRepository.findOne(id);
+		sprRepository.delete(sprEntity);
+		return mapper.map(sprEntity, StockPriceRecordTo.class);
 	}
 
+	@Transactional(readOnly = false)
 	@Override
-	public List<StockPriceRecordTo> deleteAll(Collection<Long> ids) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<StockPriceRecordTo> deleteAll(Collection<StockPriceRecordPK> ids) {
+		List<StockPriceRecordEntity> sprEntities = sprRepository.findAll(ids);
+		sprRepository.delete(sprEntities);
+		return mapList(sprEntities);
 	}
 
 	@Override
 	public StockPriceRecordTo update(StockPriceRecordTo spr) {
-		// TODO Auto-generated method stub
+		if (sprRepository.findByCompanyNameBetweenDates(spr.getCompany().getName(),
+				spr.getDate(), spr.getDate()).size() == 0) {
+			throw new IllegalArgumentException(
+					"Such element does not exist in the database!");
+		}
 		return null;
 	}
 
@@ -111,4 +145,8 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 		return null;
 	}
 
+	private List<StockPriceRecordTo> mapList(List<StockPriceRecordEntity> entities) {
+		return entities.stream().map(entity -> mapper.map(entities, StockPriceRecordTo.class))
+				.collect(Collectors.toList());
+	}
 }

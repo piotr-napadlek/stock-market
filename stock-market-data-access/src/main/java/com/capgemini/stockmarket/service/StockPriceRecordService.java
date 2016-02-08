@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
+import com.capgemini.stockmarket.entity.StockPriceRecordPK;
 
 public interface StockPriceRecordService {
 	// read
@@ -26,8 +27,8 @@ public interface StockPriceRecordService {
 	
 	// delete
 	StockPriceRecordTo deleteOne(StockPriceRecordTo spr);
-	StockPriceRecordTo deleteOne(Long id);
-	List<StockPriceRecordTo> deleteAll(Collection<Long> ids);
+	StockPriceRecordTo deleteOne(StockPriceRecordPK id);
+	List<StockPriceRecordTo> deleteAll(Collection<StockPriceRecordPK> ids);
 
 	// update
 	StockPriceRecordTo update(StockPriceRecordTo spr);
