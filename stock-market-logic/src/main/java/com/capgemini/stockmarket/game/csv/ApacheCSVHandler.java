@@ -1,6 +1,7 @@
 package com.capgemini.stockmarket.game.csv;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +28,9 @@ public class ApacheCSVHandler implements CSVHandler {
 
 	@Override
 	public List<StockPriceRecordTo> parseCSV(String csv) throws Exception {
+		if (csv == null) {
+			return new ArrayList<StockPriceRecordTo>();
+		}
 		CSVFormat csvFormat = CSVFormat.EXCEL
 				.withDelimiter(csvFormatDelimeter)
 				.withHeader(headers.split(","))
@@ -34,11 +38,12 @@ public class ApacheCSVHandler implements CSVHandler {
 		if (csv.indexOf("\r\n") < 0) {
 			csvFormat = csvFormat.withRecordSeparator("\n");
 		}
-		CSVParser csvParser = CSVParser.parse(csv, csvFormat);
-		DateFormat dateParser = new SimpleDateFormat(dateFormat);
+		return extractSPRs(CSVParser.parse(csv, csvFormat));
+	}
 
+	private List<StockPriceRecordTo> extractSPRs(CSVParser csvParser) throws ParseException {
 		List<StockPriceRecordTo> sprTos = new ArrayList<>();
-
+		DateFormat dateParser = new SimpleDateFormat(dateFormat);
 		for (CSVRecord csvRecord : csvParser) {
 			String companyName = "";
 			Date dateRecorded = new Date();

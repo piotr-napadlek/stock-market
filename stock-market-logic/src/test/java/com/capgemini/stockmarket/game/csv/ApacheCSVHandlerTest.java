@@ -37,4 +37,25 @@ public class ApacheCSVHandlerTest {
 		Assert.assertEquals("INTEL", sprList.get(0).getCompany().getName());
 		Assert.assertEquals(101.3d, sprList.get(5).getPrice(), 1e-15);
 	}
+	
+	@Test
+	public void shouldHandleEmptyString() throws Exception {
+		// given
+		final String empty = "";
+		// when
+		List<StockPriceRecordTo> sprList = csvHandler.parseCSV(empty);
+		// then
+		Assert.assertNotNull(sprList);
+		Assert.assertTrue(sprList.isEmpty());
+	}
+	
+	@Test
+	public void shouldHandleNull() throws Exception {
+		// given
+		// when
+		List<StockPriceRecordTo> sprList = csvHandler.parseCSV(null);
+		// then
+		Assert.assertNotNull(sprList);
+		Assert.assertTrue(sprList.isEmpty());
+	}
 }
