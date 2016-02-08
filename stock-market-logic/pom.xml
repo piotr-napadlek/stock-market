@@ -8,14 +8,20 @@
 	</parent>
 	<artifactId>stock-market-logic</artifactId>
 	<name>Spring business logic template</name>
-	
-	
+
+
 	<dependencies>
 		<dependency>
 			<groupId>com.capgemini.stockmarket</groupId>
 			<artifactId>stock-market-data-access</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.2</version>
+		</dependency>
+
 	</dependencies>
-	
+
 </project>

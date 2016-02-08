@@ -62,6 +62,9 @@ public class CompanyServiceImpl implements CompanyService {
 		if (company.getId() == null) {
 			throw new IllegalArgumentException("Company id should be set before updating.");
 		}
+		if (companyRepository.findOne(company.getId()) == null) {
+			throw new IllegalArgumentException("Company with id " + company.getId() + " was not found.");
+		}
 		return mapper.map(companyRepository.save(mapper.map(company, CompanyEntity.class)),
 				CompanyTo.class);
 	}
@@ -69,14 +72,16 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional(readOnly = false)
 	@Override
 	public CompanyTo delete(CompanyTo company) {
-		companyRepository.delete(mapper.map(company, CompanyEntity.class));
-		return company;
+		return delete(company.getId());
 	}
 
 	@Transactional(readOnly = false)
 	@Override
 	public CompanyTo delete(Long id) {
 		CompanyTo company = mapper.map(companyRepository.findOne(id), CompanyTo.class);
+		if (id == null || company == null || company.getId() == null) {
+			throw new IllegalArgumentException("Company with such id wasn't found in the database.");
+		}
 		companyRepository.delete(id);
 		return company;
 	}

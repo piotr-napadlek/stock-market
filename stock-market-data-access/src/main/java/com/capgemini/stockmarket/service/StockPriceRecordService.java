@@ -32,5 +32,5 @@ public interface StockPriceRecordService {
 
 	// update
 	StockPriceRecordTo update(StockPriceRecordTo spr);
-	List<StockPriceRecordTo> updateAll(StockPriceRecordTo spr);
+	List<StockPriceRecordTo> updateAll(List<StockPriceRecordTo> spr);
 }

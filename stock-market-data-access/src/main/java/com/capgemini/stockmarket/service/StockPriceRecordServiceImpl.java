@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
+import com.capgemini.stockmarket.entity.CompanyEntity;
 import com.capgemini.stockmarket.entity.StockPriceRecordEntity;
 import com.capgemini.stockmarket.entity.StockPriceRecordPK;
 import com.capgemini.stockmarket.repository.StockPriceRecordRepository;
@@ -81,7 +82,7 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 			throw new IllegalArgumentException(
 					"There is already a record with this date and company");
 		}
-		
+
 		CompanyTo company = spr.getCompany();
 		if (company.getId() == null) {
 			List<CompanyTo> matched = companyService.findCompaniesByName(company.getName());
@@ -129,20 +130,24 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 		return mapList(sprEntities);
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public StockPriceRecordTo update(StockPriceRecordTo spr) {
-		if (sprRepository.findByCompanyNameBetweenDates(spr.getCompany().getName(),
-				spr.getDate(), spr.getDate()).size() == 0) {
-			throw new IllegalArgumentException(
-					"Such element does not exist in the database!");
+		StockPriceRecordPK id = new StockPriceRecordPK(
+				mapper.map(spr.getCompany(), CompanyEntity.class), spr.getDate());
+		if (sprRepository.findOne(id) == null) {
+			throw new IllegalArgumentException("Such element does not exist in the database!");
 		}
-		return null;
+		return mapper.map(sprRepository.save(mapper.map(spr, StockPriceRecordEntity.class)),
+				StockPriceRecordTo.class);
 	}
 
+	@Transactional(readOnly = false)
 	@Override
-	public List<StockPriceRecordTo> updateAll(StockPriceRecordTo spr) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<StockPriceRecordTo> updateAll(List<StockPriceRecordTo> spr) {
+		List<StockPriceRecordTo> sprTos = new ArrayList<>(spr.size());
+		spr.forEach(sprTo -> sprTos.add(update(sprTo)));
+		return sprTos;
 	}
 
 	private List<StockPriceRecordTo> mapList(List<StockPriceRecordEntity> entities) {
