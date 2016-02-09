@@ -1,7 +1,7 @@
-package stock-market.stock-market-logic;
+package com.capgemini.stockmarket.common;
 
-import java.io.*;
-import java.util.*;
+
+import java.util.Date;
 
 public interface DateInfo {
 

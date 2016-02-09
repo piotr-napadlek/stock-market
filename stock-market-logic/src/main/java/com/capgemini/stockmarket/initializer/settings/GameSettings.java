@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.game.settings;
+package com.capgemini.stockmarket.initializer.settings;
 
 import java.util.HashMap;
 import java.util.Map;

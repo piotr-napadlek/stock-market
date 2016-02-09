@@ -1,4 +1,5 @@
-package stock-market.stock-market-logic;
+package com.capgemini.stockmarket.banking;
+
 
 import java.io.*;
 import java.util.*;

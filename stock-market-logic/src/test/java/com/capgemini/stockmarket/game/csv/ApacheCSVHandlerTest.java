@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
+import com.capgemini.stockmarket.initializer.csv.ApacheCSVHandler;
 
 public class ApacheCSVHandlerTest {
 

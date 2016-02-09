@@ -1,7 +1,4 @@
-package stock-market.stock-market-logic;
-
-import java.io.*;
-import java.util.*;
+package com.capgemini.stockmarket.common;
 
 public interface DateAware {
 
