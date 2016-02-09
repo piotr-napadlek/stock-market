@@ -1,0 +1,728 @@
+<Project>
+  <Name>stock-market</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>stock-market-logic</Name>
+    <Language>Java</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>StockSimulationManager</Name>
+        <Access>Public</Access>
+        <Location left="809" top="337" />
+        <Size width="460" height="400" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private PriorityQueue&lt;DateAware&gt; dateListeners</Member>
+        <Member type="Field">private Set&lt;StockMarketPlayer&gt; players</Member>
+        <Member type="Field">private BrokersOffice defaultBO</Member>
+        <Member type="Field">private Set&lt;BrokersOffice&gt; optionalBOs</Member>
+        <Member type="Field">private Date startDate</Member>
+        <Member type="Field">private Date currentDate</Member>
+        <Member type="Field">private SimulationCalendar calendar</Member>
+        <Member type="Method">public void addBrokersOffice(BrokersOffice brokersOffice, BrokersOfficeSettings settings)</Member>
+        <Member type="Method">public void setDefaultBrokersOfficeSettings(BrokersOfficeSettings settings)</Member>
+        <Member type="Method">public void addPlayer(BrokersOfficeDesk office)</Member>
+        <Member type="Method">public void addDefaultBOPlayer()</Member>
+        <Member type="Method">public void addDefaultPlayer()</Member>
+        <Member type="Method">public void nextDay()</Member>
+        <Member type="Method">public void processToDate(Date date)</Member>
+        <Member type="Method">public void skipToDate(Date date)</Member>
+        <Member type="Method">public void setPlayerStrategy(StockMarketPlayer player, RequestCompositor compositor)</Member>
+        <Member type="Method">public void resetSimulation()</Member>
+        <Member type="Method">public void start()</Member>
+        <Member type="Method">void setStartDate(Date date)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>DateAware</Name>
+        <Access>Public</Access>
+        <Location left="1160" top="932" />
+        <Size width="170" height="103" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public void notifyDateChanged()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>StockDataManager</Name>
+        <Access>Public</Access>
+        <Location left="384" top="960" />
+        <Size width="291" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private DateInfo currentDate</Member>
+        <Member type="Method">public void setCurrentDate()</Member>
+        <Member type="Method">public void recordTransaction(TransactionTo transaction)</Member>
+        <Member type="Method">public StockPriceDataTo getCompanyStockPriceHistory()</Member>
+        <Member type="Method">public List&lt;Company&gt; getCompanies()</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>BrokersOfficeDesk</Name>
+        <Access>Public</Access>
+        <Location left="1103" top="1064" />
+        <Size width="434" height="134" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public TransactionOfferTo processRequest(TransactionRequestTo transactionRequest)</Member>
+        <Member type="Method">public TransactionTo processAcceptance(TransactionAcceptTo transactionAccept)</Member>
+        <Member type="Method">StockDataProvider provideStockDataSource()</Member>
+      </Entity>
+      <Entity type="Comment">
+        <Text>WebApp (REST) / GUI / CLI</Text>
+        <Location left="632" top="62" />
+        <Size width="205" height="50" />
+      </Entity>
+      <Entity type="Class">
+        <Name>DefaultBrokersOffice</Name>
+        <Access>Public</Access>
+        <Location left="701" top="826" />
+        <Size width="236" height="88" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>StockMarketPlayer</Name>
+        <Access>Public</Access>
+        <Location left="1420" top="724" />
+        <Size width="439" height="281" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private BrokersOfficeDesk brokersOfficeDesk</Member>
+        <Member type="Field">private RequestCompositor compositor</Member>
+        <Member type="Field">private Wallet wallet</Member>
+        <Member type="Field">private PlayerSettings settings</Member>
+        <Member type="Field">private PlayerState state</Member>
+        <Member type="Field">private DateInfo dateInfo</Member>
+        <Member type="Field">private PlayersActionListener listener</Member>
+        <Member type="Method">public void setCompositor(RequestCompositor compositor)</Member>
+        <Member type="Constructor">public StockMarketPlayer(BrokersOfficeDesk brokersOfficeDesk, PlayerSettings settings)</Member>
+        <Member type="Method">public void applySettings(PlayerSettings settings)</Member>
+        <Member type="Method">private final void doTryTransaction()</Member>
+        <Member type="Method">public PlayerState getState()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>RequestCompositor</Name>
+        <Access>Public</Access>
+        <Location left="1399" top="540" />
+        <Size width="607" height="120" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">TransactionRequestTo composeRequest(BankAccounttInfo wallet, StockInfoProvider stockDataProvider, Date currentDate)</Member>
+        <Member type="Method">TransactionAcceptTo verifyTransactionOffer(TransactionOfferTo transactionOffer)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>BankAccountInfo</Name>
+        <Access>Public</Access>
+        <Location left="1984" top="222" />
+        <Size width="308" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">double getBalanceFor(Currency currency)</Member>
+        <Member type="Method">List&lt;Currency&gt; getAvailableCurrencies()</Member>
+        <Member type="Method">List&lt;CompanyTo&gt; getAvailableSharesCompanies()</Member>
+        <Member type="Method">Set&lt;ShareInfo&gt; getShareInfos(CompanyTo company)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>CurrencyBalance</Name>
+        <Access>Public</Access>
+        <Location left="1636" top="1077" />
+        <Size width="299" height="246" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Currency currency</Member>
+        <Member type="Field">private double balance</Member>
+        <Member type="Method">public Currency getCurrency()</Member>
+        <Member type="Method">public double getBalance()</Member>
+        <Member type="Constructor">public CurrencyBalance(Currency currency)</Member>
+        <Member type="Constructor">public CurrencyBalance(Currency currency, double balance)</Member>
+        <Member type="Method">public void setBalance()</Member>
+        <Member type="Method">public double addBalance()</Member>
+        <Member type="Method">public void subtractBalance()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>StockBasket</Name>
+        <Access>Public</Access>
+        <Location left="1968" top="1095" />
+        <Size width="361" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Map&lt;CompanyTo, List&lt;Share&gt;&gt; shareMap</Member>
+        <Member type="Method">public List&lt;ShareInfo&gt; getSharesInfo(CompanyTo company)</Member>
+        <Member type="Method">public boolean putShares(CompanyTo company, Set&lt;Share&gt; shares)</Member>
+        <Member type="Method">public Set&lt;Share&gt; extractShares(List&lt;ShareInfo&gt; shareInfo)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Share</Name>
+        <Access>Public</Access>
+        <Location left="701" top="1236" />
+        <Size width="365" height="264" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private CompanyTo company</Member>
+        <Member type="Field">private CurrencyAmount priceBought</Member>
+        <Member type="Field">private Date dateBought</Member>
+        <Member type="Field">private String token</Member>
+        <Member type="Field">private Long shareId</Member>
+        <Member type="Method">public CompanyTo getCompany()</Member>
+        <Member type="Constructor">private Share()</Member>
+        <Member type="Method">public static Share createShare(BrokersOffice creator, CompanyTo company)</Member>
+        <Member type="Method">public void setBuyPrice(double price)</Member>
+        <Member type="Method">public void setDateBought(Date date)</Member>
+        <Member type="Method">public Long getShareId()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>BrokersOffice</Name>
+        <Access>Public</Access>
+        <Location left="763" top="960" />
+        <Size width="290" height="111" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">String getPublicSecuritySignature()</Member>
+        <Member type="Method">void applySettings(BrokersOfficeSettings settings)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ShareInfo</Name>
+        <Access>Public</Access>
+        <Location left="2075" top="515" />
+        <Size width="521" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Long shareId</Member>
+        <Member type="Method">public Date dateBought()</Member>
+        <Member type="Method">public CompanyTo company()</Member>
+        <Member type="Method">public CurrencyAmount priceBought()</Member>
+        <Member type="Method">public Long getShareId()</Member>
+        <Member type="Constructor">public ShareInfo()</Member>
+        <Member type="Constructor">public ShareInfo(Long shareId, Date dateBought, CurrencyAmount priceBought, CompanyTo company)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>CurrencyAmount</Name>
+        <Access>Public</Access>
+        <Location left="2205" top="1349" />
+        <Size width="162" height="128" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Currency currency</Member>
+        <Member type="Field">private double amount</Member>
+        <Member type="Field">private String bankSignature</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>Currency</Name>
+        <Access>Public</Access>
+        <Location left="2358" top="306" />
+        <Size width="162" height="146" />
+        <Collapsed>False</Collapsed>
+        <Value>PLN</Value>
+        <Value>EUR</Value>
+        <Value>USD</Value>
+        <Value>CHF</Value>
+        <Value>GBP</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>BankAccount</Name>
+        <Access>Public</Access>
+        <Location left="1926" top="759" />
+        <Size width="396" height="258" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private StockBasket stockBasket</Member>
+        <Member type="Field">private Set&lt;CurrencyBalance&gt; balances</Member>
+        <Member type="Method">public boolean putMoney(CurrencyAmount money)</Member>
+        <Member type="Method">public boolean putShares(Set&lt;Share&gt; shares)</Member>
+        <Member type="Method">public CurrencyAmount extractMoney(Currency currency, double amount)</Member>
+        <Member type="Method">public Set&lt;Share&gt; extractShares(List&lt;ShareInfo&gt; shareInfos)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>SimulationInitializer</Name>
+        <Access>Public</Access>
+        <Location left="455" top="291" />
+        <Size width="251" height="137" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private CSVHandler csvHandler</Member>
+        <Member type="Field">private StockSimulationManager simulationManager</Member>
+        <Member type="Method">public void initializeStockData(String csv)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>CSVHandler</Name>
+        <Access>Public</Access>
+        <Location left="406" top="523" />
+        <Size width="285" height="94" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;StockPriceRecordTo&gt; parseCSV(String csv)</Member>
+      </Entity>
+      <Entity type="Comment">
+        <Text>BackEnd - Services</Text>
+        <Location left="275" top="1395" />
+        <Size width="335" height="50" />
+      </Entity>
+      <Entity type="Class">
+        <Name>TransactionProcessor</Name>
+        <Access>Public</Access>
+        <Location left="343" top="675" />
+        <Size width="419" height="111" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public TransactionOfferTo prepareOffer(TransactionRequestTo request)</Member>
+        <Member type="Method">public TransactionTo signTransaction(TransactionAcceptTo transactionAccept)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Manual</Name>
+        <Access>Public</Access>
+        <Location left="1399" top="86" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>RandomChaotic</Name>
+        <Access>Public</Access>
+        <Location left="1516" top="201" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>PatientObserver</Name>
+        <Access>Public</Access>
+        <Location left="1622" top="86" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>EagerTransactioner</Name>
+        <Access>Public</Access>
+        <Location left="1722" top="201" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>___etc___</Name>
+        <Access>Public</Access>
+        <Location left="1831" top="86" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>StockInfoProvider</Name>
+        <Access>Public</Access>
+        <Location left="1103" top="1257" />
+        <Size width="489" height="137" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;CompanyTo&gt; getStockCompanies()</Member>
+        <Member type="Method">List&lt;StockPriceRecordTo&gt; getSharePriceHistoryFor(CompanyTo company, Date fromDate)</Member>
+        <Member type="Method">List&lt;StockPriceRecordTo&gt; getSharePriceHistoryFor(CompanyTo company)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>ApplicationContextAware</Name>
+        <Access>Public</Access>
+        <Location left="1023" top="812" />
+        <Size width="224" height="77" />
+        <Collapsed>False</Collapsed>
+      </Entity>
+      <Entity type="Enum">
+        <Name>GameState</Name>
+        <Access>Public</Access>
+        <Location left="327" top="74" />
+        <Size width="162" height="146" />
+        <Collapsed>False</Collapsed>
+        <Value>NOT_INITIALIZED</Value>
+        <Value>NEW_DAY</Value>
+        <Value>DAY_FINISHED</Value>
+        <Value>SIMULATION_FINISHED</Value>
+        <Value>READY</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>SimulationCalendar</Name>
+        <Access>Default</Access>
+        <Location left="947" top="121" />
+        <Size width="234" height="145" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Date currentDate</Member>
+        <Member type="Method">public void setCurrentDate(Date date)</Member>
+        <Member type="Method">public void nextDay()</Member>
+        <Member type="Method">public void reset()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>DateInfo</Name>
+        <Access>Public</Access>
+        <Location left="1252" top="201" />
+        <Size width="203" height="94" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">Date getCurrentDate()</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>PlayersActionListener</Name>
+        <Access>Public</Access>
+        <Location left="1305" top="354" />
+        <Size width="164" height="94" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void notifyStateChanged()</Member>
+      </Entity>
+      <Entity type="Enum">
+        <Name>PlayerState</Name>
+        <Access>Public</Access>
+        <Location left="2358" top="86" />
+        <Size width="162" height="168" />
+        <Collapsed>False</Collapsed>
+        <Value>READY</Value>
+        <Value>THINKING</Value>
+        <Value>VERIFYING</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>TransactionRequestTo</Name>
+        <Access>Public</Access>
+        <Location left="2416" top="784" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TransactionOfferTo</Name>
+        <Access>Public</Access>
+        <Location left="2416" top="881" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TransactionAcceptTo</Name>
+        <Access>Public</Access>
+        <Location left="2416" top="975" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TransactionTo</Name>
+        <Access>Public</Access>
+        <Location left="2416" top="1075" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>PlayerSettings</Name>
+        <Access>Public</Access>
+        <Location left="2416" top="1180" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>BrokersOfficeSettings</Name>
+        <Access>Public</Access>
+        <Location left="2416" top="1272" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Comment" first="4" second="0">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>818</X>
+          <Y>306</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="6" second="7">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Generalization" first="12" second="1">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1093</X>
+          <Y>988</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1129</X>
+          <Y>988</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Generalization" first="12" second="3">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1055</X>
+          <Y>1124</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="5" second="12">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>824</X>
+          <Y>939</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Dependency" first="10" second="11">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2136</X>
+          <Y>1370</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1093</X>
+          <Y>1459</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="6" second="1">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1377</X>
+          <Y>828</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Dependency" first="8" second="13">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2150</X>
+          <Y>464</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>2150</X>
+          <Y>490</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="16" second="9">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1901</X>
+          <Y>988</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1881</X>
+          <Y>1050</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="16" second="10">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="6" second="16">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="16" second="8">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2040</X>
+          <Y>730</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="12" second="11">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>784</X>
+          <Y>1141</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>784</X>
+          <Y>1210</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Dependency" first="6" second="3">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1459</X>
+          <Y>1030</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1460</X>
+          <Y>1037</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="0" second="6">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1242</X>
+          <Y>786</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1388</X>
+          <Y>786</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="12">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>987</X>
+          <Y>896</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="17" second="18">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>520</X>
+          <Y>467</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>520</X>
+          <Y>494</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Comment" first="4" second="17">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>664</X>
+          <Y>263</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="5" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>722</X>
+          <Y>965</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>716</X>
+          <Y>1005</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="17" second="0">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Comment" first="19" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Comment" first="19" second="17">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>302</X>
+          <Y>1370</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>415</X>
+          <Y>369</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="5" second="20">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>661</X>
+          <Y>877</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>589</X>
+          <Y>827</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="21" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1500</X>
+          <Y>192</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1500</X>
+          <Y>511</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Comment" first="4" second="21">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="22" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="23" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="24" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="25" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1927</X>
+          <Y>188</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1927</X>
+          <Y>506</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="0" second="27">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1126</X>
+          <Y>787</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="29" second="30">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="0" second="29">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Generalization" first="3" second="26">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="0" second="31">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1294</X>
+          <Y>571</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1376</X>
+          <Y>503</Y>
+        </BendPoint>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>

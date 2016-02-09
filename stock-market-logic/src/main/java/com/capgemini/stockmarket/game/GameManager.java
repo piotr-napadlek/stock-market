@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import com.capgemini.stockmarket.broker.BrokersOffice;
 import com.capgemini.stockmarket.game.csv.CSVHandler;
 import com.capgemini.stockmarket.game.settings.GameSettings;
 import com.capgemini.stockmarket.service.StockPriceRecordService;
@@ -16,6 +17,8 @@ public class GameManager {
 	private StockPriceRecordService sprService;
 	@Inject
 	private CSVHandler csvHandler;
+	@Inject
+	private BrokersOffice brokersOffice;
 
 	public boolean readCSVHistory(String csvFileContent) throws Exception {
 		sprService.saveAll(csvHandler.parseCSV(csvFileContent));
@@ -36,5 +39,9 @@ public class GameManager {
 
 	public void setCsvHandler(CSVHandler csvHandler) {
 		this.csvHandler = csvHandler;
+	}
+
+	public BrokersOffice getBrokersOffice() {
+		return brokersOffice;
 	}
 }
