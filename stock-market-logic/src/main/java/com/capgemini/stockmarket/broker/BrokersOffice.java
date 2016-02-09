@@ -1,8 +1,8 @@
 package com.capgemini.stockmarket.broker;
 
 
-import java.io.*;
-import java.util.*;
+import com.capgemini.stockmarket.common.DateAware;
+import com.capgemini.stockmarket.settings.BrokersOfficeSettings;
 
 public interface BrokersOffice extends DateAware, BrokersOfficeDesk {
 

@@ -1,19 +1,17 @@
 package com.capgemini.stockmarket.banking;
 
-
-import java.io.*;
-import java.util.*;
-
 public class CurrencyBalance {
 
 	private Currency currency;
 	private double balance;
 
 	public Currency getCurrency() {
+		return currency;
 		
 	}
 
 	public double getBalance() {
+		return balance;
 		
 	}
 
@@ -30,6 +28,7 @@ public class CurrencyBalance {
 	}
 
 	public double addBalance() {
+		return balance;
 		
 	}
 

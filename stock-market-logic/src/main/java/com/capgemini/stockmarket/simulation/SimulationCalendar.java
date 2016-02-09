@@ -1,8 +1,9 @@
 package com.capgemini.stockmarket.simulation;
 
 
-import java.io.*;
-import java.util.*;
+import java.util.Date;
+
+import com.capgemini.stockmarket.common.DateInfo;
 
 class SimulationCalendar implements DateInfo {
 
@@ -18,6 +19,12 @@ class SimulationCalendar implements DateInfo {
 
 	public void reset() {
 		
+	}
+
+	@Override
+	public Date getCurrentDate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

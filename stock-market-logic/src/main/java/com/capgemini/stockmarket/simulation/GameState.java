@@ -1,9 +1,5 @@
 package com.capgemini.stockmarket.simulation;
 
-
-import java.io.*;
-import java.util.*;
-
 public enum GameState {
 
 	NOT_INITIALIZED,

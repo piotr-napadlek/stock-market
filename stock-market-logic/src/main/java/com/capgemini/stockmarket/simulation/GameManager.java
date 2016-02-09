@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.broker.BrokersOffice;
-import com.capgemini.stockmarket.initializer.csv.CSVHandler;
+import com.capgemini.stockmarket.initializer.CSVHandler;
 import com.capgemini.stockmarket.initializer.settings.GameSettings;
 import com.capgemini.stockmarket.service.StockPriceRecordService;
 

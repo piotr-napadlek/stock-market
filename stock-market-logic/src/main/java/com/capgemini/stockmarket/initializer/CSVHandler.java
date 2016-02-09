@@ -1,11 +1,12 @@
 package com.capgemini.stockmarket.initializer;
 
 
-import java.io.*;
-import java.util.*;
+import java.util.List;
+
+import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 
 public interface CSVHandler {
 
-	List<StockPriceRecordTo> parseCSV(String csv);
+	List<StockPriceRecordTo> parseCSV(String csv) throws Exception;
 
 }

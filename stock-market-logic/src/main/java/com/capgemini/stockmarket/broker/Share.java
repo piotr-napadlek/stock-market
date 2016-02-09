@@ -1,8 +1,10 @@
 package com.capgemini.stockmarket.broker;
 
 
-import java.io.*;
-import java.util.*;
+import java.util.Date;
+
+import com.capgemini.stockmarket.banking.CurrencyAmount;
+import com.capgemini.stockmarket.dto.CompanyTo;
 
 public class Share {
 
@@ -13,6 +15,7 @@ public class Share {
 	private Long shareId;
 
 	public CompanyTo getCompany() {
+		return company;
 		
 	}
 
@@ -21,6 +24,7 @@ public class Share {
 	}
 
 	public static Share createShare(BrokersOffice creator, CompanyTo company) {
+		return null;
 		
 	}
 
@@ -33,6 +37,7 @@ public class Share {
 	}
 
 	public Long getShareId() {
+		return null;
 		
 	}
 

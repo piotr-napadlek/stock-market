@@ -1,8 +1,11 @@
 package com.capgemini.stockmarket.banking;
 
 
-import java.io.*;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+
+import com.capgemini.stockmarket.broker.ShareInfo;
+import com.capgemini.stockmarket.dto.CompanyTo;
 
 public interface BankAccountInfo {
 

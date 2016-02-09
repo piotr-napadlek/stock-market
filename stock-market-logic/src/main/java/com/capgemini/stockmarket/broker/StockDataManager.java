@@ -1,8 +1,12 @@
 package com.capgemini.stockmarket.broker;
 
 
-import java.io.*;
-import java.util.*;
+import java.util.List;
+
+import com.capgemini.stockmarket.common.DateInfo;
+import com.capgemini.stockmarket.dto.CompanyTo;
+import com.capgemini.stockmarket.dto.StockPriceRecordTo;
+import com.capgemini.stockmarket.dto.TransactionTo;
 
 public abstract class StockDataManager {
 
@@ -16,11 +20,12 @@ public abstract class StockDataManager {
 		
 	}
 
-	public StockPriceDataTo getCompanyStockPriceHistory() {
-		
+	public StockPriceRecordTo getCompanyStockPriceHistory() {
+		return null;
 	}
 
-	public List<Company> getCompanies() {
+	public List<CompanyTo> getCompanies() {
+		return null;
 		
 	}
 

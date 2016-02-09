@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
+import com.capgemini.stockmarket.initializer.CSVHandler;
 
 @Component
 public class ApacheCSVHandler implements CSVHandler {

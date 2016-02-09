@@ -1,8 +1,7 @@
 package com.capgemini.stockmarket.initializer;
 
 
-import java.io.*;
-import java.util.*;
+import com.capgemini.stockmarket.simulation.StockSimulationManager;
 
 public class SimulationInitializer {
 

@@ -1,14 +1,18 @@
 package com.capgemini.stockmarket.player;
 
 
-import java.io.*;
-import java.util.*;
+import com.capgemini.stockmarket.banking.BankAccount;
+import com.capgemini.stockmarket.broker.BrokersOfficeDesk;
+import com.capgemini.stockmarket.common.DateAware;
+import com.capgemini.stockmarket.common.DateInfo;
+import com.capgemini.stockmarket.settings.PlayerSettings;
+import com.capgemini.stockmarket.simulation.PlayersActionListener;
 
 public class StockMarketPlayer implements DateAware {
 
 	private BrokersOfficeDesk brokersOfficeDesk;
 	private RequestCompositor compositor;
-	private Wallet wallet;
+	private BankAccount account;
 	private PlayerSettings settings;
 	private PlayerState state;
 	private DateInfo dateInfo;
@@ -31,6 +35,12 @@ public class StockMarketPlayer implements DateAware {
 	}
 
 	public PlayerState getState() {
+		return null;
+	}
+
+	@Override
+	public void notifyDateChanged() {
+		// TODO Auto-generated method stub
 		
 	}
 
