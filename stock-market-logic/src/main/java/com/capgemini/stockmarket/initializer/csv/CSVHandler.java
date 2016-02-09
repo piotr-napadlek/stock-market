@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.initializer;
+package com.capgemini.stockmarket.initializer.csv;
 
 
 import java.util.List;

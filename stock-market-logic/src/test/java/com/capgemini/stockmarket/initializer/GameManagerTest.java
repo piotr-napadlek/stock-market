@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.game;
+package com.capgemini.stockmarket.initializer;
 
 import javax.inject.Inject;
 
@@ -8,22 +8,16 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.capgemini.stockmarket.simulation.GameManager;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/game-context.xml"})
 public class GameManagerTest {
 
 	@Inject
-	private GameManager gameManager;
+	private SimulationInitializer initializer;
 	
 	@Test
 	public void shouldWireGameManager() {
-		Assert.assertNotNull(gameManager);
+		Assert.assertNotNull(initializer);
 	}
 	
-	@Test
-	public void shouldGetDelimeterFromProperties() {
-		Assert.assertNotNull(gameManager.getCsvHandler());
-	}
 }
