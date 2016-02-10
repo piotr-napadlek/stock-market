@@ -4,6 +4,11 @@ package com.capgemini.stockmarket.settings;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class PlayerSettings {
 	private static final double DEFAULT_BASE_BALANCE = 10_000d;
 	private static final String DEFAULT_CURRENCY = "PLN";

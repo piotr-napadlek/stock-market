@@ -1,6 +1,5 @@
 package com.capgemini.stockmarket.initializer.csv;
 
-
 import java.util.List;
 
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;

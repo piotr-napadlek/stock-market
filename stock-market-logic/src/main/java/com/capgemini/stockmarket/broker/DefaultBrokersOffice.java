@@ -14,7 +14,7 @@ import com.capgemini.stockmarket.settings.BrokersOfficeSettings;
 public class DefaultBrokersOffice implements BrokersOffice {
 
 	@Override
-	public void notifyDateChanged() {
+	public void dateChanged() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,5 +1,13 @@
 package com.capgemini.stockmarket.player;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.banking.BankAccount;
 import com.capgemini.stockmarket.broker.BrokersOfficeDesk;
@@ -8,40 +16,59 @@ import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.settings.PlayerSettings;
 import com.capgemini.stockmarket.simulation.PlayersActionListener;
 
+@Component
+@Scope(scopeName = "prototype")
 public class StockMarketPlayer implements DateAware {
 
-	private BrokersOfficeDesk brokersOfficeDesk;
+	@Inject
+	@Qualifier(value = "defaultStrategy")
 	private RequestCompositor compositor;
+	@Inject
 	private BankAccount account;
+	
+	private BrokersOfficeDesk brokersOfficeDesk;
 	private PlayerSettings settings;
+	
 	private PlayerState state;
 	private DateInfo dateInfo;
-	private PlayersActionListener listener;
+	private List<PlayersActionListener> listeners = new ArrayList<>();
 
 	public void setCompositor(RequestCompositor compositor) {
-		
+
 	}
 
-	public StockMarketPlayer(BrokersOfficeDesk brokersOfficeDesk, PlayerSettings settings) {
-		
+	@Inject
+	public StockMarketPlayer(BrokersOfficeDesk brokersOfficeDesk, PlayerSettings settings,
+			PlayersActionListener listener) {
+		this.brokersOfficeDesk = brokersOfficeDesk;
+		this.settings = settings;
+		listeners.add(listener);
 	}
 
-	public void applySettings(PlayerSettings settings) {
-		
+	public void setSettings(PlayerSettings settings) {
+		this.settings = settings;
 	}
 
 	private final void doTryTransaction() {
-		
+
 	}
 
 	public PlayerState getState() {
-		return null;
+		return state;
 	}
 
 	@Override
-	public void notifyDateChanged() {
-		// TODO Auto-generated method stub
-		
+	public void dateChanged() {
+		this.state = PlayerState.THINKING;
+		notifyStateChanged();
+		// actual transaction logic
+		doTryTransaction();
+		this.state = PlayerState.READY;
+		notifyStateChanged();
 	}
 
+	private void notifyStateChanged() {
+		listeners.forEach(listener -> listener.notifyStateChanged());
+	}
+	
 }
