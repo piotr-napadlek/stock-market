@@ -149,6 +149,13 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 		spr.forEach(sprTo -> sprTos.add(update(sprTo)));
 		return sprTos;
 	}
+	
+	@Override
+	public List<StockPriceRecordTo> deleteAll() {
+		List<StockPriceRecordTo> allSprs = findAllRecords();
+		sprRepository.deleteAll();
+		return allSprs;
+	}
 
 	private List<StockPriceRecordTo> mapList(List<StockPriceRecordEntity> entities) {
 		return entities.stream().map(entity -> mapper.map(entities, StockPriceRecordTo.class))

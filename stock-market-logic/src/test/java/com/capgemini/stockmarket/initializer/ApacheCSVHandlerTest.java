@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.game.csv;
+package com.capgemini.stockmarket.initializer;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

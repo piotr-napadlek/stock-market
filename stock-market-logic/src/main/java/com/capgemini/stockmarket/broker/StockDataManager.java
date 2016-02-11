@@ -3,12 +3,15 @@ package com.capgemini.stockmarket.broker;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 import com.capgemini.stockmarket.dto.TransactionTo;
 
-public abstract class StockDataManager {
+@Component
+public class StockDataManager {
 
 	private DateInfo currentDate;
 

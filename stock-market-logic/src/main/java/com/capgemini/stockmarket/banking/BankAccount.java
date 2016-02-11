@@ -4,10 +4,15 @@ package com.capgemini.stockmarket.banking;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.capgemini.stockmarket.broker.Share;
 import com.capgemini.stockmarket.broker.ShareInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 
+@Component
+@Scope("prototype")
 public class BankAccount implements BankAccountInfo {
 
 	private StockBasket stockBasket;

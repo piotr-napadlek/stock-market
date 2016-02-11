@@ -7,7 +7,7 @@
       <Entity type="Class">
         <Name>StockSimulationManager</Name>
         <Access>Public</Access>
-        <Location left="809" top="337" />
+        <Location left="1885" top="1119" />
         <Size width="460" height="400" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private PriorityQueue&lt;DateAware&gt; dateListeners</Member>
@@ -34,7 +34,7 @@
       <Entity type="Interface">
         <Name>DateAware</Name>
         <Access>Public</Access>
-        <Location left="1160" top="932" />
+        <Location left="2488" top="1862" />
         <Size width="170" height="103" />
         <Collapsed>False</Collapsed>
         <Member type="Method">public void notifyDateChanged()</Member>
@@ -42,7 +42,7 @@
       <Entity type="Class">
         <Name>StockDataManager</Name>
         <Access>Public</Access>
-        <Location left="384" top="960" />
+        <Location left="1260" top="1812" />
         <Size width="291" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private DateInfo currentDate</Member>
@@ -55,7 +55,7 @@
       <Entity type="Interface">
         <Name>BrokersOfficeDesk</Name>
         <Access>Public</Access>
-        <Location left="1103" top="1064" />
+        <Location left="2381" top="2007" />
         <Size width="434" height="112" />
         <Collapsed>False</Collapsed>
         <Member type="Method">public TransactionOfferTo processRequest(TransactionRequestTo transactionRequest)</Member>
@@ -63,13 +63,13 @@
       </Entity>
       <Entity type="Comment">
         <Text>WebApp (REST) / GUI / CLI</Text>
-        <Location left="632" top="62" />
+        <Location left="1510" top="306" />
         <Size width="205" height="50" />
       </Entity>
       <Entity type="Class">
         <Name>DefaultBrokersOffice</Name>
         <Access>Public</Access>
-        <Location left="701" top="826" />
+        <Location left="1577" top="1678" />
         <Size width="236" height="88" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -77,7 +77,7 @@
       <Entity type="Class">
         <Name>StockMarketPlayer</Name>
         <Access>Public</Access>
-        <Location left="1420" top="724" />
+        <Location left="2820" top="1638" />
         <Size width="439" height="281" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private BrokersOfficeDesk brokersOfficeDesk</Member>
@@ -97,7 +97,7 @@
       <Entity type="Interface">
         <Name>RequestCompositor</Name>
         <Access>Public</Access>
-        <Location left="1399" top="540" />
+        <Location left="3032" top="725" />
         <Size width="607" height="120" />
         <Collapsed>False</Collapsed>
         <Member type="Method">TransactionRequestTo composeRequest(BankAccounttInfo wallet, StockInfoProvider stockDataProvider, Date currentDate)</Member>
@@ -106,7 +106,7 @@
       <Entity type="Interface">
         <Name>BankAccountInfo</Name>
         <Access>Public</Access>
-        <Location left="1984" top="222" />
+        <Location left="3368" top="888" />
         <Size width="308" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Method">double getBalanceFor(Currency currency)</Member>
@@ -117,7 +117,7 @@
       <Entity type="Class">
         <Name>CurrencyBalance</Name>
         <Access>Public</Access>
-        <Location left="1636" top="1077" />
+        <Location left="3036" top="1991" />
         <Size width="299" height="246" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private Currency currency</Member>
@@ -134,7 +134,7 @@
       <Entity type="Class">
         <Name>StockBasket</Name>
         <Access>Public</Access>
-        <Location left="1968" top="1095" />
+        <Location left="3368" top="2009" />
         <Size width="361" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private Map&lt;CompanyTo, List&lt;Share&gt;&gt; shareMap</Member>
@@ -146,7 +146,7 @@
       <Entity type="Class">
         <Name>Share</Name>
         <Access>Public</Access>
-        <Location left="701" top="1236" />
+        <Location left="1847" top="2159" />
         <Size width="365" height="264" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private CompanyTo company</Member>
@@ -165,7 +165,7 @@
       <Entity type="Interface">
         <Name>BrokersOffice</Name>
         <Access>Public</Access>
-        <Location left="763" top="960" />
+        <Location left="1897" top="1922" />
         <Size width="290" height="111" />
         <Collapsed>False</Collapsed>
         <Member type="Method">String getPublicSecuritySignature()</Member>
@@ -174,7 +174,7 @@
       <Entity type="Class">
         <Name>ShareInfo</Name>
         <Access>Public</Access>
-        <Location left="2075" top="515" />
+        <Location left="3495" top="1187" />
         <Size width="521" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private Long shareId</Member>
@@ -189,7 +189,7 @@
       <Entity type="Class">
         <Name>CurrencyAmount</Name>
         <Access>Public</Access>
-        <Location left="2205" top="1349" />
+        <Location left="3861" top="2255" />
         <Size width="162" height="128" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private Currency currency</Member>
@@ -200,7 +200,7 @@
       <Entity type="Enum">
         <Name>Currency</Name>
         <Access>Public</Access>
-        <Location left="2358" top="306" />
+        <Location left="3742" top="972" />
         <Size width="162" height="146" />
         <Collapsed>False</Collapsed>
         <Value>PLN</Value>
@@ -212,7 +212,7 @@
       <Entity type="Class">
         <Name>BankAccount</Name>
         <Access>Public</Access>
-        <Location left="1926" top="759" />
+        <Location left="3326" top="1673" />
         <Size width="396" height="258" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private StockBasket stockBasket</Member>
@@ -226,7 +226,7 @@
       <Entity type="Class">
         <Name>SimulationInitializer</Name>
         <Access>Public</Access>
-        <Location left="455" top="291" />
+        <Location left="1331" top="1143" />
         <Size width="251" height="137" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private CSVHandler csvHandler</Member>
@@ -237,20 +237,20 @@
       <Entity type="Interface">
         <Name>CSVHandler</Name>
         <Access>Public</Access>
-        <Location left="406" top="523" />
+        <Location left="1282" top="1375" />
         <Size width="285" height="94" />
         <Collapsed>False</Collapsed>
         <Member type="Method">List&lt;StockPriceRecordTo&gt; parseCSV(String csv)</Member>
       </Entity>
       <Entity type="Comment">
         <Text>BackEnd - Services</Text>
-        <Location left="275" top="1395" />
+        <Location left="1191" top="2233" />
         <Size width="335" height="50" />
       </Entity>
       <Entity type="Class">
         <Name>TransactionProcessor</Name>
         <Access>Public</Access>
-        <Location left="343" top="675" />
+        <Location left="1282" top="1527" />
         <Size width="419" height="111" />
         <Collapsed>False</Collapsed>
         <Member type="Method">public TransactionOfferTo prepareOffer(TransactionRequestTo request)</Member>
@@ -260,7 +260,7 @@
       <Entity type="Class">
         <Name>Manual</Name>
         <Access>Public</Access>
-        <Location left="1399" top="86" />
+        <Location left="3032" top="271" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -268,7 +268,7 @@
       <Entity type="Class">
         <Name>RandomChaotic</Name>
         <Access>Public</Access>
-        <Location left="1516" top="201" />
+        <Location left="3149" top="386" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -276,7 +276,7 @@
       <Entity type="Class">
         <Name>PatientObserver</Name>
         <Access>Public</Access>
-        <Location left="1622" top="86" />
+        <Location left="3255" top="271" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -284,7 +284,7 @@
       <Entity type="Class">
         <Name>EagerTransactioner</Name>
         <Access>Public</Access>
-        <Location left="1722" top="201" />
+        <Location left="3355" top="386" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -292,7 +292,7 @@
       <Entity type="Class">
         <Name>___etc___</Name>
         <Access>Public</Access>
-        <Location left="1831" top="86" />
+        <Location left="3464" top="271" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -300,24 +300,17 @@
       <Entity type="Interface">
         <Name>StockInfoProvider</Name>
         <Access>Public</Access>
-        <Location left="1103" top="1248" />
+        <Location left="2447" top="2198" />
         <Size width="489" height="137" />
         <Collapsed>False</Collapsed>
         <Member type="Method">List&lt;CompanyTo&gt; getStockCompanies()</Member>
         <Member type="Method">List&lt;StockPriceRecordTo&gt; getSharePriceHistoryFor(CompanyTo company, Date fromDate)</Member>
         <Member type="Method">List&lt;StockPriceRecordTo&gt; getSharePriceHistoryFor(CompanyTo company)</Member>
       </Entity>
-      <Entity type="Interface">
-        <Name>ApplicationContextAware</Name>
-        <Access>Public</Access>
-        <Location left="1023" top="812" />
-        <Size width="224" height="77" />
-        <Collapsed>False</Collapsed>
-      </Entity>
       <Entity type="Enum">
         <Name>GameState</Name>
         <Access>Public</Access>
-        <Location left="327" top="74" />
+        <Location left="1221" top="762" />
         <Size width="162" height="146" />
         <Collapsed>False</Collapsed>
         <Value>NOT_INITIALIZED</Value>
@@ -329,7 +322,7 @@
       <Entity type="Class">
         <Name>SimulationCalendar</Name>
         <Access>Default</Access>
-        <Location left="947" top="121" />
+        <Location left="2803" top="1208" />
         <Size width="234" height="145" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private Date currentDate</Member>
@@ -341,7 +334,7 @@
       <Entity type="Interface">
         <Name>DateInfo</Name>
         <Access>Public</Access>
-        <Location left="1252" top="201" />
+        <Location left="2847" top="875" />
         <Size width="203" height="94" />
         <Collapsed>False</Collapsed>
         <Member type="Method">Date getCurrentDate()</Member>
@@ -349,7 +342,7 @@
       <Entity type="Interface">
         <Name>PlayersActionListener</Name>
         <Access>Public</Access>
-        <Location left="1305" top="354" />
+        <Location left="2625" top="1533" />
         <Size width="164" height="94" />
         <Collapsed>False</Collapsed>
         <Member type="Method">void notifyStateChanged()</Member>
@@ -357,7 +350,7 @@
       <Entity type="Enum">
         <Name>PlayerState</Name>
         <Access>Public</Access>
-        <Location left="2358" top="86" />
+        <Location left="3742" top="752" />
         <Size width="162" height="168" />
         <Collapsed>False</Collapsed>
         <Value>READY</Value>
@@ -367,7 +360,7 @@
       <Entity type="Class">
         <Name>TransactionRequestTo</Name>
         <Access>Public</Access>
-        <Location left="2416" top="784" />
+        <Location left="3840" top="1572" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -375,7 +368,7 @@
       <Entity type="Class">
         <Name>TransactionOfferTo</Name>
         <Access>Public</Access>
-        <Location left="2416" top="881" />
+        <Location left="3840" top="1669" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -383,7 +376,7 @@
       <Entity type="Class">
         <Name>TransactionAcceptTo</Name>
         <Access>Public</Access>
-        <Location left="2416" top="975" />
+        <Location left="3840" top="1763" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -391,7 +384,7 @@
       <Entity type="Class">
         <Name>TransactionTo</Name>
         <Access>Public</Access>
-        <Location left="2416" top="1075" />
+        <Location left="3840" top="1863" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -399,7 +392,7 @@
       <Entity type="Class">
         <Name>PlayerSettings</Name>
         <Access>Public</Access>
-        <Location left="2416" top="1180" />
+        <Location left="3840" top="1968" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
@@ -407,10 +400,48 @@
       <Entity type="Class">
         <Name>BrokersOfficeSettings</Name>
         <Access>Public</Access>
-        <Location left="2416" top="1272" />
+        <Location left="3840" top="2060" />
         <Size width="162" height="77" />
         <Collapsed>False</Collapsed>
         <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>PlayersManager</Name>
+        <Access>Public</Access>
+        <Location left="2086" top="840" />
+        <Size width="183" height="135" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>CalendarManager</Name>
+        <Access>Public</Access>
+        <Location left="2500" top="1241" />
+        <Size width="193" height="131" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>SimulationStateHolder</Name>
+        <Access>Public</Access>
+        <Location left="2195" top="1571" />
+        <Size width="195" height="121" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>PlayersStateInfo</Name>
+        <Access>Public</Access>
+        <Location left="2425" top="898" />
+        <Size width="162" height="92" />
+        <Collapsed>False</Collapsed>
+      </Entity>
+      <Entity type="Interface">
+        <Name>SimulationStateInfo</Name>
+        <Access>Public</Access>
+        <Location left="2381" top="1720" />
+        <Size width="190" height="90" />
+        <Collapsed>False</Collapsed>
       </Entity>
     </Entities>
     <Relationships>
@@ -418,11 +449,13 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="False">
-          <X>818</X>
-          <Y>306</Y>
+          <X>1894</X>
+          <Y>1088</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Association" first="6" second="7">
+        <Label>
+        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <Direction>Unidirectional</Direction>
@@ -432,93 +465,83 @@
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>1093</X>
-          <Y>988</Y>
+          <X>2227</X>
+          <Y>1950</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>1129</X>
-          <Y>988</Y>
+          <X>2457</X>
+          <Y>1918</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Generalization" first="12" second="3">
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="False">
-          <X>1055</X>
-          <Y>1124</Y>
+          <X>2333</X>
+          <Y>2067</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Realization" first="5" second="12">
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>824</X>
-          <Y>939</Y>
+          <X>1700</X>
+          <Y>1791</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Dependency" first="10" second="11">
-        <Label>
-        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>2136</X>
-          <Y>1370</Y>
+          <X>3536</X>
+          <Y>2284</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>1093</X>
-          <Y>1459</Y>
+          <X>2239</X>
+          <Y>2382</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Realization" first="6" second="1">
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>1377</X>
-          <Y>828</Y>
+          <X>2777</X>
+          <Y>1742</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Dependency" first="8" second="13">
-        <Label>
-        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>2150</X>
-          <Y>464</Y>
+          <X>3534</X>
+          <Y>1130</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>2150</X>
-          <Y>490</Y>
+          <X>3570</X>
+          <Y>1162</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Association" first="16" second="9">
-        <Label>
-        </Label>
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>1901</X>
-          <Y>988</Y>
+          <X>3301</X>
+          <Y>1902</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>1881</X>
-          <Y>1050</Y>
+          <X>3281</X>
+          <Y>1964</Y>
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Composition</AssociationType>
       </Relationship>
       <Relationship type="Association" first="16" second="10">
-        <Label>
-        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <Direction>Unidirectional</Direction>
         <AssociationType>Composition</AssociationType>
       </Relationship>
       <Relationship type="Association" first="6" second="16">
-        <Label>
-        </Label>
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <Direction>Unidirectional</Direction>
@@ -528,80 +551,56 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>2040</X>
-          <Y>730</Y>
+          <X>3440</X>
+          <Y>1644</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Association" first="12" second="11">
-        <Label>
-        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>784</X>
-          <Y>1141</Y>
+          <X>1918</X>
+          <Y>2103</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>784</X>
-          <Y>1210</Y>
+          <X>1930</X>
+          <Y>2133</Y>
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Aggregation</AssociationType>
       </Relationship>
       <Relationship type="Dependency" first="6" second="3">
-        <Label>
-        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>1459</X>
-          <Y>1030</Y>
+          <X>2859</X>
+          <Y>1944</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>1460</X>
-          <Y>1037</Y>
+          <X>2738</X>
+          <Y>1980</Y>
         </BendPoint>
-      </Relationship>
-      <Relationship type="Association" first="0" second="6">
-        <Label>
-        </Label>
-        <StartOrientation>Vertical</StartOrientation>
-        <EndOrientation>Horizontal</EndOrientation>
-        <BendPoint relativeToStartShape="True">
-          <X>1242</X>
-          <Y>786</Y>
-        </BendPoint>
-        <BendPoint relativeToStartShape="False">
-          <X>1388</X>
-          <Y>786</Y>
-        </BendPoint>
-        <Direction>Unidirectional</Direction>
-        <AssociationType>Aggregation</AssociationType>
       </Relationship>
       <Relationship type="Association" first="0" second="12">
-        <Label>
-        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="False">
-          <X>987</X>
-          <Y>896</Y>
+          <X>2121</X>
+          <Y>1858</Y>
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Aggregation</AssociationType>
       </Relationship>
       <Relationship type="Association" first="17" second="18">
-        <Label>
-        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>520</X>
-          <Y>467</Y>
+          <X>1396</X>
+          <Y>1319</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>520</X>
-          <Y>494</Y>
+          <X>1396</X>
+          <Y>1346</Y>
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Aggregation</AssociationType>
@@ -610,29 +609,25 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="False">
-          <X>664</X>
-          <Y>263</Y>
+          <X>1540</X>
+          <Y>1115</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Association" first="5" second="2">
-        <Label>
-        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>722</X>
-          <Y>965</Y>
+          <X>1598</X>
+          <Y>1817</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>716</X>
-          <Y>1005</Y>
+          <X>1592</X>
+          <Y>1857</Y>
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Aggregation</AssociationType>
       </Relationship>
       <Relationship type="Association" first="17" second="0">
-        <Label>
-        </Label>
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <Direction>Unidirectional</Direction>
@@ -646,26 +641,24 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>302</X>
-          <Y>1370</Y>
+          <X>1218</X>
+          <Y>2208</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>415</X>
-          <Y>369</Y>
+          <X>1291</X>
+          <Y>1221</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Association" first="5" second="20">
-        <Label>
-        </Label>
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>661</X>
-          <Y>877</Y>
+          <X>1537</X>
+          <Y>1729</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>589</X>
-          <Y>827</Y>
+          <X>1528</X>
+          <Y>1679</Y>
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Composition</AssociationType>
@@ -674,12 +667,12 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>1500</X>
-          <Y>192</Y>
+          <X>3133</X>
+          <Y>377</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>1500</X>
-          <Y>511</Y>
+          <X>3133</X>
+          <Y>696</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Comment" first="4" second="21">
@@ -702,29 +695,27 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>1927</X>
-          <Y>188</Y>
+          <X>3560</X>
+          <Y>373</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>1927</X>
-          <Y>506</Y>
+          <X>3560</X>
+          <Y>691</Y>
         </BendPoint>
       </Relationship>
-      <Relationship type="Realization" first="0" second="27">
+      <Relationship type="Association" first="0" second="28">
+        <Label>
+        </Label>
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1993</X>
+          <Y>813</Y>
+        </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>1126</X>
-          <Y>787</Y>
+          <X>2832</X>
+          <Y>1183</Y>
         </BendPoint>
-      </Relationship>
-      <Relationship type="Realization" first="29" second="30">
-        <StartOrientation>Horizontal</StartOrientation>
-        <EndOrientation>Horizontal</EndOrientation>
-      </Relationship>
-      <Relationship type="Association" first="0" second="29">
-        <StartOrientation>Vertical</StartOrientation>
-        <EndOrientation>Vertical</EndOrientation>
         <Direction>Unidirectional</Direction>
         <AssociationType>Composition</AssociationType>
       </Relationship>
@@ -732,17 +723,123 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
       </Relationship>
-      <Relationship type="Realization" first="0" second="31">
+      <Relationship type="Realization" first="39" second="30">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2680</X>
+          <Y>1420</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>2681</X>
+          <Y>1498</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="38" second="41">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2477</X>
+          <Y>855</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="40" second="42">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2294</X>
+          <Y>1777</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Dependency" first="39" second="42">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2531</X>
+          <Y>1695</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="0" second="40">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2169</X>
+          <Y>1548</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="39">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="38">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2138</X>
+          <Y>1057</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>2138</X>
+          <Y>1015</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Dependency" first="6" second="30">
+        <Label>
+        </Label>
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>1294</X>
-          <Y>571</Y>
+          <X>2792</X>
+          <Y>1702</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>1376</X>
-          <Y>503</Y>
+          <X>2673</X>
+          <Y>1652</Y>
         </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="28" second="29">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>3003</X>
+          <Y>996</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Dependency" first="6" second="29">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>3094</X>
+          <Y>933</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Dependency" first="39" second="28">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Dependency" first="39" second="41">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
       </Relationship>
     </Relationships>
   </ProjectItem>

@@ -1,125 +1,148 @@
 package com.capgemini.stockmarket.simulation;
 
-
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.broker.BrokersOffice;
-import com.capgemini.stockmarket.broker.BrokersOfficeDesk;
-import com.capgemini.stockmarket.common.DateAware;
+import com.capgemini.stockmarket.common.IllegalRequestException;
 import com.capgemini.stockmarket.player.RequestCompositor;
 import com.capgemini.stockmarket.player.StockMarketPlayer;
 import com.capgemini.stockmarket.settings.BrokersOfficeSettings;
+import com.capgemini.stockmarket.settings.PlayerSettings;
 
 @Component
-public class StockSimulationManager implements ApplicationContextAware, PlayersActionListener {
+public class StockSimulationManager implements ApplicationContextAware {
 
-	private List<DateAware> dateTimeListeners;
-	private Set<StockMarketPlayer> players = new HashSet<>();
 	
+
 	private BrokersOffice defaultBO;
-	@Inject
-	private SimulationCalendar calendar;
-	
-
+	@SuppressWarnings("unused")
 	private Set<BrokersOffice> optionalBOs;
-	
-	private DateTime startDate;
-	private DateTime finishDate;
-	private GameState gameState = GameState.NOT_INITIALIZED;
-	
+
+	private PlayersManager playersManager;
+	private CalendarManager calendarManager;
+	private SimulationStateHolder stateHolder;
+
+
+	private ApplicationContext applicationContext;
+
 	@Inject
-	public StockSimulationManager(StockMarketPlayer defaultPlayer, BrokersOffice defaultBO) {
+	public StockSimulationManager(
+			PlayersManager playersManager,
+			@Qualifier("defaultBrokersOffice") BrokersOffice defaultBO,
+			CalendarManager calendarManager, 
+			SimulationStateHolder stateHolder) {
+		
 		this.defaultBO = defaultBO;
-		players.add(defaultPlayer);
-		dateTimeListeners.add(defaultBO);
-		dateTimeListeners.add(defaultPlayer);
+		this.calendarManager = calendarManager;
+		this.playersManager = playersManager;
+		this.stateHolder = stateHolder;
+		playersManager.addDefaultPlayer();
+		calendarManager.addDateListener(defaultBO);
+		calendarManager.addDateListeners(playersManager.getAllPlayers());
 	}
 
 	public void addBrokersOffice(BrokersOffice brokersOffice, BrokersOfficeSettings settings) {
-		
+		throw new NotImplementedException(
+				"Functionality of multiple Brokers Offices is not yet implemented");
 	}
 
-	public void setDefaultBrokersOfficeSettings(BrokersOfficeSettings settings) {
-		
+	public StockMarketPlayer addPlayer(String playerName) {
+		return playersManager.addPlayer(playerName);
 	}
 
-	public void addPlayer(BrokersOfficeDesk office) {
-		
+	public StockMarketPlayer addPlayer(PlayerSettings settings) {
+		return playersManager.addPlayer(settings, null);
 	}
 
-	public void addDefaultBOPlayer() {
-		
+	public StockMarketPlayer addPlayer(PlayerSettings settings, RequestCompositor strategy) {
+		return playersManager.addPlayer(settings, strategy);
 	}
 
-	public void addDefaultPlayer() {
-		
+	public StockMarketPlayer setPlayerSettings(String playerName, PlayerSettings settings) {
+		return playersManager.setPlayerSettings(playerName, settings);
+	}
+
+	public StockMarketPlayer setPlayerSettings(StockMarketPlayer player,
+			PlayerSettings settings) {
+		return playersManager.setPlayerSettings(player.getName(), settings);
+	}
+
+	public boolean setPlayerStrategy(String playerName, RequestCompositor strategy) {
+		return playersManager.setPlayerStrategy(playerName, strategy);
+	}
+
+	public boolean setPlayerStrategy(String playerName, String strategyName) {
+		return playersManager.setPlayerStrategy(playerName, strategyName);
 	}
 
 	public void nextDay() {
-		if (GameState.SIMULATION_FINISHED.equals(gameState)) {
-			throw new IllegalRequestException("Cannot proccess; game has finished.");
-		}
-		calendar.nextDay();
-		dateTimeListeners.forEach(listener -> listener.dateChanged());
+		calendarManager.nextDay();
 	}
 
-	public void processToDateTime(DateTime DateTime) {
-		
+	public void skipToDate(DateTime date) {
+		calendarManager.skipToDateTime(date);
 	}
 
-	public void skipToDateTime(DateTime DateTime) {
-		
+	public void moveToDate(DateTime date) {
+		calendarManager.processToDateTime(date, 1);
 	}
 
-	public void setPlayerStrategy(StockMarketPlayer player, RequestCompositor compositor) {
-		
+	public void moveToDateSkipping(DateTime date, int daysSkip) {
+		calendarManager.processToDateTime(date, daysSkip);
+	}
+
+	public void moveToEnd() {
+
+	}
+
+	private void finalizeSimulation() {
+
 	}
 
 	public void resetSimulation() {
-		
+
 	}
 
 	public void start() {
-		
-	}
-
-	@Override
-	public void notifyStateChanged() {
-		// TODO Auto-generated method stub
-		
+		if (calendarManager.isCalendarSet()) {
+			throw new IllegalRequestException(
+					"Game is not initialized yet. Set the start date and end date");
+		}
+		if (defaultBO == null) {
+			throw new IllegalRequestException("Brokers office is not properly set.");
+		}
 	}
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
-		// TODO Auto-generated method stub
-		
+		this.applicationContext = applicationContext;
 	}
 
-	public GameState getGameState() {
-		return gameState;
+	public SimulationState getGameState() {
+		return stateHolder.getSimulationState();
 	}
 
-	public void setGameState(GameState gameState) {
-		this.gameState = gameState;
+	public void setGameState(SimulationState gameState) {
+		this.stateHolder.setSimualtionState(gameState);
 	}
-	
-	public void setStartDate(DateTime DateTime) {
-		this.startDate = DateTime;
+
+	public void setStartDate(DateTime dateTime) {
+		calendarManager.setStartDate(dateTime);
 	}
 
 	public void setFinishDate(DateTime finishDateTime) {
-		this.finishDate = finishDateTime;
+		calendarManager.setFinishDate(finishDateTime);
 	}
 
 }

@@ -20,7 +20,7 @@ import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 public class ApacheCSVHandler implements CSVHandler {
 
 	@Value("${csv.format.delimeter}")
-	private char csvFormatDelimeter;
+	private String csvFormatDelimeter;
 	@Value("${csv.format.headers}")
 	private String headers;
 	@Value("$csv.format.dateFormat")
@@ -32,7 +32,7 @@ public class ApacheCSVHandler implements CSVHandler {
 			return new ArrayList<StockPriceRecordTo>();
 		}
 		CSVFormat csvFormat = CSVFormat.EXCEL
-				.withDelimiter(csvFormatDelimeter)
+				.withDelimiter(csvFormatDelimeter.charAt(0))
 				.withHeader(headers.split(","))
 				.withIgnoreEmptyLines();
 		if (csv.indexOf("\r\n") < 0) {
@@ -58,7 +58,7 @@ public class ApacheCSVHandler implements CSVHandler {
 	}
 
 	public char getCsvFormatDelimeter() {
-		return csvFormatDelimeter;
+		return csvFormatDelimeter.charAt(0);
 	}
 
 	public String getHeaders() {
@@ -78,6 +78,6 @@ public class ApacheCSVHandler implements CSVHandler {
 	}
 
 	public void setCsvFormatDelimeter(char csvFormatDelimeter) {
-		this.csvFormatDelimeter = csvFormatDelimeter;
+		this.csvFormatDelimeter = String.valueOf(csvFormatDelimeter);
 	}
 }

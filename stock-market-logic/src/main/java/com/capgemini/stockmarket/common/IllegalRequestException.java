@@ -1,6 +1,7 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.common;
 
 public class IllegalRequestException  extends RuntimeException {
+	private static final long serialVersionUID = 1L;
 
 	public IllegalRequestException() {
 		super();

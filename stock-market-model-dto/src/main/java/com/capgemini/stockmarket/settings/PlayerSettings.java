@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component ("defaultPlayerSettings")
 @Scope("prototype")
 public class PlayerSettings {
 	private static final double DEFAULT_BASE_BALANCE = 10_000d;

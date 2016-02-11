@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 import com.capgemini.stockmarket.initializer.csv.CSVHandler;
 import com.capgemini.stockmarket.service.StockPriceRecordService;
-import com.capgemini.stockmarket.simulation.GameState;
+import com.capgemini.stockmarket.simulation.SimulationState;
 import com.capgemini.stockmarket.simulation.StockSimulationManager;
 
 @Component
@@ -26,9 +26,16 @@ public class SimulationInitializer {
 	public void initializeGame(String csv) throws Exception {
 		List<StockPriceRecordTo> sprTos = insertAndVerifyDBData(csv);
 		calculateSimulationBoundaryDates(sprTos);
-		simulationManager.setGameState(GameState.DB_READY);
+		simulationManager.setGameState(SimulationState.DB_READY);
 	}
 
+	public void reset() {
+		sprService.deleteAll();
+		simulationManager.setStartDate(null);
+		simulationManager.setFinishDate(null);
+		simulationManager.setGameState(SimulationState.NOT_INITIALIZED);
+	}
+	
 	private void calculateSimulationBoundaryDates(List<StockPriceRecordTo> sprTos) {
 		Date startDate = sprTos.stream()
 				.min((spr, sprOther) -> spr.getDate().compareTo(sprOther.getDate()))
@@ -41,13 +48,16 @@ public class SimulationInitializer {
 	}
 
 	private List<StockPriceRecordTo> insertAndVerifyDBData(String csv) throws Exception {
-		List<StockPriceRecordTo> sprTos = sprService.saveAll(csvHandler.parseCSV(csv));
-		sprTos.forEach(spr -> {
-			if (spr.getCompany().getId() == null) {
-				throw new InitializationException(
-						"Something went wrong with Database storage.");
+		List<StockPriceRecordTo> parsedSprs = csvHandler.parseCSV(csv);
+		parsedSprs.forEach(spr -> {
+			if (spr.getDate() == null || spr.getCompany() == null
+					|| spr.getCompany().getId() == null) {
+				throw new IllegalArgumentException(
+						"Something is wrong with input stock data. Missing some fields.");
 			}
 		});
+		List<StockPriceRecordTo> sprTos = sprService.saveAll(parsedSprs);
 		return sprTos;
 	}
+	
 }

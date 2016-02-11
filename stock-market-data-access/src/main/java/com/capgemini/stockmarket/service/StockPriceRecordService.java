@@ -29,6 +29,7 @@ public interface StockPriceRecordService {
 	StockPriceRecordTo deleteOne(StockPriceRecordTo spr);
 	StockPriceRecordTo deleteOne(StockPriceRecordPK id);
 	List<StockPriceRecordTo> deleteAll(Collection<StockPriceRecordPK> ids);
+	List<StockPriceRecordTo> deleteAll();
 
 	// update
 	StockPriceRecordTo update(StockPriceRecordTo spr);

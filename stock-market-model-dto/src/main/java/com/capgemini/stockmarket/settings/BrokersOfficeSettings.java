@@ -1,5 +1,10 @@
 package com.capgemini.stockmarket.settings;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component(value = "defaultBrokersOfficeSettings")
+@Scope("prototype")
 public class BrokersOfficeSettings {
 	
 	private static final double DEFAULT_MIN_SELL_AVAILABILITY = 0.8d;

@@ -18,7 +18,7 @@ class SimulationCalendarImpl implements SimulationCalendar {
 
 	@Override
 	public void nextDay() {
-		currentDate.plusDays(1);
+		currentDate = currentDate.plusDays(1);
 	}
 
 	@Override
@@ -31,4 +31,8 @@ class SimulationCalendarImpl implements SimulationCalendar {
 		return currentDate.toDate();
 	}
 
+	@Override
+	public void plusDays(int days) {
+		currentDate = currentDate.plusDays(days);
+	}
 }

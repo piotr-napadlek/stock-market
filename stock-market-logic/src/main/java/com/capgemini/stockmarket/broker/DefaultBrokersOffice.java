@@ -3,6 +3,11 @@ package com.capgemini.stockmarket.broker;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 import com.capgemini.stockmarket.dto.TransactionAcceptTo;
@@ -11,8 +16,18 @@ import com.capgemini.stockmarket.dto.TransactionRequestTo;
 import com.capgemini.stockmarket.dto.TransactionTo;
 import com.capgemini.stockmarket.settings.BrokersOfficeSettings;
 
+@Component ("defaultBrokersOffice")
+@Scope("singleton")
 public class DefaultBrokersOffice implements BrokersOffice {
-
+	private TransactionProcessor processor;
+	private StockDataManager dataManager;
+	
+	@Inject
+	public DefaultBrokersOffice(StockDataManager manager, TransactionProcessor processor) {
+		this.processor = processor;
+		this.dataManager = manager;
+	}
+	
 	@Override
 	public void dateChanged() {
 		// TODO Auto-generated method stub

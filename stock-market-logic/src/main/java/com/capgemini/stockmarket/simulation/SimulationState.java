@@ -1,6 +1,6 @@
 package com.capgemini.stockmarket.simulation;
 
-public enum GameState {
+public enum SimulationState {
 
 	NOT_INITIALIZED,
 	DB_READY,
