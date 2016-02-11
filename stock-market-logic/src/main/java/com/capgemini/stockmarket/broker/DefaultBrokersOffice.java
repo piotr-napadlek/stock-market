@@ -8,12 +8,10 @@ import javax.inject.Inject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.capgemini.stockmarket.common.StockTransactionInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
-import com.capgemini.stockmarket.dto.TransactionAcceptTo;
-import com.capgemini.stockmarket.dto.TransactionOfferTo;
-import com.capgemini.stockmarket.dto.TransactionRequestTo;
-import com.capgemini.stockmarket.dto.TransactionTo;
+import com.capgemini.stockmarket.dto.TransactionObjectTo;
 import com.capgemini.stockmarket.settings.BrokersOfficeSettings;
 
 @Component ("defaultBrokersOffice")
@@ -32,18 +30,6 @@ public class DefaultBrokersOffice implements BrokersOffice {
 	public void dateChanged() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public TransactionOfferTo processRequest(TransactionRequestTo transactionRequest) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public TransactionTo processAcceptance(TransactionAcceptTo transactionAccept) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -74,6 +60,20 @@ public class DefaultBrokersOffice implements BrokersOffice {
 	public void applySettings(BrokersOfficeSettings settings) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public TransactionObjectTo<StockTransactionInfo> processRequest(
+			TransactionObjectTo<StockTransactionInfo> transactionRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TransactionObjectTo<Stock> processAcceptance(
+			TransactionObjectTo<StockTransactionInfo> transactionAccept) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -7,8 +7,8 @@ import java.util.Set;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.capgemini.stockmarket.broker.Share;
-import com.capgemini.stockmarket.broker.ShareInfo;
+import com.capgemini.stockmarket.broker.Stock;
+import com.capgemini.stockmarket.broker.StockInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 
 @Component
@@ -23,7 +23,7 @@ public class BankAccount implements BankAccountInfo {
 		
 	}
 
-	public boolean putShares(Set<Share> shares) {
+	public boolean putShares(Set<Stock> shares) {
 		return false;
 		
 	}
@@ -33,7 +33,7 @@ public class BankAccount implements BankAccountInfo {
 		
 	}
 
-	public Set<Share> extractShares(List<ShareInfo> shareInfos) {
+	public Set<Stock> extractShares(List<StockInfo> shareInfos) {
 		return null;
 		
 	}
@@ -57,9 +57,13 @@ public class BankAccount implements BankAccountInfo {
 	}
 
 	@Override
-	public Set<ShareInfo> getShareInfos(CompanyTo company) {
+	public Set<StockInfo> getShareInfos(CompanyTo company) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void clearAccount() {
+		
 	}
 }
 

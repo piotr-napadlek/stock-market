@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.simulation.state;
 
 public interface SimulationStateInfo {
 	SimulationState getSimulationState();

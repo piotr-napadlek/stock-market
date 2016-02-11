@@ -1,27 +1,30 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.simulation.calendar;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
-
-import static org.mockito.Matchers.*;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import com.capgemini.stockmarket.common.DateAware;
+import com.capgemini.stockmarket.simulation.PlayersStateInfo;
+import com.capgemini.stockmarket.simulation.calendar.CalendarManager;
+import com.capgemini.stockmarket.simulation.calendar.SimulationCalendar;
+import com.capgemini.stockmarket.simulation.calendar.SimulationCalendarImpl;
+import com.capgemini.stockmarket.simulation.state.SimulationState;
+import com.capgemini.stockmarket.simulation.state.SimulationStateSetter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalendarManagerTest {
@@ -30,16 +33,17 @@ public class CalendarManagerTest {
 	@Spy
 	private SimulationCalendar calendar = new SimulationCalendarImpl();
 	@Mock
-	private SimulationStateInfo stateInfo;
+	private SimulationStateSetter stateInfo;
 	@Mock
 	private PlayersStateInfo playerStateInfo;
+	@Mock
+	private DateAware listener;
 
 	@Before
 	public void setUp() {
 		when(playerStateInfo.allPlayersAreReady()).thenReturn(true);
 		when(stateInfo.getSimulationState()).thenReturn(SimulationState.READY);
 		when(stateInfo.isSimulationInProgress()).thenReturn(true);
-		DateAware listener = Mockito.mock(DateAware.class);
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
@@ -47,6 +51,7 @@ public class CalendarManagerTest {
 				return null;
 			}
 		}).when(listener).dateChanged();
+		manager.addDateListener(listener);
 	}
 
 	@Test
@@ -60,6 +65,7 @@ public class CalendarManagerTest {
 		manager.nextDay();
 		// then
 		assertEquals(startDate.toDate(), calendar.getCurrentDate());
+		verify(calendar, times(1)).plusDays(1);
 		// when
 		manager.nextDay();
 		manager.nextDay();
@@ -67,6 +73,22 @@ public class CalendarManagerTest {
 		manager.nextDay();
 		// then
 		assertEquals(finishDate.toDate(), calendar.getCurrentDate());
+		verify(calendar, times(5)).plusDays(1);
+		verify(listener, times(5)).dateChanged();
 	}
-
+	
+	@Test
+	public void testShouldProcessToDateSkipping() {
+		// given
+		DateTime startDate = DateTime.parse("20150101", DateTimeFormat.forPattern("yyyyMMdd"));
+		DateTime finishDate = DateTime.parse("20150106", DateTimeFormat.forPattern("yyyyMMdd"));
+		manager.setStartDate(startDate);
+		manager.setFinishDate(finishDate);
+		// when
+		manager.processToDateTimeSkipping(finishDate, 2);
+		// then
+		assertEquals(finishDate.toDate(), calendar.getCurrentDate());
+		verify(calendar, times(3)).plusDays(2);
+		verify(listener, times(3)).dateChanged();
+	}
 }

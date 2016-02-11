@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.simulation.calendar;
 
 public interface PlayersActionListener {
 

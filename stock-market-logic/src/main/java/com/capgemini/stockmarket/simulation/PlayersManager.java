@@ -12,10 +12,12 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.common.IllegalRequestException;
-import com.capgemini.stockmarket.player.PlayerState;
-import com.capgemini.stockmarket.player.RequestCompositor;
 import com.capgemini.stockmarket.player.StockMarketPlayer;
+import com.capgemini.stockmarket.player.StockMarketPlayer;
+import com.capgemini.stockmarket.player.strategy.PlayerState;
+import com.capgemini.stockmarket.player.strategy.RequestCompositor;
 import com.capgemini.stockmarket.settings.PlayerSettings;
+import com.capgemini.stockmarket.simulation.state.SimulationStateInfo;
 
 @Component
 public class PlayersManager implements ApplicationContextAware, PlayersStateInfo {
@@ -118,5 +120,14 @@ public class PlayersManager implements ApplicationContextAware, PlayersStateInfo
 					"You cannot add new player during the simulation. "
 							+ "Add one before or after.");
 		}
+	}
+
+	public void reset() {
+		this.players.clear();
+		addDefaultPlayer();
+	}
+
+	public void activatePlayers() {
+		players.values().forEach(player -> player.setState(PlayerState.READY));
 	}
 }

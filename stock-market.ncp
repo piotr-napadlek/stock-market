@@ -322,7 +322,7 @@
       <Entity type="Class">
         <Name>SimulationCalendar</Name>
         <Access>Default</Access>
-        <Location left="2803" top="1208" />
+        <Location left="2788" top="1215" />
         <Size width="234" height="145" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private Date currentDate</Member>
@@ -334,7 +334,7 @@
       <Entity type="Interface">
         <Name>DateInfo</Name>
         <Access>Public</Access>
-        <Location left="2847" top="875" />
+        <Location left="2855" top="877" />
         <Size width="203" height="94" />
         <Collapsed>False</Collapsed>
         <Member type="Method">Date getCurrentDate()</Member>
@@ -713,8 +713,8 @@
           <Y>813</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>2832</X>
-          <Y>1183</Y>
+          <X>2817</X>
+          <Y>1190</Y>
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Composition</AssociationType>
@@ -815,8 +815,8 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
         <BendPoint relativeToStartShape="False">
-          <X>3003</X>
-          <Y>996</Y>
+          <X>3011</X>
+          <Y>998</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Dependency" first="6" second="29">
@@ -825,8 +825,8 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="False">
-          <X>3094</X>
-          <Y>933</Y>
+          <X>3102</X>
+          <Y>935</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Dependency" first="39" second="28">

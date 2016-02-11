@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.simulation.calendar;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,24 +12,27 @@ import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.common.DateAware;
 import com.capgemini.stockmarket.common.IllegalRequestException;
+import com.capgemini.stockmarket.simulation.PlayersStateInfo;
+import com.capgemini.stockmarket.simulation.state.SimulationState;
+import com.capgemini.stockmarket.simulation.state.SimulationStateSetter;
 
 @Component
 public class CalendarManager implements PlayersActionListener {
 	private List<DateAware> dateTimeListeners = new ArrayList<>();
+	private SimulationCalendar calendar;
+	private SimulationStateSetter simulationStateSetter;
+	private PlayersStateInfo playersStateInfo;
 
 	private DateTime nextTargetDate;
 	private int daySpan = 1;
 	private DateTime startDate;
 	private DateTime finishDate;
-	private SimulationCalendar calendar;
-	private SimulationStateInfo simulationStateInfo;
-	private PlayersStateInfo playersStateInfo;
 
 	@Inject
-	public CalendarManager(SimulationCalendar calendar, SimulationStateInfo simulationStateInfo,
-			PlayersStateInfo playerStateinfo) {
+	public CalendarManager(SimulationCalendar calendar,
+			SimulationStateSetter simulationStateSetter, PlayersStateInfo playerStateinfo) {
 		this.calendar = calendar;
-		this.simulationStateInfo = simulationStateInfo;
+		this.simulationStateSetter = simulationStateSetter;
 		this.playersStateInfo = playerStateinfo;
 	}
 
@@ -47,7 +50,7 @@ public class CalendarManager implements PlayersActionListener {
 		moveCalendar();
 	}
 
-	public void processToDateTime(DateTime dateTime, int daySpan) {
+	public void processToDateTimeSkipping(DateTime dateTime, int daySpan) {
 		nextTargetDate = dateTime;
 		checkGameStateValidity();
 		this.daySpan = daySpan;
@@ -62,9 +65,13 @@ public class CalendarManager implements PlayersActionListener {
 	}
 
 	private void checkGameStateValidity() {
-		if (simulationStateInfo.isSimulationInProgress() == false) {
+		if (currentDate().isAfter(finishDate)) {
+			simulationStateSetter.setSimualtionState(SimulationState.SIMULATION_FINISHED);
+			throw new IllegalRequestException("Simulation has finished.");
+		}
+		if (simulationStateSetter.isSimulationInProgress() == false) {
 			throw new IllegalRequestException("Cannot proccess; game state is "
-					+ simulationStateInfo.getSimulationState().toString());
+					+ simulationStateSetter.getSimulationState().toString());
 		}
 	}
 
@@ -91,7 +98,11 @@ public class CalendarManager implements PlayersActionListener {
 
 	public void setStartDate(DateTime startDate) {
 		this.startDate = startDate;
-		this.calendar.setCurrentDate(startDate.minusDays(1));
+		if (startDate != null) {
+			this.calendar.setCurrentDate(startDate.minusDays(1));
+		} else {
+			this.calendar.setCurrentDate(null);
+		}
 	}
 
 	public DateTime getFinishDate() {
@@ -119,5 +130,11 @@ public class CalendarManager implements PlayersActionListener {
 
 	private void notifyListenersDateChanged() {
 		dateTimeListeners.forEach(listener -> listener.dateChanged());
+	}
+
+	public void reset() {
+		setFinishDate(null);
+		setStartDate(null);
+		simulationStateSetter.setSimualtionState(SimulationState.NOT_INITIALIZED);
 	}
 }

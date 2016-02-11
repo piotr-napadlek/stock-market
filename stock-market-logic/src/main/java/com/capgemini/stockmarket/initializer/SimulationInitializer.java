@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 import com.capgemini.stockmarket.initializer.csv.CSVHandler;
 import com.capgemini.stockmarket.service.StockPriceRecordService;
-import com.capgemini.stockmarket.simulation.SimulationState;
 import com.capgemini.stockmarket.simulation.StockSimulationManager;
+import com.capgemini.stockmarket.simulation.state.SimulationState;
 
 @Component
 public class SimulationInitializer {
@@ -26,14 +26,12 @@ public class SimulationInitializer {
 	public void initializeGame(String csv) throws Exception {
 		List<StockPriceRecordTo> sprTos = insertAndVerifyDBData(csv);
 		calculateSimulationBoundaryDates(sprTos);
-		simulationManager.setGameState(SimulationState.DB_READY);
+		simulationManager.setGameState(SimulationState.READY);
 	}
 
 	public void reset() {
 		sprService.deleteAll();
-		simulationManager.setStartDate(null);
-		simulationManager.setFinishDate(null);
-		simulationManager.setGameState(SimulationState.NOT_INITIALIZED);
+		simulationManager.resetSimulation();
 	}
 	
 	private void calculateSimulationBoundaryDates(List<StockPriceRecordTo> sprTos) {

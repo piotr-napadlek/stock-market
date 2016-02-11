@@ -2,20 +2,18 @@ package com.capgemini.stockmarket.broker;
 
 import org.springframework.stereotype.Component;
 
-import com.capgemini.stockmarket.dto.TransactionAcceptTo;
-import com.capgemini.stockmarket.dto.TransactionOfferTo;
-import com.capgemini.stockmarket.dto.TransactionRequestTo;
-import com.capgemini.stockmarket.dto.TransactionTo;
+import com.capgemini.stockmarket.common.StockTransactionInfo;
+import com.capgemini.stockmarket.dto.TransactionObjectTo;
 
 @Component
 public class TransactionProcessor {
 
-	public TransactionOfferTo prepareOffer(TransactionRequestTo request) {
+	public TransactionObjectTo<StockTransactionInfo> prepareOffer(TransactionObjectTo<StockTransactionInfo> request) {
 		return null;
 
 	}
 
-	public TransactionTo signTransaction(TransactionAcceptTo transactionAccept) {
+	public TransactionObjectTo<Stock> signTransaction(TransactionObjectTo<StockTransactionInfo> transactionAccept) {
 		return null;
 
 	}

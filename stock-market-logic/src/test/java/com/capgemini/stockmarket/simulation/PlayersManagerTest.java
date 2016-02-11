@@ -13,10 +13,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
 
+import com.capgemini.stockmarket.banking.BankAccount;
 import com.capgemini.stockmarket.common.IllegalRequestException;
-import com.capgemini.stockmarket.player.RequestCompositor;
 import com.capgemini.stockmarket.player.StockMarketPlayer;
+import com.capgemini.stockmarket.player.StockMarketPlayerImpl;
+import com.capgemini.stockmarket.player.strategy.RequestCompositor;
 import com.capgemini.stockmarket.settings.PlayerSettings;
+import com.capgemini.stockmarket.simulation.PlayersManager;
+import com.capgemini.stockmarket.simulation.state.SimulationState;
+import com.capgemini.stockmarket.simulation.state.SimulationStateInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PlayersManagerTest {
@@ -29,10 +34,10 @@ public class PlayersManagerTest {
 
 	@Before
 	public void setUp() {
-		when(stateInfo.getSimulationState()).thenReturn(SimulationState.DB_READY);
+		when(stateInfo.getSimulationState()).thenReturn(SimulationState.READY);
 		when(stateInfo.isSimulationInProgress()).thenReturn(false);
 		when(context.getBean(StockMarketPlayer.class))
-				.thenReturn(new StockMarketPlayer(null, new PlayerSettings(), null, null));
+				.thenReturn(new StockMarketPlayerImpl(null, new PlayerSettings(), null, null, new BankAccount(), null));
 		when(context.getBean(PlayerSettings.class)).thenReturn(new PlayerSettings());
 		when(context.getBean(RequestCompositor.class)).thenReturn(null);
 		when(context.getBeansOfType(RequestCompositor.class)).thenReturn(new HashMap<>());

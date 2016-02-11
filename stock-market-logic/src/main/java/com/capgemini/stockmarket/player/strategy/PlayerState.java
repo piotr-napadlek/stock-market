@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.player;
+package com.capgemini.stockmarket.player.strategy;
 
 public enum PlayerState {
 

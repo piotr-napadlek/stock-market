@@ -6,7 +6,7 @@ import java.util.Date;
 import com.capgemini.stockmarket.banking.CurrencyAmount;
 import com.capgemini.stockmarket.dto.CompanyTo;
 
-public class Share {
+public class Stock implements StockInfo {
 
 	private CompanyTo company;
 	private CurrencyAmount priceBought;
@@ -19,11 +19,11 @@ public class Share {
 		
 	}
 
-	private Share() {
+	private Stock() {
 		
 	}
 
-	public static Share createShare(BrokersOffice creator, CompanyTo company) {
+	public static Stock createShare(BrokersOffice creator, CompanyTo company) {
 		return null;
 		
 	}
@@ -36,9 +36,24 @@ public class Share {
 		
 	}
 
-	public Long getShareId() {
+	@Override
+	public Long getStockId() {
 		return null;
-		
+	}
+
+	@Override
+	public Date dateBought() {
+		return null;
+	}
+
+	@Override
+	public CompanyTo company() {
+		return null;
+	}
+
+	@Override
+	public CurrencyAmount priceBought() {
+		return null;
 	}
 
 }

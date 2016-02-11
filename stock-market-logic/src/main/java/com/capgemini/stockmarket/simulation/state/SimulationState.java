@@ -1,11 +1,11 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.simulation.state;
 
 public enum SimulationState {
 
 	NOT_INITIALIZED,
-	DB_READY,
 	READY,
 	NEW_DAY,
+	DAY_SIMULATING,
 	DAY_FINISHED,
 	SIMULATION_FINISHED,
 }

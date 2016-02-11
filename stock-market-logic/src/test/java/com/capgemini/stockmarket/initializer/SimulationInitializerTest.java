@@ -26,8 +26,8 @@ import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 import com.capgemini.stockmarket.initializer.csv.CSVHandler;
 import com.capgemini.stockmarket.service.StockPriceRecordService;
-import com.capgemini.stockmarket.simulation.SimulationState;
 import com.capgemini.stockmarket.simulation.StockSimulationManager;
+import com.capgemini.stockmarket.simulation.state.SimulationState;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -56,7 +56,7 @@ public class SimulationInitializerTest {
 		Assert.assertEquals(captor.getValue(), new DateTime(2002, 01, 01, 0, 0, 0));
 		verify(simulationManager, times(1)).setFinishDate(captor.capture());
 		Assert.assertEquals(captor.getValue(), new DateTime(2002, 01, 03, 0, 0, 0));
-		verify(simulationManager, times(1)).setGameState(SimulationState.DB_READY);
+		verify(simulationManager, times(1)).setGameState(SimulationState.READY);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)

@@ -1,9 +1,9 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.simulation.state;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class SimulationStateHolder implements SimulationStateInfo {
+public class SimulationStateHolder implements SimulationStateSetter {
 	private SimulationState simulationState = SimulationState.NOT_INITIALIZED;
 
 	@Override
@@ -14,10 +14,11 @@ public class SimulationStateHolder implements SimulationStateInfo {
 	@Override
 	public boolean isSimulationInProgress() {
 		return SimulationState.NEW_DAY.equals(simulationState)
-				|| SimulationState.READY.equals(simulationState)
+				|| SimulationState.DAY_SIMULATING.equals(simulationState)
 				|| SimulationState.DAY_FINISHED.equals(simulationState);
 	}
 
+	@Override
 	public void setSimualtionState(SimulationState state) {
 		this.simulationState = state;
 	}

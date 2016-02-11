@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
-import com.capgemini.stockmarket.dto.TransactionTo;
+import com.capgemini.stockmarket.dto.TransactionObjectTo;
 
 @Component
 public class StockDataManager {
@@ -19,7 +19,7 @@ public class StockDataManager {
 		
 	}
 
-	public void recordTransaction(TransactionTo transaction) {
+	public void recordTransaction(TransactionObjectTo<Stock> transaction) {
 		
 	}
 

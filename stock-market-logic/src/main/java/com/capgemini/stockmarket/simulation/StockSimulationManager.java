@@ -6,23 +6,21 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.joda.time.DateTime;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.broker.BrokersOffice;
 import com.capgemini.stockmarket.common.IllegalRequestException;
-import com.capgemini.stockmarket.player.RequestCompositor;
 import com.capgemini.stockmarket.player.StockMarketPlayer;
+import com.capgemini.stockmarket.player.strategy.RequestCompositor;
 import com.capgemini.stockmarket.settings.BrokersOfficeSettings;
 import com.capgemini.stockmarket.settings.PlayerSettings;
+import com.capgemini.stockmarket.simulation.calendar.CalendarManager;
+import com.capgemini.stockmarket.simulation.state.SimulationState;
+import com.capgemini.stockmarket.simulation.state.SimulationStateSetter;
 
 @Component
-public class StockSimulationManager implements ApplicationContextAware {
-
-	
+public class StockSimulationManager {
 
 	private BrokersOffice defaultBO;
 	@SuppressWarnings("unused")
@@ -30,18 +28,13 @@ public class StockSimulationManager implements ApplicationContextAware {
 
 	private PlayersManager playersManager;
 	private CalendarManager calendarManager;
-	private SimulationStateHolder stateHolder;
-
-
-	private ApplicationContext applicationContext;
+	private SimulationStateSetter stateHolder;
 
 	@Inject
-	public StockSimulationManager(
-			PlayersManager playersManager,
+	public StockSimulationManager(PlayersManager playersManager,
 			@Qualifier("defaultBrokersOffice") BrokersOffice defaultBO,
-			CalendarManager calendarManager, 
-			SimulationStateHolder stateHolder) {
-		
+			CalendarManager calendarManager, SimulationStateSetter stateHolder) {
+
 		this.defaultBO = defaultBO;
 		this.calendarManager = calendarManager;
 		this.playersManager = playersManager;
@@ -94,23 +87,21 @@ public class StockSimulationManager implements ApplicationContextAware {
 	}
 
 	public void moveToDate(DateTime date) {
-		calendarManager.processToDateTime(date, 1);
+		calendarManager.processToDateTimeSkipping(date, 1);
 	}
 
 	public void moveToDateSkipping(DateTime date, int daysSkip) {
-		calendarManager.processToDateTime(date, daysSkip);
+		calendarManager.processToDateTimeSkipping(date, daysSkip);
 	}
 
 	public void moveToEnd() {
-
-	}
-
-	private void finalizeSimulation() {
-
+		calendarManager.processToDateTime(calendarManager.getFinishDate().plusDays(1));
 	}
 
 	public void resetSimulation() {
-
+		calendarManager.reset();
+		playersManager.reset();
+		defaultBO.applySettings(new BrokersOfficeSettings());
 	}
 
 	public void start() {
@@ -121,12 +112,12 @@ public class StockSimulationManager implements ApplicationContextAware {
 		if (defaultBO == null) {
 			throw new IllegalRequestException("Brokers office is not properly set.");
 		}
-	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
+		if (SimulationState.READY.equals(getGameState())) {
+			setGameState(SimulationState.NEW_DAY);
+			playersManager.activatePlayers();
+		} else {
+			throw new IllegalRequestException("Initialize stock database with CSV first.");
+		}
 	}
 
 	public SimulationState getGameState() {
