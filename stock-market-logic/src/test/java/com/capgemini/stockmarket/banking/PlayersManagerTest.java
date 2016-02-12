@@ -1,7 +1,10 @@
 package com.capgemini.stockmarket.banking;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 
@@ -13,10 +16,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
 
-import com.capgemini.stockmarket.banking.account.NationalBankAccount;
-import com.capgemini.stockmarket.banking.account.basket.StockBasket;
-import com.capgemini.stockmarket.banking.account.caretaker.NationalBankAccountBalanceCaretaker;
-import com.capgemini.stockmarket.banking.account.validator.BankValidator;
 import com.capgemini.stockmarket.common.IllegalRequestException;
 import com.capgemini.stockmarket.player.StockMarketPlayer;
 import com.capgemini.stockmarket.player.StockMarketPlayerImpl;
@@ -39,14 +38,8 @@ public class PlayersManagerTest {
 	public void setUp() {
 		when(stateInfo.getSimulationState()).thenReturn(SimulationState.READY);
 		when(stateInfo.isSimulationInProgress()).thenReturn(false);
-		when(context.getBean(StockMarketPlayer.class))
-				.thenReturn(
-						new StockMarketPlayerImpl(null, new PlayerSettings(), null, null,
-								new NationalBankAccount(new StockBasket(),
-										new NationalBankAccountBalanceCaretaker(
-												new BankValidator()),
-										new NationalBankCurrencyExchanger()),
-								null));
+		when(context.getBean(StockMarketPlayer.class)).thenReturn(
+				new StockMarketPlayerImpl(null, new PlayerSettings(), null, null, null, null));
 		when(context.getBean(PlayerSettings.class)).thenReturn(new PlayerSettings());
 		when(context.getBean(RequestCompositor.class)).thenReturn(null);
 		when(context.getBeansOfType(RequestCompositor.class)).thenReturn(new HashMap<>());

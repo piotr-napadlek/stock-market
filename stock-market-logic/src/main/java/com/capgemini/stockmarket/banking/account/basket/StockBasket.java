@@ -78,4 +78,15 @@ public class StockBasket implements Basket {
 		this.stocks.clear();
 	}
 
+	@Override
+	public List<Stock> extractStock(CompanyTo company, int amount) {
+		List<StockInfo> stockInfos = getStockInfos(company);
+		if (stockInfos.size() < amount) {
+			throw new BankOperationException(
+					"Not enough stock in basket for requested company. Company "
+							+ company.getName() + ", amount " + amount);
+		}
+		return extractStocks(
+				stockInfos.subList(0, amount).stream().collect(Collectors.toList()));
+	}
 }

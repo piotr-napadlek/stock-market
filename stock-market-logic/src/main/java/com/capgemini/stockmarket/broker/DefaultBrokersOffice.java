@@ -63,17 +63,18 @@ public class DefaultBrokersOffice implements BrokersOffice {
 	}
 
 	@Override
-	public TransactionObjectTo<StockTransactionInfo> processRequest(
-			TransactionObjectTo<StockTransactionInfo> transactionRequest) {
+	public TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> processRequest(
+			TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionRequest) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public TransactionObjectTo<Stock> processAcceptance(
-			TransactionObjectTo<StockTransactionInfo> transactionAccept) {
+	public TransactionObjectTo<Void, Stock> processAcceptance(
+			TransactionObjectTo<StockTransactionInfo, Stock> transactionAccept) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

@@ -11,7 +11,7 @@ import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 import com.capgemini.stockmarket.dto.TransactionObjectTo;
 
 @Component
-public class StockDataManager {
+public class StockDataManager implements StockPriceInformer {
 
 	private DateInfo currentDate;
 
@@ -19,7 +19,7 @@ public class StockDataManager {
 		
 	}
 
-	public void recordTransaction(TransactionObjectTo<Stock> transaction) {
+	public void recordTransaction(TransactionObjectTo<Void, Stock> transaction) {
 		
 	}
 
@@ -30,6 +30,16 @@ public class StockDataManager {
 	public List<CompanyTo> getCompanies() {
 		return null;
 		
+	}
+
+	@Override
+	public double getCurrentStockPrice() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public DateInfo getCurrentDate() {
+		return currentDate;
 	}
 
 }

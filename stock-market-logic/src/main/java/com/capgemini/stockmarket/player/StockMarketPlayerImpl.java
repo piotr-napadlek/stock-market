@@ -67,14 +67,21 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 	}
 
 	private final void doTryTransaction() {
-		TransactionObjectTo<StockTransactionInfo> transactionRequest = compositor.composeRequest(account,
-				brokersOfficeDesk, dateInfo.getCurrentDate());
-		TransactionObjectTo<StockTransactionInfo> transactionOffer = brokersOfficeDesk
+		TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionRequest = compositor
+				.composeRequest(account, brokersOfficeDesk, dateInfo.getCurrentDate());
+		
+		TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionOffer = brokersOfficeDesk
 				.processRequest(transactionRequest);
+		
 		setState(PlayerState.VERIFYING);
-		TransactionObjectTo<StockTransactionInfo> transactionAccept = compositor
+		
+		TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionAccept = compositor
 				.verifyTransactionOffer(transactionOffer);
-		TransactionObjectTo<Stock> transaction = brokersOfficeDesk.processAcceptance(transactionAccept);
+
+		TransactionObjectTo<StockTransactionInfo, Stock> acceptFilled = account.fillInTransaction(transactionAccept);
+
+		TransactionObjectTo<Void, Stock> transaction = brokersOfficeDesk.processAcceptance(acceptFilled);
+		
 		account.digestTransaction(transaction);
 	}
 
@@ -108,13 +115,13 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 	}
 
 	private void applySettings() {
-		if (PlayerState.NEW.equals(this.state)) {
+		if (PlayerState.NEW.equals(this.state) && account != null) {
 			account.clearAccount();
 			Money money = new Money(Currency.valueOf(settings.getCurrency()),
 					settings.getBaseBalance(), "Initialization money");
 			account.putMoney(money);
-			settings.getAdditionalBalances().forEach((currency, balance) -> account
-					.putMoney(new Money(Currency.valueOf(currency), balance, "Initialization money")));
+			settings.getAdditionalBalances().forEach((currency, balance) -> account.putMoney(
+					new Money(Currency.valueOf(currency), balance, "Initialization money")));
 		}
 	}
 }

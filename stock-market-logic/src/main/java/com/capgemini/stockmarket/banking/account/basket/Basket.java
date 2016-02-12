@@ -15,6 +15,8 @@ public interface Basket {
 
 	List<Stock> extractStocks(Collection<StockInfo> stockInfos);
 	
+	List<Stock> extractStock(CompanyTo company, int amount);
+	
 	Collection<CompanyTo> getAvailableCompanies();
 	
 	public void clearBasket();
