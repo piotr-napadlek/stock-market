@@ -2,6 +2,9 @@ package com.capgemini.stockmarket.banking;
 
 import org.springframework.stereotype.Component;
 
+import com.capgemini.stockmarket.dto.Currency;
+import com.capgemini.stockmarket.dto.Money;
+
 @Component
 public class NationalBankCurrencyExchanger implements CurrencyExchange {
 

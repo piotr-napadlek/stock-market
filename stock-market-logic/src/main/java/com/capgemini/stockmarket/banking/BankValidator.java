@@ -6,6 +6,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Component;
 
+import com.capgemini.stockmarket.dto.Currency;
+import com.capgemini.stockmarket.dto.Money;
+
+@Component("nationalBankValidator")
 final class BankValidator implements Validator {
 	private Map<String, Money> validMoney = new ConcurrentHashMap<>();
 	

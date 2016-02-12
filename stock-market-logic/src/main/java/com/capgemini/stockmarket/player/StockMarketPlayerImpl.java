@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.banking.BankAccount;
-import com.capgemini.stockmarket.banking.Currency;
-import com.capgemini.stockmarket.banking.Money;
 import com.capgemini.stockmarket.broker.BrokersOfficeDesk;
 import com.capgemini.stockmarket.broker.Stock;
 import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.common.IllegalOperationException;
 import com.capgemini.stockmarket.common.StockTransactionInfo;
+import com.capgemini.stockmarket.dto.Currency;
+import com.capgemini.stockmarket.dto.Money;
 import com.capgemini.stockmarket.dto.TransactionObjectTo;
 import com.capgemini.stockmarket.player.strategy.PlayerState;
 import com.capgemini.stockmarket.player.strategy.RequestCompositor;

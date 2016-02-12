@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.banking;
+package com.capgemini.stockmarket.dto;
 
 public class Money {
 

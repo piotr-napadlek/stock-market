@@ -1,20 +1,20 @@
 package com.capgemini.stockmarket.banking;
 
 
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 import com.capgemini.stockmarket.broker.StockInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
+import com.capgemini.stockmarket.dto.Currency;
 
 public interface BankAccountInfo {
 
 	double getBalanceFor(Currency currency);
 
-	Set<Currency> getAvailableCurrencies();
+	Collection<Currency> getAvailableCurrencies();
 
-	List<CompanyTo> getAvailableSharesCompanies();
+	Collection<CompanyTo> getAvailableStockCompanies();
 
-	Set<StockInfo> getShareInfos(CompanyTo company);
+	Collection<StockInfo> getStockInfos(CompanyTo company);
 
 }

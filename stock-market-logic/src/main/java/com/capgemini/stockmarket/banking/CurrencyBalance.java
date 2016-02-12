@@ -1,5 +1,7 @@
 package com.capgemini.stockmarket.banking;
 
+import com.capgemini.stockmarket.dto.Currency;
+
 public class CurrencyBalance {
 
 	private Currency currency;

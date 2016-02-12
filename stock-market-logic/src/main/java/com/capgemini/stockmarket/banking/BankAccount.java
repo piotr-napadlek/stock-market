@@ -1,100 +1,25 @@
 package com.capgemini.stockmarket.banking;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.inject.Inject;
+import java.util.Collection;
 
 import com.capgemini.stockmarket.broker.Stock;
 import com.capgemini.stockmarket.broker.StockInfo;
-import com.capgemini.stockmarket.dto.CompanyTo;
+import com.capgemini.stockmarket.dto.Currency;
+import com.capgemini.stockmarket.dto.Money;
 import com.capgemini.stockmarket.dto.TransactionObjectTo;
 
-final public class BankAccount implements BankAccountInfo {
+public interface BankAccount extends BankAccountInfo {
 
-	private StockBasket stockBasket;
-	private Map<Currency, Double> balances = new ConcurrentHashMap<>();
-	private Validator validator;
+	boolean putMoney(Money money);
 
-	@Inject
-	public BankAccount(Validator validator) {
-		this.validator = validator;
-	}
+	boolean putStocks(Collection<Stock> stock);
 
-	public boolean putMoney(Money money) {
-		if (money.getAmount() <= 0) {
-			throw new BankOperationException("Impossible money amount");
-		}
-		if (validator.validate(money) == false) {
-			throw new BankOperationException("These money are illegal!");
-		}
-		if (balances.containsKey(money.getCurrency()) == false) {
-			balances.put(money.getCurrency(), 0d);
-		}
-		Double oldValue = balances.get(money.getCurrency());
-		Double newValue = oldValue.doubleValue() + money.getAmount();
-		balances.put(money.getCurrency(), newValue);
-		money = null;
-		return true;
-	}
+	Money extractMoney(Currency currency, double amount);
 
-	public boolean putShares(Set<Stock> shares) {
-		return false;
+	Collection<Stock> extractStock(Collection<StockInfo> stockInfo);
 
-	}
+	void clearAccount();
 
-	public Money extractMoney(Currency currency, double amount) {
-		currencyCheck(currency);
-		if (balances.get(currency) < amount) {
-			throw new BankOperationException("Not enough money!");
-		}
-		Double oldValue = balances.get(currency);
-		Double newValue = oldValue.doubleValue() - amount;
-		balances.put(currency, newValue);
-		return validator.createMoney(currency, amount);
-	}
+	void digestTransaction(TransactionObjectTo<Stock> transaction);
 
-	private void currencyCheck(Currency currency) {
-		if (balances.containsKey(currency) == false) {
-			throw new BankOperationException(
-					"No such currency balance is held for this account.");
-		}
-	}
-
-	public Set<Stock> extractShares(List<StockInfo> shareInfos) {
-		return null;
-	}
-
-	@Override
-	public double getBalanceFor(Currency currency) {
-		currencyCheck(currency);
-		return balances.get(currency).doubleValue();
-	}
-
-	@Override
-	public Set<Currency> getAvailableCurrencies() {
-		return balances.keySet();
-	}
-
-	@Override
-	public List<CompanyTo> getAvailableSharesCompanies() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set<StockInfo> getShareInfos(CompanyTo company) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void clearAccount() {
-		this.balances.clear();
-	}
-
-	public void digestTransaction(TransactionObjectTo<Stock> transaction) {
-		// TODO Auto-generated method stub
-	}
 }

@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
 
-import com.capgemini.stockmarket.banking.BankAccount;
+import com.capgemini.stockmarket.banking.NationalBankAccount;
 import com.capgemini.stockmarket.common.IllegalRequestException;
 import com.capgemini.stockmarket.player.StockMarketPlayer;
 import com.capgemini.stockmarket.player.StockMarketPlayerImpl;
@@ -37,7 +37,7 @@ public class PlayersManagerTest {
 		when(stateInfo.getSimulationState()).thenReturn(SimulationState.READY);
 		when(stateInfo.isSimulationInProgress()).thenReturn(false);
 		when(context.getBean(StockMarketPlayer.class))
-				.thenReturn(new StockMarketPlayerImpl(null, new PlayerSettings(), null, null, new BankAccount(new BankValidator()), null));
+				.thenReturn(new StockMarketPlayerImpl(null, new PlayerSettings(), null, null, new NationalBankAccount(new BankValidator(), null), null));
 		when(context.getBean(PlayerSettings.class)).thenReturn(new PlayerSettings());
 		when(context.getBean(RequestCompositor.class)).thenReturn(null);
 		when(context.getBeansOfType(RequestCompositor.class)).thenReturn(new HashMap<>());
