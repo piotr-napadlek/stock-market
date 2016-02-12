@@ -3,13 +3,13 @@ package com.capgemini.stockmarket.broker;
 
 import java.util.Date;
 
-import com.capgemini.stockmarket.banking.CurrencyAmount;
+import com.capgemini.stockmarket.banking.Money;
 import com.capgemini.stockmarket.dto.CompanyTo;
 
 public class Stock implements StockInfo {
 
 	private CompanyTo company;
-	private CurrencyAmount priceBought;
+	private Money priceBought;
 	private Date dateBought;
 	private String token;
 	private Long shareId;
@@ -52,7 +52,7 @@ public class Stock implements StockInfo {
 	}
 
 	@Override
-	public CurrencyAmount priceBought() {
+	public Money priceBought() {
 		return null;
 	}
 

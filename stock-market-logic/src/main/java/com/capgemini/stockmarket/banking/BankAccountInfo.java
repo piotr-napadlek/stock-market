@@ -11,7 +11,7 @@ public interface BankAccountInfo {
 
 	double getBalanceFor(Currency currency);
 
-	List<Currency> getAvailableCurrencies();
+	Set<Currency> getAvailableCurrencies();
 
 	List<CompanyTo> getAvailableSharesCompanies();
 

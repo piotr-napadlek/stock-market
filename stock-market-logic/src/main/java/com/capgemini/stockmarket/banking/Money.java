@@ -1,14 +1,15 @@
 package com.capgemini.stockmarket.banking;
 
-public class CurrencyAmount {
+public class Money {
 
 	private Currency currency;
 	private double amount;
 	private String bankSignature;
 	
-	public CurrencyAmount(Currency currency, double amount) {
+	public Money(Currency currency, double amount, String signature) {
 		this.currency = currency;
 		this.amount = amount;
+		this.bankSignature = signature;
 	}
 	
 	public Currency getCurrency() {
@@ -20,5 +21,4 @@ public class CurrencyAmount {
 	public String getBankSignature() {
 		return bankSignature;
 	}
-
 }

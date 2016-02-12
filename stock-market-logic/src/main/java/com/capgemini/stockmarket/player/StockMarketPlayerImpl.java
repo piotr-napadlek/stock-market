@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.banking.BankAccount;
 import com.capgemini.stockmarket.banking.Currency;
-import com.capgemini.stockmarket.banking.CurrencyAmount;
+import com.capgemini.stockmarket.banking.Money;
 import com.capgemini.stockmarket.broker.BrokersOfficeDesk;
 import com.capgemini.stockmarket.broker.Stock;
 import com.capgemini.stockmarket.common.DateInfo;
@@ -75,11 +75,7 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 		TransactionObjectTo<StockTransactionInfo> transactionAccept = compositor
 				.verifyTransactionOffer(transactionOffer);
 		TransactionObjectTo<Stock> transaction = brokersOfficeDesk.processAcceptance(transactionAccept);
-		digestTransaction(transaction);
-	}
-
-	private void digestTransaction(TransactionObjectTo<Stock> transaction) {
-		
+		account.digestTransaction(transaction);
 	}
 
 	@Override
@@ -114,11 +110,11 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 	private void applySettings() {
 		if (PlayerState.NEW.equals(this.state)) {
 			account.clearAccount();
-			CurrencyAmount money = new CurrencyAmount(Currency.valueOf(settings.getCurrency()),
-					settings.getBaseBalance());
+			Money money = new Money(Currency.valueOf(settings.getCurrency()),
+					settings.getBaseBalance(), "Initialization money");
 			account.putMoney(money);
 			settings.getAdditionalBalances().forEach((currency, balance) -> account
-					.putMoney(new CurrencyAmount(Currency.valueOf(currency), balance)));
+					.putMoney(new Money(Currency.valueOf(currency), balance, "Initialization money")));
 		}
 	}
 }

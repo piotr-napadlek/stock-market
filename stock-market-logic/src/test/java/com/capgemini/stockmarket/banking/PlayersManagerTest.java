@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.banking;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -37,7 +37,7 @@ public class PlayersManagerTest {
 		when(stateInfo.getSimulationState()).thenReturn(SimulationState.READY);
 		when(stateInfo.isSimulationInProgress()).thenReturn(false);
 		when(context.getBean(StockMarketPlayer.class))
-				.thenReturn(new StockMarketPlayerImpl(null, new PlayerSettings(), null, null, new BankAccount(), null));
+				.thenReturn(new StockMarketPlayerImpl(null, new PlayerSettings(), null, null, new BankAccount(new BankValidator()), null));
 		when(context.getBean(PlayerSettings.class)).thenReturn(new PlayerSettings());
 		when(context.getBean(RequestCompositor.class)).thenReturn(null);
 		when(context.getBeansOfType(RequestCompositor.class)).thenReturn(new HashMap<>());
