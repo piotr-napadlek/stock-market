@@ -1,6 +1,5 @@
-package com.capgemini.stockmarket.banking;
+package com.capgemini.stockmarket.banking.account.caretaker;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,32 +9,25 @@ import javax.inject.Inject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.capgemini.stockmarket.broker.Stock;
-import com.capgemini.stockmarket.broker.StockInfo;
-import com.capgemini.stockmarket.dto.CompanyTo;
+import com.capgemini.stockmarket.banking.BankOperationException;
+import com.capgemini.stockmarket.banking.account.validator.Validator;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
-import com.capgemini.stockmarket.dto.TransactionObjectTo;
 
-@Component("nationalBankAccount")
+@Component("nationalBankAccountCaretaker")
 @Scope("prototype")
-final public class NationalBankAccount implements BankAccount {
-
-	private Basket stockBasket;
+public class NationalBankAccountBalanceCaretaker implements AccountBalanceCaretaker{
 	private Map<Currency, Double> balances = new ConcurrentHashMap<>();
 	private Validator validator;
-
+	
 	@Inject
-	public NationalBankAccount(Validator validator, Basket basket) {
+	public NationalBankAccountBalanceCaretaker(Validator validator) {
 		this.validator = validator;
-		this.stockBasket = basket;
 	}
-
+	
 	@Override
 	public boolean putMoney(Money money) {
-		if (money.getAmount() <= 0) {
-			throw new BankOperationException("Impossible money amount");
-		}
+		checkMoneyAmount(money);
 		if (validator.validate(money) == false) {
 			throw new BankOperationException("These money are illegal!");
 		}
@@ -49,14 +41,20 @@ final public class NationalBankAccount implements BankAccount {
 		return true;
 	}
 
-	@Override
-	public boolean putStocks(Collection<Stock> stock) {
-		return stockBasket.putStocks(stock);
+	private void checkMoneyAmount(Money money) {
+		checkMoneyAmount(money.getAmount());
 	}
 
+	private void checkMoneyAmount(double amount) {
+		if (amount <= 0) {
+			throw new BankOperationException("Impossible money amount");
+		}
+	}
+	
 	@Override
 	public Money extractMoney(Currency currency, double amount) {
 		currencyCheck(currency);
+		checkMoneyAmount(amount);
 		if (balances.get(currency) < amount) {
 			throw new BankOperationException("Not enough money!");
 		}
@@ -65,17 +63,13 @@ final public class NationalBankAccount implements BankAccount {
 		balances.put(currency, newValue);
 		return validator.createMoney(currency, amount);
 	}
+	
 
 	private void currencyCheck(Currency currency) {
 		if (balances.containsKey(currency) == false) {
 			throw new BankOperationException(
 					"No such currency balance is held for this account.");
 		}
-	}
-
-	@Override
-	public Collection<Stock> extractStock(Collection<StockInfo> stockInfo) {
-		return stockBasket.extractStocks(stockInfo);
 	}
 
 	@Override
@@ -90,22 +84,7 @@ final public class NationalBankAccount implements BankAccount {
 	}
 
 	@Override
-	public Collection<CompanyTo> getAvailableStockCompanies() {
-		return stockBasket.getAvailableCompanies();
-	}
-
-	@Override
-	public Collection<StockInfo> getStockInfos(CompanyTo company) {
-		return stockBasket.getStockInfos(company);
-	}
-
-	@Override
 	public void clearAccount() {
 		this.balances.clear();
-	}
-
-	@Override
-	public void digestTransaction(TransactionObjectTo<Stock> transaction) {
-		stockBasket.putStocks(transaction.getSellItems());
 	}
 }

@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
-import com.capgemini.stockmarket.dto.Money;
 
 public final class Stock implements StockInfo {
 	private CompanyTo company;
@@ -19,44 +18,43 @@ public final class Stock implements StockInfo {
 	}
 
 	private Stock(Date dateBought, CompanyTo company, double priceBought, Currency currency,
-			String signature) {
+			String signature, String id) {
 		this.dateBought = new Date(dateBought.getTime());
 		this.company = new CompanyTo(company.getId().longValue(), company.getName());
 		this.priceBought = priceBought;
 		this.currencyBought = currency;
 		this.signature = signature;
-		this.id = UUID.randomUUID().toString();
+		this.id = id;
 	}
 
-	public static Stock createShare(String signature, CompanyTo company, Date date,
+	public static Stock createStock(String signature, CompanyTo company, Date date,
 			double price, Currency currency) {
-		return new Stock(date, company, price, currency, signature);
+		return new Stock(date, company, price, currency, signature, UUID.randomUUID().toString());
 	}
 
 	@Override
 	public Date dateBought() {
-		return null;
+		return this.dateBought;
 	}
 
 	@Override
 	public CompanyTo company() {
-		return null;
+		return this.company;
 	}
 
 	@Override
-	public Money priceBought() {
-		return null;
+	public double priceBought() {
+		return this.priceBought;
 	}
 
 	@Override
 	public String getStockId() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.id;
 	}
 
 	public StockInfo getInfo() {
 		return new Stock(this.dateBought, this.company, this.priceBought, this.currencyBought,
-				this.id);
+				this.signature, this.id);
 	}
 
 	@Override
@@ -91,6 +89,11 @@ public final class Stock implements StockInfo {
 
 	public String getSignature() {
 		return signature;
+	}
+
+	@Override
+	public Currency currencyBought() {
+		return this.currencyBought;
 	}
 
 }

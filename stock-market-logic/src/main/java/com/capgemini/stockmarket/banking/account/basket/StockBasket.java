@@ -1,7 +1,8 @@
-package com.capgemini.stockmarket.banking;
+package com.capgemini.stockmarket.banking.account.basket;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -9,23 +10,25 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.capgemini.stockmarket.banking.BankOperationException;
 import com.capgemini.stockmarket.broker.Stock;
 import com.capgemini.stockmarket.broker.StockInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 
 @Component
 public class StockBasket implements Basket {
-	private Map<String, Stock> stocks;
+	private Map<String, Stock> stocks = new HashMap<>();
 
 	@Override
-	public Collection<StockInfo> getStockInfos(CompanyTo company) {
+	public List<StockInfo> getStockInfos(CompanyTo company) {
 		basketCompanyCheck(company);
 		return stocks.values().stream().filter(stock -> stock.company().equals(company))
 				.map(stock -> stock.getInfo()).collect(Collectors.toList());
 	}
 
 	private void basketCompanyCheck(CompanyTo company) {
-		if (stocks.values().stream().anyMatch(stock -> stock.company().equals(company))) {
+		if (stocks.values().stream()
+				.anyMatch(stock -> stock.company().equals(company)) == false) {
 			throw new BankOperationException(
 					"No such company in basket: " + company.getName());
 		}
@@ -43,12 +46,10 @@ public class StockBasket implements Basket {
 
 	@Override
 	@Transactional
-	public Collection<Stock> extractStocks(Collection<StockInfo> stockInfos) {
+	public List<Stock> extractStocks(Collection<StockInfo> stockInfos) {
+		stockInfos.forEach(stockInfo -> checkStockNonExistance(stockInfo));
 		List<Stock> extracted = new ArrayList<>();
-		stockInfos.forEach(stockInfo -> {
-			checkStockNonExistance(stockInfo);
-			extracted.add(stocks.remove(stockInfo.getStockId()));
-		});
+		stockInfos.forEach(stockInfo -> extracted.add(stocks.remove(stockInfo.getStockId())));
 		return extracted;
 	}
 
@@ -70,6 +71,11 @@ public class StockBasket implements Basket {
 	public Collection<CompanyTo> getAvailableCompanies() {
 		return stocks.values().stream().map(stock -> stock.company()).distinct()
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void clearBasket() {
+		this.stocks.clear();
 	}
 
 }

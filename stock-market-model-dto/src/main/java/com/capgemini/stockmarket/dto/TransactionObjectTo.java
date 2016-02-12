@@ -8,6 +8,7 @@ public class TransactionObjectTo <T> {
 	private Set<T> buyItems = new HashSet<T>();
 	private Set<T> sellItems = new HashSet<T>();
 	private String signature;
+	private Money money;
 	
 	public boolean addBuyItem(T buyItem) {
 		return buyItems.add(buyItem);
@@ -33,4 +34,11 @@ public class TransactionObjectTo <T> {
 		this.signature = signature;
 	}
 
+	public Money getMoney() {
+		return money;
+	}
+
+	public void setMoney(Money money) {
+		this.money = money;
+	}
 }

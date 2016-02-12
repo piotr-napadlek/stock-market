@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.capgemini.stockmarket.banking.BankAccount;
+import com.capgemini.stockmarket.banking.account.BankAccount;
 import com.capgemini.stockmarket.broker.BrokersOfficeDesk;
 import com.capgemini.stockmarket.broker.Stock;
 import com.capgemini.stockmarket.common.DateInfo;

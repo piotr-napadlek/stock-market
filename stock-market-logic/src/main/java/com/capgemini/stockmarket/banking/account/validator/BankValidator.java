@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.banking;
+package com.capgemini.stockmarket.banking.account.validator;
 
 import java.util.Map;
 import java.util.UUID;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
 
-@Component("nationalBankValidator")
-final class BankValidator implements Validator {
+@Component
+final public class BankValidator implements Validator {
 	private Map<String, Money> validMoney = new ConcurrentHashMap<>();
 	
 	@Override
@@ -24,7 +24,7 @@ final class BankValidator implements Validator {
 	@Override
 	public boolean validate(Money money) {
 		if (money.getBankSignature().equals("Initialization money")) {
-			return true;
+			return true; // cheat passphrase to initialize account
 		}
 		if (validMoney.containsKey(money.getBankSignature())) {
 			 validMoney.remove(money.getBankSignature());

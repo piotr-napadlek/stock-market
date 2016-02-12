@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
-import com.capgemini.stockmarket.banking.BankAccountInfo;
+import com.capgemini.stockmarket.banking.account.BankAccountInfo;
 import com.capgemini.stockmarket.broker.StockInfoProvider;
 import com.capgemini.stockmarket.common.StockTransactionInfo;
 import com.capgemini.stockmarket.dto.TransactionObjectTo;

@@ -6,11 +6,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import com.capgemini.stockmarket.banking.account.BankAccount;
+import com.capgemini.stockmarket.banking.account.validator.Validator;
+import com.capgemini.stockmarket.banking.account.validator.ValidityChecker;
 
 @Component
 @Scope("singleton")
@@ -20,7 +23,7 @@ public class NationalBank implements Bank, ApplicationContextAware {
 	private ApplicationContext context;
 
 	@Inject
-	public NationalBank(ApplicationContext context, @Qualifier("nationalBankValidator") Validator validator) {
+	public NationalBank(ApplicationContext context, Validator validator) {
 		this.validator = validator;
 		this.context = context;
 	}

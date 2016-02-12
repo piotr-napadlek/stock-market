@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.common.IllegalRequestException;
 import com.capgemini.stockmarket.player.StockMarketPlayer;
-import com.capgemini.stockmarket.player.StockMarketPlayer;
 import com.capgemini.stockmarket.player.strategy.PlayerState;
 import com.capgemini.stockmarket.player.strategy.RequestCompositor;
 import com.capgemini.stockmarket.settings.PlayerSettings;

@@ -13,7 +13,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
 
-import com.capgemini.stockmarket.banking.NationalBankAccount;
+import com.capgemini.stockmarket.banking.account.NationalBankAccount;
+import com.capgemini.stockmarket.banking.account.basket.StockBasket;
+import com.capgemini.stockmarket.banking.account.caretaker.NationalBankAccountBalanceCaretaker;
+import com.capgemini.stockmarket.banking.account.validator.BankValidator;
 import com.capgemini.stockmarket.common.IllegalRequestException;
 import com.capgemini.stockmarket.player.StockMarketPlayer;
 import com.capgemini.stockmarket.player.StockMarketPlayerImpl;
@@ -37,7 +40,13 @@ public class PlayersManagerTest {
 		when(stateInfo.getSimulationState()).thenReturn(SimulationState.READY);
 		when(stateInfo.isSimulationInProgress()).thenReturn(false);
 		when(context.getBean(StockMarketPlayer.class))
-				.thenReturn(new StockMarketPlayerImpl(null, new PlayerSettings(), null, null, new NationalBankAccount(new BankValidator(), null), null));
+				.thenReturn(
+						new StockMarketPlayerImpl(null, new PlayerSettings(), null, null,
+								new NationalBankAccount(new StockBasket(),
+										new NationalBankAccountBalanceCaretaker(
+												new BankValidator()),
+										new NationalBankCurrencyExchanger()),
+								null));
 		when(context.getBean(PlayerSettings.class)).thenReturn(new PlayerSettings());
 		when(context.getBean(RequestCompositor.class)).thenReturn(null);
 		when(context.getBeansOfType(RequestCompositor.class)).thenReturn(new HashMap<>());
@@ -51,7 +60,7 @@ public class PlayersManagerTest {
 		assertEquals(1, manager.getAllPlayers().size());
 		assertNotNull(manager.getPlayer("DefaultPlayer"));
 	}
-	
+
 	@Test
 	public void testShouldAddDefaultPlayerAndAnotherOne() {
 		// given when
@@ -64,7 +73,7 @@ public class PlayersManagerTest {
 		assertEquals(2, manager.getAllPlayers().size());
 		assertNotNull(manager.getPlayer("second player"));
 	}
-	
+
 	@Test
 	public void testShouldChangePlayerName() {
 		PlayerSettings settings = new PlayerSettings();
@@ -85,8 +94,8 @@ public class PlayersManagerTest {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 	}
-	
-	@Test (expected = IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testShouldAddDefaultPlayerAndAnotherOneAndThrowWhenWrongNameIsGiven() {
 		// given when
 		manager.addDefaultPlayer();
@@ -98,8 +107,8 @@ public class PlayersManagerTest {
 		assertEquals(2, manager.getAllPlayers().size());
 		assertNotNull(manager.getPlayer("second"));
 	}
-	
-	@Test (expected = IllegalRequestException.class)
+
+	@Test(expected = IllegalRequestException.class)
 	public void shouldThrowOnPlayerOperationsWhenGameIsInProgress() {
 		// given
 		manager.addDefaultPlayer();
@@ -108,8 +117,8 @@ public class PlayersManagerTest {
 		// when
 		manager.addPlayer("i cannot be added");
 	}
-	
-	@Test (expected = IllegalRequestException.class)
+
+	@Test(expected = IllegalRequestException.class)
 	public void shouldThrowOnPlayerSettingsWhenGameInProgress() {
 		// given
 		manager.addDefaultPlayer();
@@ -118,7 +127,5 @@ public class PlayersManagerTest {
 		// when
 		manager.setPlayerSettings("DefaultPlayer", new PlayerSettings());
 	}
-	
-	
 
 }
