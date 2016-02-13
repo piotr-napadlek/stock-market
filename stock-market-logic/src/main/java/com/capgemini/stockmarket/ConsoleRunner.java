@@ -30,6 +30,9 @@ public class ConsoleRunner {
 		PlayerSettings settings = context.getBean(PlayerSettings.class);
 		settings.setPlayerName("Piotr");
 		manager.setPlayerSettings("DefaultPlayer", settings);
+		manager.addPlayer("Krystian");
+		manager.addPlayer("Bierny Maciek");
+		manager.setPlayerStrategy("Bierny Maciek", "passive");
 		manager.start();
 		manager.nextDay();
 		String input;

@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +50,7 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 	@Inject
 	public StockMarketPlayerImpl(BrokersOfficeDesk brokersOfficeDesk, PlayerSettings settings,
 			PlayersActionListener listener, DateInfo dateInfo, BankAccount account,
-			RequestCompositor compositor) {
+			@Qualifier("default") RequestCompositor compositor) {
 		this.brokersOfficeDesk = brokersOfficeDesk;
 		this.settings = settings;
 		this.listeners.add(listener);

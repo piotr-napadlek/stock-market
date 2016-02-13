@@ -68,7 +68,7 @@ public class PlayersManager implements ApplicationContextAware, PlayersStateInfo
 	public boolean setPlayerStrategy(String playerName, String strategyName) {
 		Map<String, RequestCompositor> strategies = applicationContext
 				.getBeansOfType(RequestCompositor.class);
-		if (strategies.containsKey(strategyName)) {
+		if (strategies.containsKey(strategyName) == false) {
 			throw new IllegalArgumentException("No such strategy exists!");
 		}
 		return setPlayerStrategy(playerName, strategies.get(strategyName));

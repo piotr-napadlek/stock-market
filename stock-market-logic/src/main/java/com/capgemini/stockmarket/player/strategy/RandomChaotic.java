@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.banking.account.BankAccountInfo;
@@ -13,7 +14,8 @@ import com.capgemini.stockmarket.dto.transactions.TxAccept;
 import com.capgemini.stockmarket.dto.transactions.TxOffer;
 import com.capgemini.stockmarket.dto.transactions.TxRequest;
 
-@Component("defaultStrategy")
+@Component("default")
+@Scope("prototype")
 public class RandomChaotic implements RequestCompositor {
 	private Random random = new Random();
 

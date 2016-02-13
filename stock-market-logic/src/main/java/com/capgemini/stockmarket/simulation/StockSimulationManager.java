@@ -56,15 +56,21 @@ public class StockSimulationManager {
 	}
 
 	public StockMarketPlayer addPlayer(String playerName) {
-		return playersManager.addPlayer(playerName);
+		StockMarketPlayer newPlayer = playersManager.addPlayer(playerName);
+		calendarManager.addDateListener(newPlayer);
+		return newPlayer;
 	}
 
 	public StockMarketPlayer addPlayer(PlayerSettings settings) {
-		return playersManager.addPlayer(settings, null);
+		StockMarketPlayer newPlayer = playersManager.addPlayer(settings, null);
+		calendarManager.addDateListener(newPlayer);
+		return newPlayer;
 	}
 
 	public StockMarketPlayer addPlayer(PlayerSettings settings, RequestCompositor strategy) {
-		return playersManager.addPlayer(settings, strategy);
+		StockMarketPlayer newPlayer = playersManager.addPlayer(settings, strategy);
+		calendarManager.addDateListener(newPlayer);
+		return newPlayer;
 	}
 
 	public StockMarketPlayer setPlayerSettings(String playerName, PlayerSettings settings) {

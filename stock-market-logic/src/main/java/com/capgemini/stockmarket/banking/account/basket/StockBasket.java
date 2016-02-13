@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import com.capgemini.stockmarket.dto.transactions.Stock;
 import com.capgemini.stockmarket.dto.transactions.StockInfo;
 
 @Component
+@Scope("prototype")
 public class StockBasket implements Basket {
 	private Map<String, Stock> stocks = new HashMap<>();
 
