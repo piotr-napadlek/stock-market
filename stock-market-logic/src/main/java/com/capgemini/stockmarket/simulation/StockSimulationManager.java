@@ -24,7 +24,7 @@ import com.capgemini.stockmarket.simulation.state.SimulationState;
 import com.capgemini.stockmarket.simulation.state.SimulationStateSetter;
 
 @Component
-public class StockSimulationManager implements DateAware {
+public class StockSimulationManager {
 	private static final Log LOG = LogFactory.getLog(StockSimulationManager.class);
 
 	private BrokersOffice defaultBO;
@@ -34,13 +34,12 @@ public class StockSimulationManager implements DateAware {
 	private PlayersManager playersManager;
 	private CalendarManager calendarManager;
 	private SimulationStateSetter stateHolder;
-	private DateInfo dateInfo;
 
 	@Inject
 	public StockSimulationManager(PlayersManager playersManager,
 			@Qualifier("defaultBrokersOffice") BrokersOffice defaultBO,
 			CalendarManager calendarManager, SimulationStateSetter stateHolder,
-			DateInfo dateInfo) {
+			SimulationLogger logger) {
 
 		this.defaultBO = defaultBO;
 		this.calendarManager = calendarManager;
@@ -48,8 +47,7 @@ public class StockSimulationManager implements DateAware {
 		this.stateHolder = stateHolder;
 		playersManager.addDefaultPlayer();
 		calendarManager.addDateListeners(playersManager.getAllPlayers());
-		calendarManager.addDateListener(this);
-		this.dateInfo = dateInfo;
+		calendarManager.addDateListener(logger);
 	}
 
 	public void addBrokersOffice(BrokersOffice brokersOffice, BrokersOfficeSettings settings) {
@@ -145,18 +143,6 @@ public class StockSimulationManager implements DateAware {
 	public void setFinishDate(DateTime finishDateTime) {
 		calendarManager.setFinishDate(finishDateTime);
 		LOG.info("Finish date set to: " + finishDateTime.toString());
-	}
-
-	@Override
-	public void dateChanged() {
-		LOG.info("Current day is: " + dateInfo.getCurrentDate().toString());
-		StringBuilder builder = new StringBuilder("Current stock prices are: \n");
-		defaultBO.getStockCompanies().forEach(comp -> {
-			builder.append(comp.getName() + ": " + defaultBO.getTodaysPriceFor(comp) + ", ");
-		});
-		LOG.info(builder.toString());
-		LOG.info("Obecny stan graczy: \n");
-		playersManager.getAllPlayers().forEach(player -> LOG.info(player.toString()));
 	}
 
 }

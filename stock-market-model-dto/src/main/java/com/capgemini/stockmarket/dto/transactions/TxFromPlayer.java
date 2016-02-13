@@ -16,6 +16,7 @@ public class TxFromPlayer {
 	private final Map<CompanyTo, List<Stock>> soldStocks = new HashMap<>();
 	private final Map<CompanyTo, Pair<Integer, Money>> moneyToBuyStocks = new HashMap<>();
 	private Money transactionFee;
+	private String signature;
 
 	public void addStockToSell(Stock stock) {
 		if (soldStocks.containsKey(stock.getCompany()) == false) {
@@ -51,5 +52,13 @@ public class TxFromPlayer {
 
 	public Money getTransactionFee() {
 		return transactionFee;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
 	}
 }

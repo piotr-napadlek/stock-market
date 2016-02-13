@@ -80,7 +80,9 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 		Pair<Currency, Double> transactionFee = brokersOfficeDesk
 				.getTransactionFee(offerVerified);
 		TxFromPlayer accept = account.fillInTransaction(offerVerified, transactionFee);
-
+		if (accept != null) {
+			accept.setSignature(getName());
+		}
 		Optional<TxFromBO> transaction = brokersOfficeDesk
 				.processAccept(Optional.ofNullable(accept));
 

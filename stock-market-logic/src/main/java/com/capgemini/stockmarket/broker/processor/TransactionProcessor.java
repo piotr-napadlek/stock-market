@@ -104,8 +104,10 @@ public class TransactionProcessor {
 	private void cashStocksBeingSold(TxFromPlayer accept, TxFromBO transaction) {
 		accept.getAllSoldStocks().forEach(stock -> {
 			if (stockCertifier.confirmStockValidity(stock)) {
-				transaction.addMoneyForDisposal(stockCertifier.cashStock(stock,
-						stockPriceSellOffer.get(stock.getCompany()).getRight()));
+				transaction.addMoneyForDisposal(
+						stockCertifier.cashStock(stock,
+								stockPriceSellOffer.get(stock.getCompany()).getRight()),
+						stock.getCompany());
 			} else {
 				throw new BrokersOfficeException("Was tried to be sold invalid stock!");
 			}

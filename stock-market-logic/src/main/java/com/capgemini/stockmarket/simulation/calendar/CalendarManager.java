@@ -1,9 +1,8 @@
 package com.capgemini.stockmarket.simulation.calendar;
 
-import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -20,7 +19,7 @@ import com.capgemini.stockmarket.simulation.state.SimulationStateSetter;
 
 @Component
 public class CalendarManager implements PlayersActionListener {
-	private List<DateAware> dateTimeListeners = new ArrayList<>();
+	private Set<DateAware> dateTimeListeners = new HashSet<>();
 	private SimulationCalendar calendar;
 	private SimulationStateSetter simulationStateSetter;
 	private PlayersStateInfo playersStateInfo;
@@ -40,41 +39,45 @@ public class CalendarManager implements PlayersActionListener {
 
 	public void nextDay() {
 		nextTargetDate = currentDate().plusDays(1);
-		checkGameStateValidity();
-		daySpan = 1;
-		moveCalendar();
+		if (gameStateIsValid()) {
+			daySpan = 1;
+			moveCalendar();
+		}
 	}
 
 	public void processToDateTime(DateTime dateTime) {
 		nextTargetDate = dateTime;
-		checkGameStateValidity();
-		daySpan = 1;
-		moveCalendar();
+		if (gameStateIsValid()) {
+			daySpan = 1;
+			moveCalendar();
+		}
 	}
 
 	public void processToDateTimeSkipping(DateTime dateTime, int daySpan) {
 		nextTargetDate = dateTime;
-		checkGameStateValidity();
-		this.daySpan = daySpan;
-		moveCalendar();
+		if (gameStateIsValid()) {
+			this.daySpan = daySpan;
+			moveCalendar();
+		}
 	}
 
 	public void skipToDateTime(DateTime dateTime) {
 		nextTargetDate = dateTime;
-		checkGameStateValidity();
-		this.daySpan = Days.daysBetween(currentDate(), dateTime).getDays();
-		moveCalendar();
+		if (gameStateIsValid()) {
+			this.daySpan = Days.daysBetween(currentDate(), dateTime).getDays();
+			moveCalendar();
+		}
 	}
 
-	private void checkGameStateValidity() {
+	private boolean gameStateIsValid() {
 		if (currentDate().isAfter(finishDate)) {
 			simulationStateSetter.setSimualtionState(SimulationState.SIMULATION_FINISHED);
-			throw new IllegalRequestException("Simulation has finished.");
+			return false;
 		}
 		if (simulationStateSetter.isSimulationInProgress() == false) {
-			throw new IllegalRequestException("Cannot proccess; game state is "
-					+ simulationStateSetter.getSimulationState().toString());
+			return false;
 		}
+		return true;
 	}
 
 	private boolean moveCalendar() {
@@ -83,7 +86,7 @@ public class CalendarManager implements PlayersActionListener {
 			if (currentDate().getDayOfWeek() == DateTimeConstants.SATURDAY) {
 				calendar.plusDays(2);
 			}
-			if(currentDate().getDayOfWeek() == DateTimeConstants.SUNDAY) {
+			if (currentDate().getDayOfWeek() == DateTimeConstants.SUNDAY) {
 				calendar.plusDays(1);
 			}
 			notifyListenersDateChanged();

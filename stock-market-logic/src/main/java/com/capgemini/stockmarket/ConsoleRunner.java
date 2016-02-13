@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.capgemini.stockmarket.initializer.SimulationInitializer;
+import com.capgemini.stockmarket.settings.PlayerSettings;
 import com.capgemini.stockmarket.simulation.StockSimulationManager;
 
 public class ConsoleRunner {
@@ -26,12 +27,15 @@ public class ConsoleRunner {
 		LOG.info(data);
 		initializer.initializeGame(data);
 		StockSimulationManager manager = context.getBean(StockSimulationManager.class);
+		PlayerSettings settings = context.getBean(PlayerSettings.class);
+		settings.setPlayerName("Piotr");
+		manager.setPlayerSettings("DefaultPlayer", settings);
 		manager.start();
 		manager.nextDay();
 		String input;
 		do {
 			input = in.nextLine();
-			
+
 			manager.nextDay();
 		} while (input.equals("exit") == false);
 		in.close();

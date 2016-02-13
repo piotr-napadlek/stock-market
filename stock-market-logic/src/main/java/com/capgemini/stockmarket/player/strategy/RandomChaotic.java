@@ -31,11 +31,11 @@ public class RandomChaotic implements RequestCompositor {
 			request.addBuyRequest(company, amount);
 		}
 		if (wallet.getAvailableStockCompanies().size() > 0) {
-			for (int i = 0; i < random.nextInt(wallet.getAvailableStockCompanies().size())
-					/ 2; i++) {
+			for (int i = 0; i < random.nextInt(wallet.getAvailableStockCompanies().size() + 1); i++) {
 				CompanyTo company = wallet.getAvailableStockCompanies()
 						.get(random.nextInt(wallet.getAvailableStockCompanies().size()));
 				int amount = random.nextInt(wallet.getStockInfos(company).size());
+				amount = Math.max(amount, wallet.getStockInfos(company).size() / 2);
 				request.addSellRequest(company, amount);
 			}
 		}
