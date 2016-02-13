@@ -9,14 +9,12 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.dozer.Mapper;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
-import com.capgemini.stockmarket.entity.CompanyEntity;
 import com.capgemini.stockmarket.entity.StockPriceRecordEntity;
-import com.capgemini.stockmarket.entity.StockPriceRecordPK;
 import com.capgemini.stockmarket.repository.StockPriceRecordRepository;
 
 @Service
@@ -25,8 +23,6 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 
 	@Inject
 	private StockPriceRecordRepository sprRepository;
-	@Inject
-	private CompanyService companyService;
 	@Inject
 	private Mapper mapper;
 
@@ -69,32 +65,23 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 
 	@Override
 	public StockPriceRecordTo findByCompanyNameAndExactDay(String companyName, Date date) {
-		return mapper.map(
-				sprRepository.findByCompanyNameBetweenDates(companyName, date, date).get(0),
-				StockPriceRecordTo.class);
+		List<StockPriceRecordEntity> sprs = sprRepository
+				.findByCompanyNameBetweenDates(companyName, date, date);
+		if (sprs.isEmpty()) {
+			return findByCompanyNameAndExactDay(companyName,
+					new DateTime(date.getTime()).minusDays(1).toDate());
+		} else {
+			return mapper.map(sprRepository
+					.findByCompanyNameBetweenDates(companyName, date, date).get(0),
+					StockPriceRecordTo.class);
+		}
+		
+		
 	}
 
 	@Transactional(readOnly = false)
 	@Override
 	public StockPriceRecordTo saveOne(StockPriceRecordTo spr) {
-		if (sprRepository.findByCompanyNameBetweenDates(spr.getCompany().getName(),
-				spr.getDate(), spr.getDate()).size() > 0) {
-			throw new IllegalArgumentException(
-					"There is already a record with this date and company");
-		}
-
-		CompanyTo company = spr.getCompany();
-		if (company.getId() == null) {
-			List<CompanyTo> matched = companyService.findCompaniesByName(company.getName());
-			if (matched.isEmpty()) {
-				company = companyService.save(company);
-			} else if (matched.size() == 1) {
-				company.setId(matched.get(0).getId());
-			} else {
-				throw new IllegalStateException(
-						"Database error: there are two companies with the exact name and different Id in database.");
-			}
-		}
 		return mapper.map(sprRepository.save(mapper.map(spr, StockPriceRecordEntity.class)),
 				StockPriceRecordTo.class);
 	}
@@ -116,7 +103,7 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 
 	@Transactional(readOnly = false)
 	@Override
-	public StockPriceRecordTo deleteOne(StockPriceRecordPK id) {
+	public StockPriceRecordTo deleteOne(Long id) {
 		StockPriceRecordEntity sprEntity = sprRepository.findOne(id);
 		sprRepository.delete(sprEntity);
 		return mapper.map(sprEntity, StockPriceRecordTo.class);
@@ -124,7 +111,7 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 
 	@Transactional(readOnly = false)
 	@Override
-	public List<StockPriceRecordTo> deleteAll(Collection<StockPriceRecordPK> ids) {
+	public List<StockPriceRecordTo> deleteAll(Collection<Long> ids) {
 		List<StockPriceRecordEntity> sprEntities = sprRepository.findAll(ids);
 		sprRepository.delete(sprEntities);
 		return mapList(sprEntities);
@@ -133,9 +120,7 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 	@Transactional(readOnly = false)
 	@Override
 	public StockPriceRecordTo update(StockPriceRecordTo spr) {
-		StockPriceRecordPK id = new StockPriceRecordPK(
-				mapper.map(spr.getCompany(), CompanyEntity.class), spr.getDate());
-		if (sprRepository.findOne(id) == null) {
+		if (sprRepository.findOne(spr.getId()) == null) {
 			throw new IllegalArgumentException("Such element does not exist in the database!");
 		}
 		return mapper.map(sprRepository.save(mapper.map(spr, StockPriceRecordEntity.class)),
@@ -149,7 +134,7 @@ public class StockPriceRecordServiceImpl implements StockPriceRecordService {
 		spr.forEach(sprTo -> sprTos.add(update(sprTo)));
 		return sprTos;
 	}
-	
+
 	@Override
 	public List<StockPriceRecordTo> deleteAll() {
 		List<StockPriceRecordTo> allSprs = findAllRecords();

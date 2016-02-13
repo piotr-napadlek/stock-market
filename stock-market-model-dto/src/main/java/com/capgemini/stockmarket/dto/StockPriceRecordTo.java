@@ -3,6 +3,7 @@ package com.capgemini.stockmarket.dto;
 import java.util.Date;
 
 public class StockPriceRecordTo {
+	private Long id;
 	private Date date;
 	private CompanyTo company;
 	private double price;
@@ -38,6 +39,14 @@ public class StockPriceRecordTo {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

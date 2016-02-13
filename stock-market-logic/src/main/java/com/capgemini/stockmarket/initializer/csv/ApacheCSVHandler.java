@@ -23,7 +23,7 @@ public class ApacheCSVHandler implements CSVHandler {
 	private String csvFormatDelimeter;
 	@Value("${csv.format.headers}")
 	private String headers;
-	@Value("$csv.format.dateFormat")
+	@Value("${csv.format.dateFormat}")
 	private String dateFormat;
 
 	@Override

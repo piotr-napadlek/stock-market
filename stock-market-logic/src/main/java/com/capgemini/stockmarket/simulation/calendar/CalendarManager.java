@@ -1,5 +1,6 @@
 package com.capgemini.stockmarket.simulation.calendar;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
 import org.springframework.stereotype.Component;
 
@@ -78,6 +80,12 @@ public class CalendarManager implements PlayersActionListener {
 	private boolean moveCalendar() {
 		if (currentDate().isBefore(nextTargetDate)) {
 			calendar.plusDays(daySpan);
+			if (currentDate().getDayOfWeek() == DateTimeConstants.SATURDAY) {
+				calendar.plusDays(2);
+			}
+			if(currentDate().getDayOfWeek() == DateTimeConstants.SUNDAY) {
+				calendar.plusDays(1);
+			}
 			notifyListenersDateChanged();
 			return true;
 		}

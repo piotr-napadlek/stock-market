@@ -11,7 +11,7 @@ import com.capgemini.stockmarket.entity.StockPriceRecordEntity;
 import com.capgemini.stockmarket.entity.StockPriceRecordPK;
 
 
-public interface StockPriceRecordRepository extends JpaRepository<StockPriceRecordEntity, StockPriceRecordPK> {
+public interface StockPriceRecordRepository extends JpaRepository<StockPriceRecordEntity, Long> {
 
 	@Query("select record from StockPriceRecordEntity record where record.date = :dateRecorded ")
 	public List<StockPriceRecordEntity> findByDate(@Param("dateRecorded") Date dateRecorded);

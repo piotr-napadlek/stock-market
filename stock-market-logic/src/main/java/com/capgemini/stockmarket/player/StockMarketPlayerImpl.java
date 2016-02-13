@@ -14,6 +14,7 @@ import com.capgemini.stockmarket.banking.account.BankAccount;
 import com.capgemini.stockmarket.broker.BrokersOfficeDesk;
 import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.common.IllegalOperationException;
+import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
 import com.capgemini.stockmarket.dto.transactions.TxAccept;
@@ -126,5 +127,27 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 			settings.getAdditionalBalances().forEach((currency, balance) -> account.putMoney(
 					new Money(Currency.valueOf(currency), balance, "Initialization money")));
 		}
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder toStr = new StringBuilder("\n\n" + getName());
+		toStr.append("\nAvailable balances:\n");
+		account.getAvailableCurrencies().forEach(currency -> {
+			toStr.append("Currency: " + currency.toString() + ", Balance: "
+					+ account.getBalanceFor(currency) + ", ");
+		});
+		double totalWorth = account.getBalanceFor(Currency.PLN);
+		toStr.append("\nAvailable Stocks:\n");
+
+		for (CompanyTo company : account.getAvailableStockCompanies()) {
+			double worth = (account.getStockInfos(company).size()
+					* brokersOfficeDesk.getTodaysPriceFor(company));
+			totalWorth += worth;
+			toStr.append("Company: " + company.getName() + ", amount: "
+					+ account.getStockInfos(company).size() + " o wartości " + worth + "\n");
+		}
+		toStr.append("\nCałkowita wartość konta gracza to " + totalWorth + "PLN\n\n");
+		return toStr.toString();
 	}
 }

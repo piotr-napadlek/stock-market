@@ -1,6 +1,7 @@
 package com.capgemini.stockmarket.banking.account;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -69,7 +70,7 @@ final public class NationalBankAccount implements BankAccount {
 	}
 
 	@Override
-	public Collection<CompanyTo> getAvailableStockCompanies() {
+	public List<CompanyTo> getAvailableStockCompanies() {
 		return stockBasket.getAvailableCompanies();
 	}
 
@@ -96,6 +97,9 @@ final public class NationalBankAccount implements BankAccount {
 
 	@Override
 	public TxFromPlayer fillInTransaction(TxAccept accept, Pair<Currency, Double> fee) {
+		if (accept.getBuyAccepts().size() == 0 && accept.getSellAccepts().size() == 0) {
+			return null;
+		}
 		final Money transactionFee;
 		final TxFromPlayer fromPlayer;
 		try {

@@ -5,11 +5,15 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.broker.BrokersOffice;
+import com.capgemini.stockmarket.common.DateAware;
+import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.common.IllegalRequestException;
 import com.capgemini.stockmarket.player.StockMarketPlayer;
 import com.capgemini.stockmarket.player.strategy.RequestCompositor;
@@ -20,7 +24,8 @@ import com.capgemini.stockmarket.simulation.state.SimulationState;
 import com.capgemini.stockmarket.simulation.state.SimulationStateSetter;
 
 @Component
-public class StockSimulationManager {
+public class StockSimulationManager implements DateAware {
+	private static final Log LOG = LogFactory.getLog(StockSimulationManager.class);
 
 	private BrokersOffice defaultBO;
 	@SuppressWarnings("unused")
@@ -29,11 +34,13 @@ public class StockSimulationManager {
 	private PlayersManager playersManager;
 	private CalendarManager calendarManager;
 	private SimulationStateSetter stateHolder;
+	private DateInfo dateInfo;
 
 	@Inject
 	public StockSimulationManager(PlayersManager playersManager,
 			@Qualifier("defaultBrokersOffice") BrokersOffice defaultBO,
-			CalendarManager calendarManager, SimulationStateSetter stateHolder) {
+			CalendarManager calendarManager, SimulationStateSetter stateHolder,
+			DateInfo dateInfo) {
 
 		this.defaultBO = defaultBO;
 		this.calendarManager = calendarManager;
@@ -41,6 +48,8 @@ public class StockSimulationManager {
 		this.stateHolder = stateHolder;
 		playersManager.addDefaultPlayer();
 		calendarManager.addDateListeners(playersManager.getAllPlayers());
+		calendarManager.addDateListener(this);
+		this.dateInfo = dateInfo;
 	}
 
 	public void addBrokersOffice(BrokersOffice brokersOffice, BrokersOfficeSettings settings) {
@@ -104,7 +113,7 @@ public class StockSimulationManager {
 	}
 
 	public void start() {
-		if (calendarManager.isCalendarSet()) {
+		if (calendarManager.isCalendarSet() == false) {
 			throw new IllegalRequestException(
 					"Game is not initialized yet. Set the start date and end date");
 		}
@@ -125,14 +134,29 @@ public class StockSimulationManager {
 
 	public void setGameState(SimulationState gameState) {
 		this.stateHolder.setSimualtionState(gameState);
+		LOG.info("GameState set to: " + gameState.toString());
 	}
 
 	public void setStartDate(DateTime dateTime) {
 		calendarManager.setStartDate(dateTime);
+		LOG.info("Start date set to: " + dateTime.toString());
 	}
 
 	public void setFinishDate(DateTime finishDateTime) {
 		calendarManager.setFinishDate(finishDateTime);
+		LOG.info("Finish date set to: " + finishDateTime.toString());
+	}
+
+	@Override
+	public void dateChanged() {
+		LOG.info("Current day is: " + dateInfo.getCurrentDate().toString());
+		StringBuilder builder = new StringBuilder("Current stock prices are: \n");
+		defaultBO.getStockCompanies().forEach(comp -> {
+			builder.append(comp.getName() + ": " + defaultBO.getTodaysPriceFor(comp) + ", ");
+		});
+		LOG.info(builder.toString());
+		LOG.info("Obecny stan graczy: \n");
+		playersManager.getAllPlayers().forEach(player -> LOG.info(player.toString()));
 	}
 
 }

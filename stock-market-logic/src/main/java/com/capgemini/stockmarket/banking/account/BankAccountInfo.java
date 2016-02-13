@@ -2,6 +2,7 @@ package com.capgemini.stockmarket.banking.account;
 
 
 import java.util.Collection;
+import java.util.List;
 
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
@@ -13,7 +14,7 @@ public interface BankAccountInfo {
 
 	Collection<Currency> getAvailableCurrencies();
 
-	Collection<CompanyTo> getAvailableStockCompanies();
+	List<CompanyTo> getAvailableStockCompanies();
 
 	Collection<StockInfo> getStockInfos(CompanyTo company);
 

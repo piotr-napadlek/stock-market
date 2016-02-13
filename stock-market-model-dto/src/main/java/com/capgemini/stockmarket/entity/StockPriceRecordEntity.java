@@ -2,13 +2,11 @@ package com.capgemini.stockmarket.entity;
 
 import java.util.Date;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -16,14 +14,14 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "STOCK_PRICE")
-@IdClass(StockPriceRecordPK.class)
-@Access(AccessType.FIELD)
 public class StockPriceRecordEntity {
 	
 	@Id
-	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+	
+	@ManyToOne(optional = false)
 	private CompanyEntity company;
-	@Id
 	@Temporal(TemporalType.DATE)
 	private Date date;
 

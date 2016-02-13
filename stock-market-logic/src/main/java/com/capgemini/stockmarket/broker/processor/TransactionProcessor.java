@@ -86,7 +86,7 @@ public class TransactionProcessor {
 			double priceForStock = informer.getCurrentStockPrice(company);
 			double priceOffer = randomSellPrice(priceForStock);
 			int amountOffer = randomSellAmount(amount);
-			offer.addSellAccept(company, amountOffer, priceOffer);
+			offer.addSellOffer(company, amountOffer, priceOffer);
 			stockPriceSellOffer.put(company, NumPair.of(amountOffer, priceOffer));
 		});
 	}
@@ -96,7 +96,7 @@ public class TransactionProcessor {
 			double priceForStock = informer.getCurrentStockPrice(company);
 			double priceOffer = randomBuyPrice(priceForStock);
 			int amountOffer = randomBuyAmount(amount);
-			offer.addBuyAccept(company, amountOffer, priceOffer);
+			offer.addBuyOffer(company, amountOffer, priceOffer);
 			stockPriceSellOffer.put(company, NumPair.of(amountOffer, priceOffer));
 		});
 	}
@@ -119,14 +119,14 @@ public class TransactionProcessor {
 					amountMoney.getLeft());
 			IntStream.range(0, amountMoney.getLeft()).forEach(i -> {
 				stocksToSell.add(stockCertifier.provideCertifiedStock(company,
-						stockPriceBuyOffer.get(company).getRight(), company.stockCurrency()));
+						stockPriceSellOffer.get(company).getRight(), company.stockCurrency()));
 			});
 		});
 		return stocksToSell;
 	}
 
 	private void validateUserSentEnoughMoney(Money money, CompanyTo company, Integer amount) {
-		double demandedMoney = stockPriceBuyOffer.getOrDefault(company, NumPair.of(0, 0d))
+		double demandedMoney = stockPriceSellOffer.getOrDefault(company, NumPair.of(0, 0d))
 				.product();
 		if (money.getAmount() - demandedMoney > 0.00000001d) {
 			throw new BrokersOfficeException(

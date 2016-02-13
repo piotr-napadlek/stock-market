@@ -68,7 +68,7 @@ public class StockBasket implements Basket {
 	}
 
 	@Override
-	public Collection<CompanyTo> getAvailableCompanies() {
+	public List<CompanyTo> getAvailableCompanies() {
 		return stocks.values().stream().map(stock -> stock.getCompany()).distinct()
 				.collect(Collectors.toList());
 	}

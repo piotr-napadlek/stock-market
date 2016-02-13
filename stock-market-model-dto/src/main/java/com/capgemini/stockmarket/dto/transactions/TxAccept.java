@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.capgemini.stockmarket.dto.CompanyTo;
 
-public class TxAccept extends TxOffer {
+public class TxAccept {
 	private final Map<CompanyTo, NumPair<Integer, Double>> buyAccepts = new HashMap<>();
 	private final Map<CompanyTo, NumPair<Integer, Double>> sellAccepts = new HashMap<>();
 
@@ -21,7 +21,7 @@ public class TxAccept extends TxOffer {
 		return buyAccepts.getOrDefault(company, NumPair.of(0, 0d));
 	}
 
-	public NumPair<Integer, Double> getSellAcceptOfferFor(CompanyTo company) {
+	public NumPair<Integer, Double> getSellAcceptFor(CompanyTo company) {
 		return sellAccepts.getOrDefault(company, NumPair.of(0, 0d));
 	}
 
