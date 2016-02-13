@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.stockmarket.banking.BankOperationException;
-import com.capgemini.stockmarket.broker.Stock;
-import com.capgemini.stockmarket.broker.StockInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
+import com.capgemini.stockmarket.dto.transactions.Stock;
+import com.capgemini.stockmarket.dto.transactions.StockInfo;
 
 @Component
 public class StockBasket implements Basket {
@@ -22,13 +22,13 @@ public class StockBasket implements Basket {
 	@Override
 	public List<StockInfo> getStockInfos(CompanyTo company) {
 		basketCompanyCheck(company);
-		return stocks.values().stream().filter(stock -> stock.company().equals(company))
+		return stocks.values().stream().filter(stock -> stock.getCompany().equals(company))
 				.map(stock -> stock.getInfo()).collect(Collectors.toList());
 	}
 
 	private void basketCompanyCheck(CompanyTo company) {
 		if (stocks.values().stream()
-				.anyMatch(stock -> stock.company().equals(company)) == false) {
+				.anyMatch(stock -> stock.getCompany().equals(company)) == false) {
 			throw new BankOperationException(
 					"No such company in basket: " + company.getName());
 		}
@@ -69,7 +69,7 @@ public class StockBasket implements Basket {
 
 	@Override
 	public Collection<CompanyTo> getAvailableCompanies() {
-		return stocks.values().stream().map(stock -> stock.company()).distinct()
+		return stocks.values().stream().map(stock -> stock.getCompany()).distinct()
 				.collect(Collectors.toList());
 	}
 

@@ -1,102 +1,134 @@
 package com.capgemini.stockmarket.broker;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
-import com.capgemini.stockmarket.banking.account.caretaker.AccountBalanceCaretaker;
-import com.capgemini.stockmarket.common.StockTransactionInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
-import com.capgemini.stockmarket.dto.TransactionObjectTo;
+import com.capgemini.stockmarket.dto.Currency;
+import com.capgemini.stockmarket.dto.Money;
+import com.capgemini.stockmarket.dto.transactions.NumPair;
+import com.capgemini.stockmarket.dto.transactions.Stock;
+import com.capgemini.stockmarket.dto.transactions.TxFromBO;
+import com.capgemini.stockmarket.dto.transactions.TxFromPlayer;
+import com.capgemini.stockmarket.dto.transactions.TxOffer;
+import com.capgemini.stockmarket.dto.transactions.TxRequest;
 import com.capgemini.stockmarket.settings.BrokersOfficeSettings;
 
 @Component
 public class TransactionProcessor {
 	private BrokersOfficeSettings settings;
-	private Random random = new Random();
 	private StockCertifier stockCertifier;
-	private AccountBalanceCaretaker account;
-	private Map<CompanyTo, StockTransactionInfo> stockPriceSellOffer = new HashMap<>();
+	private StockPriceInformer informer;
+
+	private Map<CompanyTo, NumPair<Integer, Double>> stockPriceSellOffer = new HashMap<>();
+	private Map<CompanyTo, NumPair<Integer, Double>> stockPriceBuyOffer = new HashMap<>();
+	private Random random = new Random();
+	private double transactionFee = 0d;
+	private double transactionSum = 0d;
 
 	@Inject
 	public TransactionProcessor(BrokersOfficeSettings settings, StockCertifier stockCertifier,
-			AccountBalanceCaretaker account) {
+			StockPriceInformer informer) {
 		this.settings = settings;
 		this.stockCertifier = stockCertifier;
-		this.account = account;
+		this.informer = informer;
 	}
 
-	public TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> prepareOffer(
-			TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> request) {
-
+	public TxOffer prepareOffer(TxRequest request) {
 		stockPriceSellOffer.clear();
-		TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> newOffer = new TransactionObjectTo<>();
-		if ((int) request.getBuyItems().stream().map(item -> item.getCompany()).distinct()
-				.count() < request.getBuyItems().size()) {
-			throw new BrokersOfficeException("You should provide distinct companies offers. "
-					+ "Cheating is disallowed.");
-		}
-		request.getSellItems().forEach(item -> {
-			StockTransactionInfo sti = new StockTransactionInfo(item.getCompany(),
-					randomBuyAmount(item.getAmount()), randomBuyPrice(item.getUnitPrice()),
-					item.getCurrency());
-			newOffer.addBuyItem(sti);
-		});
-		request.getBuyItems().forEach(item -> {
-			StockTransactionInfo sti = new StockTransactionInfo(item.getCompany(),
-					randomSellAmount(item.getAmount()), randomSellPrice(item.getUnitPrice()),
-					item.getCurrency());
-			newOffer.addSellItem(sti);
-			stockPriceSellOffer.put(sti.getCompany(), sti);
-		});
-		return newOffer;
+		stockPriceBuyOffer.clear();
+		TxOffer offer = new TxOffer();
+		prepareBuyOffer(request, offer);
+		prepareSellOffer(request, offer);
+		return offer;
 	}
 
-	public TransactionObjectTo<Void, Stock> provideStocks(
-			TransactionObjectTo<StockTransactionInfo, Stock> transactionAccept) {
-
-		account.clearAccount();
-		transactionAccept.getMoney().forEach(money -> account.putMoney(money));
-		validateUserSentEnoughMoney(transactionAccept.getBuyItems());
-		List<Stock> newStocksToSell = new ArrayList<>();
-		transactionAccept.getBuyItems().forEach(buyItem -> {
-			for (int i = 0; i < buyItem.getAmount(); i++) {
-				newStocksToSell.add(stockCertifier.provideCertifiedStock(buyItem.getCompany(),
-						buyItem.getUnitPrice(), buyItem.getCurrency()));
-			}
+	public Pair<Currency, Double> getTransactionFee(TxRequest request) {
+		transactionSum = 0;
+		request.getBuyRequests().forEach((company, amount) -> {
+			transactionSum += stockPriceSellOffer.get(company).getRight() * amount;
 		});
-		TransactionObjectTo<Void, Stock> transaction = new TransactionObjectTo<>();
-		transaction.addAllSellItems(newStocksToSell);
+		request.getSellRequests().forEach((company, amount) -> {
+			transactionSum += stockPriceBuyOffer.get(company).getRight() * amount;
+		});
+		Currency currencyAccepted = settings.getMinProvision().getLeft();
+		transactionFee = transactionSum * settings.getBoProvision();
+		transactionFee = Math.max(transactionFee, settings.getMinProvision().getRight());
+		return Pair.of(currencyAccepted, transactionFee);
+	}
 
-		transactionAccept.getSellItems().forEach(stock -> {
+	public Optional<TxFromBO> provideStocks(Optional<TxFromPlayer> accept) {
+		TxFromBO transaction = null;
+		if (accept.isPresent()) {
+			transaction = new TxFromBO();
+			List<Stock> newStocksToSell = prepareNewStocksForPlayer(accept.get());
+			transaction.addAllStocskBought(newStocksToSell);
+			cashStocksBeingSold(accept.get(), transaction);
+		}
+		return Optional.ofNullable(transaction);
+	}
+
+	private void prepareSellOffer(TxRequest request, TxOffer offer) {
+		request.getBuyRequests().forEach((company, amount) -> {
+			double priceForStock = informer.getCurrentStockPrice(company);
+			double priceOffer = randomSellPrice(priceForStock);
+			int amountOffer = randomSellAmount(amount);
+			offer.addSellAccept(company, amountOffer, priceOffer);
+			stockPriceSellOffer.put(company, NumPair.of(amountOffer, priceOffer));
+		});
+	}
+
+	private void prepareBuyOffer(TxRequest request, TxOffer offer) {
+		request.getSellRequests().forEach((company, amount) -> {
+			double priceForStock = informer.getCurrentStockPrice(company);
+			double priceOffer = randomBuyPrice(priceForStock);
+			int amountOffer = randomBuyAmount(amount);
+			offer.addBuyAccept(company, amountOffer, priceOffer);
+			stockPriceSellOffer.put(company, NumPair.of(amountOffer, priceOffer));
+		});
+	}
+
+	private void cashStocksBeingSold(TxFromPlayer accept, TxFromBO transaction) {
+		accept.getAllSoldStocks().forEach(stock -> {
 			if (stockCertifier.confirmStockValidity(stock)) {
-				transaction.addMoney(stockCertifier.cashStock(stock,
-						stockPriceSellOffer.get(stock.company()).getUnitPrice()));
+				transaction.addMoneyForDisposal(stockCertifier.cashStock(stock,
+						stockPriceSellOffer.get(stock.getCompany()).getRight()));
 			} else {
 				throw new BrokersOfficeException("Was tried to be sold invalid stock!");
 			}
 		});
-		return transaction;
 	}
 
-	private void validateUserSentEnoughMoney(Collection<StockTransactionInfo> buyItems) {
-		try {
-			buyItems.forEach(item -> {
-				account.extractMoney(item.getCurrency(),
-						item.getAmount() * item.getUnitPrice());
+	private List<Stock> prepareNewStocksForPlayer(TxFromPlayer accept) {
+		List<Stock> stocksToSell = new ArrayList<>();
+		accept.getMoneyToBuyStocks().forEach((company, amountMoney) -> {
+			validateUserSentEnoughMoney(amountMoney.getRight(), company,
+					amountMoney.getLeft());
+			IntStream.range(0, amountMoney.getLeft()).forEach(i -> {
+				stocksToSell.add(stockCertifier.provideCertifiedStock(company,
+						stockPriceBuyOffer.get(company).getRight(), company.stockCurrency()));
 			});
-		} catch (Exception e) {
-			BrokersOfficeException ex = new BrokersOfficeException(
-					"Not enough money provided for this buy demand.");
-			ex.addSuppressed(e);
-			throw ex;
+		});
+		return stocksToSell;
+	}
+
+	private void validateUserSentEnoughMoney(Money money, CompanyTo company, Integer amount) {
+		double demandedMoney = stockPriceBuyOffer.getOrDefault(company, NumPair.of(0, 0d))
+				.product();
+		if (money.getAmount() - demandedMoney > 0.00000001d) {
+			throw new BrokersOfficeException(
+					"Not enough money provided for this buy demand. Company: "
+							+ company.getName());
 		}
 	}
 

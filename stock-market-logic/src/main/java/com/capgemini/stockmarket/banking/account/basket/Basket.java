@@ -3,9 +3,9 @@ package com.capgemini.stockmarket.banking.account.basket;
 import java.util.Collection;
 import java.util.List;
 
-import com.capgemini.stockmarket.broker.Stock;
-import com.capgemini.stockmarket.broker.StockInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
+import com.capgemini.stockmarket.dto.transactions.Stock;
+import com.capgemini.stockmarket.dto.transactions.StockInfo;
 
 public interface Basket {
 

@@ -3,9 +3,9 @@ package com.capgemini.stockmarket.banking.account;
 
 import java.util.Collection;
 
-import com.capgemini.stockmarket.broker.StockInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
+import com.capgemini.stockmarket.dto.transactions.StockInfo;
 
 public interface BankAccountInfo {
 

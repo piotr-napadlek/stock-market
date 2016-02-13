@@ -3,6 +3,7 @@ package com.capgemini.stockmarket.dto;
 public class CompanyTo {
 	private Long id;
 	private String name;
+	private String currency;
 	
 	public CompanyTo() {
 	}
@@ -26,6 +27,18 @@ public class CompanyTo {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getCurrency() {
+		return currency;
+	}
+	
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	
+	public Currency stockCurrency() {
+		return Currency.valueOf(currency);
 	}
 
 	@Override

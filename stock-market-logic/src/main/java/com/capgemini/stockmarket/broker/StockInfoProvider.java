@@ -14,5 +14,7 @@ public interface StockInfoProvider {
 	List<StockPriceRecordTo> getSharePriceHistoryFor(CompanyTo company, Date fromDate);
 
 	List<StockPriceRecordTo> getSharePriceHistoryFor(CompanyTo company);
+	
+	Double getTodaysPriceFor(CompanyTo company);
 
 }

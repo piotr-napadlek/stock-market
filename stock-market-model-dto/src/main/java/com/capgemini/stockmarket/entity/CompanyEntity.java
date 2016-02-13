@@ -22,6 +22,8 @@ public class CompanyEntity implements Serializable{
 	private Long id;
 	@Column(length = 50, nullable = false)
 	private String name;
+	@Column(length = 4, nullable = false)
+	private String currency = "PLN";
 	
 	//for Hibernate
 	public CompanyEntity() {
@@ -46,6 +48,14 @@ public class CompanyEntity implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getCurrency() {
+		return currency;
+	}
+	
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 	@Override

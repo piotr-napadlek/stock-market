@@ -1,25 +1,26 @@
 package com.capgemini.stockmarket.banking.account;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.capgemini.stockmarket.banking.BankOperationException;
 import com.capgemini.stockmarket.banking.CurrencyExchange;
 import com.capgemini.stockmarket.banking.account.basket.Basket;
 import com.capgemini.stockmarket.banking.account.caretaker.AccountBalanceCaretaker;
-import com.capgemini.stockmarket.broker.Stock;
-import com.capgemini.stockmarket.broker.StockInfo;
-import com.capgemini.stockmarket.common.StockTransactionInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
-import com.capgemini.stockmarket.dto.TransactionObjectTo;
+import com.capgemini.stockmarket.dto.transactions.Stock;
+import com.capgemini.stockmarket.dto.transactions.StockInfo;
+import com.capgemini.stockmarket.dto.transactions.TxAccept;
+import com.capgemini.stockmarket.dto.transactions.TxFromBO;
+import com.capgemini.stockmarket.dto.transactions.TxFromPlayer;
 
 @Component("nationalBankAccount")
 @Scope("prototype")
@@ -87,37 +88,33 @@ final public class NationalBankAccount implements BankAccount {
 	}
 
 	@Override
-	public TransactionObjectTo<StockTransactionInfo, Stock> fillInTransaction(
-			TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionAccept) {
+	public void digestTransaction(TxFromBO transaction) {
+		transaction.getMoneyForSoldStocks().forEach(money -> balanceCaretaker.putMoney(money));
+		stockBasket.putStocks(transaction.getStocksBought());
 
-		TransactionObjectTo<StockTransactionInfo, Stock> transactionFilled = new TransactionObjectTo<>();
-		fillInSoldStock(transactionAccept, transactionFilled);
-		fillInMoneyToBuy(transactionAccept, transactionFilled);
-		return transactionFilled;
-	}
-
-	private void fillInMoneyToBuy(
-			TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionAccept,
-			TransactionObjectTo<StockTransactionInfo, Stock> transactionFilled) {
-		
-		transactionAccept.getBuyItems()
-				.forEach(stock -> transactionFilled.addMoney(extractMoney(stock.getCurrency(),
-						(stock.getUnitPrice() * stock.getAmount()))));
-	}
-
-	private void fillInSoldStock(
-			TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionAccept,
-			TransactionObjectTo<StockTransactionInfo, Stock> transactionFilled) {
-		List<Stock> soldStock = new ArrayList<>();
-		transactionAccept.getSellItems().forEach(stockTI -> soldStock
-				.addAll(stockBasket.extractStock(stockTI.getCompany(), stockTI.getAmount())));
-		transactionFilled.addAllSellItems(soldStock);
 	}
 
 	@Override
-	public void digestTransaction(TransactionObjectTo<Void, Stock> transaction) {
-		transaction.getMoney().forEach(money -> balanceCaretaker.putMoney(money));
-		stockBasket.putStocks(transaction.getSellItems());
+	public TxFromPlayer fillInTransaction(TxAccept accept, Pair<Currency, Double> fee) {
+		final Money transactionFee;
+		final TxFromPlayer fromPlayer;
+		try {
+			fromPlayer = new TxFromPlayer();
+			accept.getSellAccepts().forEach((company, amount) -> {
+				fromPlayer.addAllStocksToSell(
+						stockBasket.extractStock(company, amount.getLeft()));
+			});
+			accept.getBuyAccepts().forEach((company, amount) -> {
+				fromPlayer.putMoneyToBuy(company, amount.getLeft(),
+						extractMoney(company.stockCurrency(), amount.product()));
+			});
+			transactionFee = balanceCaretaker.extractMoney(fee.getLeft(), fee.getRight());
+			fromPlayer.addTransactionFee(transactionFee);
+		} catch (BankOperationException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return fromPlayer;
 	}
 
 }

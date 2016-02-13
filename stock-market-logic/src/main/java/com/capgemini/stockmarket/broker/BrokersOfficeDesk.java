@@ -1,13 +1,21 @@
 package com.capgemini.stockmarket.broker;
 
-import com.capgemini.stockmarket.common.StockTransactionInfo;
-import com.capgemini.stockmarket.dto.TransactionObjectTo;
+import java.util.Optional;
 
-public interface BrokersOfficeDesk extends StockInfoProvider {
+import org.apache.commons.lang3.tuple.Pair;
 
-	public TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> processRequest(
-			TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionRequest);
+import com.capgemini.stockmarket.dto.Currency;
+import com.capgemini.stockmarket.dto.transactions.TxAccept;
+import com.capgemini.stockmarket.dto.transactions.TxFromBO;
+import com.capgemini.stockmarket.dto.transactions.TxFromPlayer;
+import com.capgemini.stockmarket.dto.transactions.TxOffer;
+import com.capgemini.stockmarket.dto.transactions.TxRequest;
 
-	public TransactionObjectTo<Void, Stock> processAcceptance(
-			TransactionObjectTo<StockTransactionInfo, Stock> transactionAccept);
+public interface BrokersOfficeDesk extends BrokersOfficeProxy {
+
+	public TxOffer processRequest(TxRequest request);
+
+	public Pair<Currency, Double> getTransactionFee(TxAccept request);
+
+	public Optional<TxFromBO> processAccept(Optional<TxFromPlayer> accept);
 }

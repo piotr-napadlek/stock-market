@@ -13,10 +13,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.capgemini.stockmarket.banking.account.basket.Basket;
 import com.capgemini.stockmarket.banking.account.basket.StockBasket;
-import com.capgemini.stockmarket.broker.Stock;
-import com.capgemini.stockmarket.broker.StockInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
+import com.capgemini.stockmarket.dto.transactions.Stock;
+import com.capgemini.stockmarket.dto.transactions.StockInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StockBasketTest {

@@ -2,16 +2,22 @@ package com.capgemini.stockmarket.broker;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.capgemini.stockmarket.common.StockTransactionInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
+import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
-import com.capgemini.stockmarket.dto.TransactionObjectTo;
+import com.capgemini.stockmarket.dto.transactions.TxAccept;
+import com.capgemini.stockmarket.dto.transactions.TxFromBO;
+import com.capgemini.stockmarket.dto.transactions.TxFromPlayer;
+import com.capgemini.stockmarket.dto.transactions.TxOffer;
+import com.capgemini.stockmarket.dto.transactions.TxRequest;
 import com.capgemini.stockmarket.settings.BrokersOfficeSettings;
 
 @Component ("defaultBrokersOffice")
@@ -63,15 +69,31 @@ public class DefaultBrokersOffice implements BrokersOffice {
 	}
 
 	@Override
-	public TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> processRequest(
-			TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionRequest) {
+	public TxOffer processRequest(TxRequest request) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public TransactionObjectTo<Void, Stock> processAcceptance(
-			TransactionObjectTo<StockTransactionInfo, Stock> transactionAccept) {
+	public Pair<Currency, Double> getTransactionFee(TxAccept request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Optional<TxFromBO> processAccept(Optional<TxFromPlayer> accept) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BoFeeInfo getBoTransactionFee() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getTodaysPriceFor(CompanyTo company) {
 		// TODO Auto-generated method stub
 		return null;
 	}

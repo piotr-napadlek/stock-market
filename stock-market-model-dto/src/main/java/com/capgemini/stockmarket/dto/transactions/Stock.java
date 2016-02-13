@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.broker;
+package com.capgemini.stockmarket.dto.transactions;
 
 import java.util.Date;
 import java.util.UUID;
@@ -38,7 +38,7 @@ public final class Stock implements StockInfo {
 	}
 
 	@Override
-	public CompanyTo company() {
+	public CompanyTo getCompany() {
 		return this.company;
 	}
 

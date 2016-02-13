@@ -2,21 +2,25 @@ package com.capgemini.stockmarket.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.banking.account.BankAccount;
 import com.capgemini.stockmarket.broker.BrokersOfficeDesk;
-import com.capgemini.stockmarket.broker.Stock;
 import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.common.IllegalOperationException;
-import com.capgemini.stockmarket.common.StockTransactionInfo;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
-import com.capgemini.stockmarket.dto.TransactionObjectTo;
+import com.capgemini.stockmarket.dto.transactions.TxAccept;
+import com.capgemini.stockmarket.dto.transactions.TxFromBO;
+import com.capgemini.stockmarket.dto.transactions.TxFromPlayer;
+import com.capgemini.stockmarket.dto.transactions.TxOffer;
+import com.capgemini.stockmarket.dto.transactions.TxRequest;
 import com.capgemini.stockmarket.player.strategy.PlayerState;
 import com.capgemini.stockmarket.player.strategy.RequestCompositor;
 import com.capgemini.stockmarket.settings.PlayerSettings;
@@ -67,22 +71,21 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 	}
 
 	private final void doTryTransaction() {
-		TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionRequest = compositor
-				.composeRequest(account, brokersOfficeDesk, dateInfo.getCurrentDate());
-		
-		TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionOffer = brokersOfficeDesk
-				.processRequest(transactionRequest);
-		
+		TxRequest request = compositor.composeRequest(account, brokersOfficeDesk,
+				dateInfo.getCurrentDate());
+		TxOffer offer = brokersOfficeDesk.processRequest(request);
 		setState(PlayerState.VERIFYING);
-		
-		TransactionObjectTo<StockTransactionInfo, StockTransactionInfo> transactionAccept = compositor
-				.verifyTransactionOffer(transactionOffer);
+		TxAccept offerVerified = compositor.verifyTransactionOffer(offer);
+		Pair<Currency, Double> transactionFee = brokersOfficeDesk
+				.getTransactionFee(offerVerified);
+		TxFromPlayer accept = account.fillInTransaction(offerVerified, transactionFee);
 
-		TransactionObjectTo<StockTransactionInfo, Stock> acceptFilled = account.fillInTransaction(transactionAccept);
+		Optional<TxFromBO> transaction = brokersOfficeDesk
+				.processAccept(Optional.ofNullable(accept));
 
-		TransactionObjectTo<Void, Stock> transaction = brokersOfficeDesk.processAcceptance(acceptFilled);
-		
-		account.digestTransaction(transaction);
+		if (transaction.isPresent()) {
+			account.digestTransaction(transaction.get());
+		}
 	}
 
 	@Override

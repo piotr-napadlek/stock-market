@@ -14,6 +14,7 @@ import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
+import com.capgemini.stockmarket.dto.transactions.Stock;
 
 @Component
 @Scope("singleton")
