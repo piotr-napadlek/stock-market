@@ -18,14 +18,20 @@ import com.capgemini.stockmarket.simulation.state.SimulationState;
 
 @Component
 public class SimulationInitializer {
-	@Inject
 	private CSVHandler csvHandler;
-	@Inject
 	private StockSimulationManager simulationManager;
-	@Inject
 	private StockPriceRecordService sprService;
-	@Inject
 	private CompanyService companyService;
+
+	@Inject
+	public SimulationInitializer(CSVHandler csvHandler,
+			StockSimulationManager simulationManager, StockPriceRecordService sprService,
+			CompanyService companyService) {
+		this.csvHandler = csvHandler;
+		this.simulationManager = simulationManager;
+		this.sprService = sprService;
+		this.companyService = companyService;
+	}
 
 	public void initializeGame(String csv) throws Exception {
 		List<StockPriceRecordTo> sprTos = insertAndVerifyDBData(csv);
@@ -65,7 +71,7 @@ public class SimulationInitializer {
 			} else if (companies.size() == 1) {
 				spr.setCompany(companies.get(0));
 			} else {
-				throw new RuntimeException();
+				throw new InitializationException("Something went wrong with data storage");
 			}
 		});
 		List<StockPriceRecordTo> sprTos = sprService.saveAll(parsedSprs);

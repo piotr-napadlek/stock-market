@@ -58,7 +58,7 @@ public class CalendarManagerTest {
 	public void testShouldProcessToNextDay() {
 		// given
 		DateTime startDate = DateTime.parse("20150101", DateTimeFormat.forPattern("yyyyMMdd"));
-		DateTime finishDate = DateTime.parse("20150105", DateTimeFormat.forPattern("yyyyMMdd"));
+		DateTime finishDate = DateTime.parse("20150106", DateTimeFormat.forPattern("yyyyMMdd"));
 		manager.setStartDate(startDate);
 		manager.setFinishDate(finishDate);
 		// when
@@ -70,18 +70,18 @@ public class CalendarManagerTest {
 		manager.nextDay();
 		manager.nextDay();
 		manager.nextDay();
-		manager.nextDay();
 		// then
 		assertEquals(finishDate.toDate(), calendar.getCurrentDate());
-		verify(calendar, times(5)).plusDays(1);
-		verify(listener, times(5)).dateChanged();
+		verify(calendar, times(4)).plusDays(1);
+		verify(calendar, times(1)).plusDays(2); //on friday
+		verify(listener, times(4)).dateChanged();
 	}
 	
 	@Test
 	public void testShouldProcessToDateSkipping() {
 		// given
 		DateTime startDate = DateTime.parse("20150101", DateTimeFormat.forPattern("yyyyMMdd"));
-		DateTime finishDate = DateTime.parse("20150106", DateTimeFormat.forPattern("yyyyMMdd"));
+		DateTime finishDate = DateTime.parse("20150107", DateTimeFormat.forPattern("yyyyMMdd"));
 		manager.setStartDate(startDate);
 		manager.setFinishDate(finishDate);
 		// when

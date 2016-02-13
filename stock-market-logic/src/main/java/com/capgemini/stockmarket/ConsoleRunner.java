@@ -18,6 +18,7 @@ public class ConsoleRunner {
 	public static void main(String[] args) throws Exception {
 		ApplicationContext context = new ClassPathXmlApplicationContext("game-context.xml");
 		SimulationInitializer initializer = context.getBean(SimulationInitializer.class);
+		Scanner in = new Scanner(System.in);
 		String data = new String(
 				Files.readAllBytes(
 						Paths.get(ConsoleRunner.class.getResource("/data.csv").toURI())),
@@ -27,14 +28,13 @@ public class ConsoleRunner {
 		StockSimulationManager manager = context.getBean(StockSimulationManager.class);
 		manager.start();
 		manager.nextDay();
-		Scanner in = new Scanner(System.in);
 		String input;
 		do {
 			input = in.nextLine();
 			
 			manager.nextDay();
 		} while (input.equals("exit") == false);
-		
+		in.close();
 	}
 
 }

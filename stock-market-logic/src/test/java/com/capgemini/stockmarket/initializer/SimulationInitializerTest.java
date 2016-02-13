@@ -25,6 +25,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 import com.capgemini.stockmarket.initializer.csv.CSVHandler;
+import com.capgemini.stockmarket.service.CompanyService;
 import com.capgemini.stockmarket.service.StockPriceRecordService;
 import com.capgemini.stockmarket.simulation.StockSimulationManager;
 import com.capgemini.stockmarket.simulation.state.SimulationState;
@@ -40,6 +41,8 @@ public class SimulationInitializerTest {
 	private StockSimulationManager simulationManager;
 	@Mock
 	private StockPriceRecordService sprService;
+	@Mock
+	private CompanyService companyService;
 
 	@Test
 	public void shouldInitializeGame() throws ParseException, Exception {
