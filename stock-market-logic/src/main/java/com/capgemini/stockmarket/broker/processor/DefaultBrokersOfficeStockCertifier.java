@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.broker;
+package com.capgemini.stockmarket.broker.processor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.banking.account.validator.Validator;
+import com.capgemini.stockmarket.broker.BrokersOfficeException;
 import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;

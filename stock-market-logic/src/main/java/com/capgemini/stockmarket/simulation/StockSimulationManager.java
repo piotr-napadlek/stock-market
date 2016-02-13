@@ -40,7 +40,6 @@ public class StockSimulationManager {
 		this.playersManager = playersManager;
 		this.stateHolder = stateHolder;
 		playersManager.addDefaultPlayer();
-		calendarManager.addDateListener(defaultBO);
 		calendarManager.addDateListeners(playersManager.getAllPlayers());
 	}
 

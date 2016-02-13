@@ -1,6 +1,7 @@
 package com.capgemini.stockmarket.initializer;
 
 public class InitializationException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
 
 	public InitializationException() {
 		// TODO Auto-generated constructor stub

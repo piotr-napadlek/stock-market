@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.broker;
+package com.capgemini.stockmarket.broker.processor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,11 +13,14 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
+import com.capgemini.stockmarket.broker.BrokersOfficeException;
+import com.capgemini.stockmarket.broker.StockPriceInformer;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
 import com.capgemini.stockmarket.dto.transactions.NumPair;
 import com.capgemini.stockmarket.dto.transactions.Stock;
+import com.capgemini.stockmarket.dto.transactions.TxAccept;
 import com.capgemini.stockmarket.dto.transactions.TxFromBO;
 import com.capgemini.stockmarket.dto.transactions.TxFromPlayer;
 import com.capgemini.stockmarket.dto.transactions.TxOffer;
@@ -53,13 +56,13 @@ public class TransactionProcessor {
 		return offer;
 	}
 
-	public Pair<Currency, Double> getTransactionFee(TxRequest request) {
+	public Pair<Currency, Double> getTransactionFee(TxAccept request) {
 		transactionSum = 0;
-		request.getBuyRequests().forEach((company, amount) -> {
-			transactionSum += stockPriceSellOffer.get(company).getRight() * amount;
+		request.getBuyAccepts().forEach((company, amount) -> {
+			transactionSum += amount.product();
 		});
-		request.getSellRequests().forEach((company, amount) -> {
-			transactionSum += stockPriceBuyOffer.get(company).getRight() * amount;
+		request.getSellAccepts().forEach((company, amount) -> {
+			transactionSum += amount.product();
 		});
 		Currency currencyAccepted = settings.getMinProvision().getLeft();
 		transactionFee = transactionSum * settings.getBoProvision();

@@ -1,5 +1,5 @@
-insert into COMPANY (id, name) values (1, 'INTEL');
-insert into COMPANY (id, name) values (2, 'MICROSOFT');
+insert into COMPANY (id, name, currency) values (1, 'INTEL', 'PLN');
+insert into COMPANY (id, name, currency) values (2, 'MICROSOFT', 'PLN');
 
 insert into STOCK_PRICE (date, price, company_id) values ('2016-02-12', 15.1, 1);
 insert into STOCK_PRICE (date, price, company_id) values ('2016-02-12', 102.5, 2);

@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.broker;
+package com.capgemini.stockmarket.broker.processor;
 
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;

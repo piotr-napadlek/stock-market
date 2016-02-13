@@ -1,6 +1,7 @@
 package com.capgemini.stockmarket.broker;
 
 public class BrokersOfficeException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
 
 	public BrokersOfficeException() {
 		// TODO Auto-generated constructor stub

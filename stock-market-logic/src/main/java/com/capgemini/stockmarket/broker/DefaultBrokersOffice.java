@@ -10,6 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.capgemini.stockmarket.broker.processor.TransactionProcessor;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.StockPriceRecordTo;
@@ -20,83 +21,69 @@ import com.capgemini.stockmarket.dto.transactions.TxOffer;
 import com.capgemini.stockmarket.dto.transactions.TxRequest;
 import com.capgemini.stockmarket.settings.BrokersOfficeSettings;
 
-@Component ("defaultBrokersOffice")
+@Component("defaultBrokersOffice")
 @Scope("singleton")
 public class DefaultBrokersOffice implements BrokersOffice {
 	private TransactionProcessor processor;
 	private StockDataManager dataManager;
-	
+	private BrokersOfficeSettings settings;
+
 	@Inject
-	public DefaultBrokersOffice(StockDataManager manager, TransactionProcessor processor) {
+	public DefaultBrokersOffice(StockDataManager manager, TransactionProcessor processor,
+			BrokersOfficeSettings settings) {
 		this.processor = processor;
 		this.dataManager = manager;
-	}
-	
-	@Override
-	public void dateChanged() {
-		// TODO Auto-generated method stub
-		
+		this.settings = settings;
 	}
 
 	@Override
 	public List<CompanyTo> getStockCompanies() {
-		// TODO Auto-generated method stub
-		return null;
+		return dataManager.getCompanies();
 	}
 
 	@Override
 	public List<StockPriceRecordTo> getSharePriceHistoryFor(CompanyTo company, Date fromDate) {
-		// TODO Auto-generated method stub
-		return null;
+		return dataManager.getCompanyStockPriceHistory(company, fromDate);
 	}
 
 	@Override
 	public List<StockPriceRecordTo> getSharePriceHistoryFor(CompanyTo company) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPublicSecuritySignature() {
-		// TODO Auto-generated method stub
-		return null;
+		return dataManager.getCompanyStockPriceHistory(company);
 	}
 
 	@Override
 	public void applySettings(BrokersOfficeSettings settings) {
-		// TODO Auto-generated method stub
-		
+		this.settings = settings;
+		processor.setSettings(settings);
 	}
 
 	@Override
 	public TxOffer processRequest(TxRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		return processor.prepareOffer(request);
 	}
 
 	@Override
 	public Pair<Currency, Double> getTransactionFee(TxAccept request) {
-		// TODO Auto-generated method stub
-		return null;
+		return processor.getTransactionFee(request);
 	}
 
 	@Override
 	public Optional<TxFromBO> processAccept(Optional<TxFromPlayer> accept) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<TxFromBO> transaction = processor.provideStocks(accept);
+		if (transaction.isPresent() && accept.isPresent()) {
+			dataManager.recordTransaction(transaction.get(), accept.get());
+		}
+		return transaction;
 	}
 
 	@Override
 	public BoFeeInfo getBoTransactionFee() {
-		// TODO Auto-generated method stub
-		return null;
+		return new BoFeeInfo(settings.getMinProvision().getLeft(), settings.getBoProvision(),
+				settings.getMinProvision().getRight());
 	}
 
 	@Override
 	public Double getTodaysPriceFor(CompanyTo company) {
-		// TODO Auto-generated method stub
-		return null;
+		return dataManager.getCurrentStockPrice(company);
 	}
-
-
 }
