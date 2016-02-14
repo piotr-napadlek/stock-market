@@ -1,2 +1,3 @@
-# spring-template-xml
-Spring multi-tier web application template that is runnable in any IDE via embedded jetty, runnable in any OS using embedded tomcat runner and deployable to any server as a single .war file!
+# stock-market simulator
+Spring multi-tier application to verify different strategies on stock-market.
+Launch info: for now edit ConsoleRunner.java as needed, launch it and press enter in the console.
