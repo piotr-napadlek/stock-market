@@ -38,6 +38,7 @@ public class CalendarManagerImpl implements CalendarManager {
 
 	@Override
 	public void nextDay() {
+		simulationStateSetter.setSimualtionState(SimulationState.NEW_DAY);
 		nextTargetDate = currentDate().plusDays(1);
 		if (gameStateIsValid()) {
 			daySpan = 1;
@@ -93,6 +94,7 @@ public class CalendarManagerImpl implements CalendarManager {
 				calendar.plusDays(1);
 			}
 			notifyListenersDateChanged();
+			simulationStateSetter.setSimualtionState(SimulationState.DAY_FINISHED);
 			return true;
 		}
 		return false;

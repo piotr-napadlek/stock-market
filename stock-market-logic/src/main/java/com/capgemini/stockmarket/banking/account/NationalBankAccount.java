@@ -97,7 +97,8 @@ final public class NationalBankAccount implements BankAccount {
 
 	@Override
 	public TxFromPlayer fillInTransaction(TxAccept accept, Pair<Currency, Double> fee) {
-		if (accept.getBuyAccepts().size() == 0 && accept.getSellAccepts().size() == 0) {
+		if (accept.getBuyAccepts().values().stream().allMatch(i -> i.getLeft() == 0)
+				&& accept.getSellAccepts().values().stream().allMatch(i -> i.getLeft() == 0)) {
 			return null;
 		}
 		final Money transactionFee;
