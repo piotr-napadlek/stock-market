@@ -1,5 +1,6 @@
 package com.capgemini.stockmarket.player;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -134,23 +135,26 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 
 	@Override
 	public String toString() {
-		final StringBuilder toStr = new StringBuilder("\n\n" + getName());
-		toStr.append("\nAvailable balances:\n");
+		DecimalFormat df = new DecimalFormat("#.00");
+		final StringBuilder toStr = new StringBuilder("\n\nGracz: " + getName());
+		toStr.append("\nDostępne środki:\n");
 		account.getAvailableCurrencies().forEach(currency -> {
-			toStr.append("Currency: " + currency.toString() + ", Balance: "
-					+ account.getBalanceFor(currency) + ", ");
+			toStr.append("Waluta: " + currency.toString() + ", Ilość: "
+					+ df.format(account.getBalanceFor(currency)) + ", ");
 		});
 		double totalWorth = account.getBalanceFor(Currency.PLN);
-		toStr.append("\nAvailable Stocks:\n");
+		toStr.append("\nAkcje w koszyku:\n");
 
 		for (CompanyTo company : account.getAvailableStockCompanies()) {
 			double worth = (account.getStockInfos(company).size()
 					* brokersOfficeDesk.getTodaysPriceFor(company));
 			totalWorth += worth;
-			toStr.append("Company: " + company.getName() + ", amount: "
-					+ account.getStockInfos(company).size() + " o wartości " + worth + "\n");
+			toStr.append("Company: ").append(company.getName()).append(", amount: ")
+					.append(account.getStockInfos(company).size()).append(" o wartości ")
+					.append(df.format(worth)).append("\n");
 		}
-		toStr.append("\nCałkowita wartość konta gracza to " + totalWorth + "PLN\n\n");
+		toStr.append("\nCałkowita wartość konta gracza to ").append(df.format(totalWorth))
+				.append("PLN\n\n");
 		return toStr.toString();
 	}
 }
