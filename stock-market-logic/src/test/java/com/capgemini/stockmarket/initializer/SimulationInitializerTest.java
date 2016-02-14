@@ -27,7 +27,7 @@ import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 import com.capgemini.stockmarket.initializer.csv.CSVHandler;
 import com.capgemini.stockmarket.service.CompanyService;
 import com.capgemini.stockmarket.service.StockPriceRecordService;
-import com.capgemini.stockmarket.simulation.StockSimulationManager;
+import com.capgemini.stockmarket.simulation.StockSimulationManagerImpl;
 import com.capgemini.stockmarket.simulation.state.SimulationState;
 
 
@@ -38,7 +38,7 @@ public class SimulationInitializerTest {
 	@Mock
 	private CSVHandler csvHandler;
 	@Mock
-	private StockSimulationManager simulationManager;
+	private StockSimulationManagerImpl simulationManager;
 	@Mock
 	private StockPriceRecordService sprService;
 	@Mock
@@ -51,7 +51,7 @@ public class SimulationInitializerTest {
 		when(sprService.saveAll(anyListOf(StockPriceRecordTo.class))).thenReturn(getSPRTos());
 		final String initializationCsvText = "any csv with proper format";
 		// when
-		initializer.initializeGame(initializationCsvText);
+		initializer.initializeSimulation(initializationCsvText);
 		// then
 		ArgumentCaptor<DateTime> captor = ArgumentCaptor.forClass(DateTime.class);
 		verify(csvHandler, times(1)).parseCSV(initializationCsvText);
@@ -68,7 +68,7 @@ public class SimulationInitializerTest {
 		when(csvHandler.parseCSV(anyString())).thenReturn(getIncompleteSprTos());
 		final String initializationCsvText = "any csv with improper content";
 		// when
-		initializer.initializeGame(initializationCsvText);
+		initializer.initializeSimulation(initializationCsvText);
 		// then
 		verify(csvHandler, times(1)).parseCSV(initializationCsvText);
 		verify(sprService, never()).saveAll(any());

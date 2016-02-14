@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.simulation.players;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,9 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.common.IllegalRequestException;
@@ -19,21 +17,23 @@ import com.capgemini.stockmarket.settings.PlayerSettings;
 import com.capgemini.stockmarket.simulation.state.SimulationStateInfo;
 
 @Component
-public class PlayersManager implements ApplicationContextAware, PlayersStateInfo {
+public class PlayersManagerImpl implements PlayersManager {
 	private Map<String, StockMarketPlayer> players = new HashMap<>();
 	private ApplicationContext applicationContext;
 	private SimulationStateInfo stateInfo;
 
 	@Inject
-	public PlayersManager(SimulationStateInfo stateInfo, ApplicationContext appContext) {
+	public PlayersManagerImpl(SimulationStateInfo stateInfo, ApplicationContext appContext) {
 		this.stateInfo = stateInfo;
 		this.applicationContext = appContext;
 	}
 	
+	@Override
 	public StockMarketPlayer addDefaultPlayer() {
 		return addPlayer(null, null);
 	}
 
+	@Override
 	public StockMarketPlayer addPlayer(PlayerSettings settings, RequestCompositor strategy) {
 		validateSimulationState();
 		StockMarketPlayer newPlayer = applicationContext.getBean(StockMarketPlayer.class);
@@ -51,12 +51,14 @@ public class PlayersManager implements ApplicationContextAware, PlayersStateInfo
 		return newPlayer;
 	}
 	
+	@Override
 	public StockMarketPlayer addPlayer(String playerName) {
 		PlayerSettings settings = applicationContext.getBean(PlayerSettings.class);
 		settings.setPlayerName(playerName);
 		return addPlayer(settings, null);
 	}
 
+	@Override
 	public boolean setPlayerStrategy(String playerName, RequestCompositor compositor) {
 		if (compositor == null) {
 			compositor = applicationContext.getBean(RequestCompositor.class);
@@ -65,6 +67,7 @@ public class PlayersManager implements ApplicationContextAware, PlayersStateInfo
 		return true;
 	}
 
+	@Override
 	public boolean setPlayerStrategy(String playerName, String strategyName) {
 		Map<String, RequestCompositor> strategies = applicationContext
 				.getBeansOfType(RequestCompositor.class);
@@ -74,6 +77,7 @@ public class PlayersManager implements ApplicationContextAware, PlayersStateInfo
 		return setPlayerStrategy(playerName, strategies.get(strategyName));
 	}
 
+	@Override
 	public StockMarketPlayer setPlayerSettings(String playerName, PlayerSettings settings) {
 		validateSimulationState();
 		if (settings == null) {
@@ -85,11 +89,13 @@ public class PlayersManager implements ApplicationContextAware, PlayersStateInfo
 		return playerChanged;
 	}
 
+	@Override
 	public StockMarketPlayer getPlayer(String playerName) {
 		checkPlayerExistence(playerName);
 		return players.get(playerName);
 	}
 
+	@Override
 	public Collection<StockMarketPlayer> getAllPlayers() {
 		return players.values();
 	}
@@ -107,12 +113,6 @@ public class PlayersManager implements ApplicationContextAware, PlayersStateInfo
 		}
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
-	}
-
 	private void validateSimulationState() {
 		if (stateInfo.isSimulationInProgress()) {
 			throw new IllegalRequestException(
@@ -121,11 +121,13 @@ public class PlayersManager implements ApplicationContextAware, PlayersStateInfo
 		}
 	}
 
+	@Override
 	public void reset() {
 		this.players.clear();
 		addDefaultPlayer();
 	}
 
+	@Override
 	public void activatePlayers() {
 		players.values().forEach(player -> player.setState(PlayerState.READY));
 	}

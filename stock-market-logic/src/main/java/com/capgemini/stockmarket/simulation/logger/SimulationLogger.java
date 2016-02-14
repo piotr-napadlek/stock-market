@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.simulation.logger;
 
 import com.capgemini.stockmarket.common.DateAware;
 

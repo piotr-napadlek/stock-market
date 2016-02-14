@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.broker;
+package com.capgemini.stockmarket.broker.datamanager;
 
 import com.capgemini.stockmarket.dto.CompanyTo;
 

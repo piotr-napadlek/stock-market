@@ -12,18 +12,18 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.banking.account.BankAccount;
-import com.capgemini.stockmarket.banking.account.validator.Validator;
+import com.capgemini.stockmarket.banking.account.validator.MoneyValidator;
 import com.capgemini.stockmarket.banking.account.validator.ValidityChecker;
 
 @Component
 @Scope("singleton")
 public class NationalBank implements Bank, ApplicationContextAware {
-	private Validator validator;
+	private MoneyValidator validator;
 	private List<BankAccount> bankAccounts = new ArrayList<>();
 	private ApplicationContext context;
 
 	@Inject
-	public NationalBank(ApplicationContext context, Validator validator) {
+	public NationalBank(ApplicationContext context, MoneyValidator validator) {
 		this.validator = validator;
 		this.context = context;
 	}
@@ -35,7 +35,7 @@ public class NationalBank implements Bank, ApplicationContextAware {
 		return account;
 	}
 
-	public Validator getValiditor() {
+	public MoneyValidator getValiditor() {
 		return this.validator;
 	}
 

@@ -14,7 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import com.capgemini.stockmarket.banking.account.caretaker.NationalBankAccountBalanceCaretaker;
-import com.capgemini.stockmarket.banking.account.validator.Validator;
+import com.capgemini.stockmarket.banking.account.validator.MoneyValidator;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
 
@@ -24,7 +24,7 @@ public class BalanceAccountCaretakerTest {
 	@InjectMocks
 	private NationalBankAccountBalanceCaretaker caretaker;
 	@Mock
-	private Validator validator;
+	private MoneyValidator validator;
 
 	@Before
 	public void setUp() {

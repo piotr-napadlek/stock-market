@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.simulation;
+package com.capgemini.stockmarket.simulation.logger;
 
 import javax.inject.Inject;
 
@@ -8,19 +8,20 @@ import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.broker.BrokersOffice;
 import com.capgemini.stockmarket.common.DateInfo;
+import com.capgemini.stockmarket.simulation.players.PlayersInfo;
 import com.capgemini.stockmarket.simulation.state.SimulationStateInfo;
 
 @Component
 public class SimulationLogerImpl implements SimulationLogger {
 	private static final Log LOG = LogFactory.getLog(SimulationLogger.class);
 	
-	private PlayersManager playersManager;
+	private PlayersInfo playersManager;
 	private BrokersOffice defaultBO;
 	private DateInfo dateInfo;
 	private SimulationStateInfo stateInfo;
 
 	@Inject
-	public SimulationLogerImpl(PlayersManager playersManager, BrokersOffice defaultBO,
+	public SimulationLogerImpl(PlayersInfo playersManager, BrokersOffice defaultBO,
 			DateInfo dateInfo, SimulationStateInfo stateInfo) {
 		this.playersManager = playersManager;
 		this.defaultBO = defaultBO;

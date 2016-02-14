@@ -19,17 +19,17 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import com.capgemini.stockmarket.common.DateAware;
-import com.capgemini.stockmarket.simulation.PlayersStateInfo;
-import com.capgemini.stockmarket.simulation.calendar.CalendarManager;
+import com.capgemini.stockmarket.simulation.calendar.CalendarManagerImpl;
 import com.capgemini.stockmarket.simulation.calendar.SimulationCalendar;
 import com.capgemini.stockmarket.simulation.calendar.SimulationCalendarImpl;
+import com.capgemini.stockmarket.simulation.players.PlayersStateInfo;
 import com.capgemini.stockmarket.simulation.state.SimulationState;
 import com.capgemini.stockmarket.simulation.state.SimulationStateSetter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalendarManagerTest {
 	@InjectMocks
-	private CalendarManager manager;
+	private CalendarManagerImpl manager;
 	@Spy
 	private SimulationCalendar calendar = new SimulationCalendarImpl();
 	@Mock

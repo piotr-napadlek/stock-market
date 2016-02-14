@@ -10,6 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.capgemini.stockmarket.broker.datamanager.StockDataManager;
 import com.capgemini.stockmarket.broker.processor.TransactionProcessor;
 import com.capgemini.stockmarket.dto.CompanyTo;
 import com.capgemini.stockmarket.dto.Currency;
@@ -71,6 +72,7 @@ public class DefaultBrokersOffice implements BrokersOffice {
 	public Optional<TxFromBO> processAccept(Optional<TxFromPlayer> accept) {
 		Optional<TxFromBO> transaction = processor.provideStocks(accept);
 		if (transaction.isPresent() && accept.isPresent()) {
+			transaction.get().setSignature(settings.getName());
 			dataManager.recordTransaction(transaction.get(), accept.get());
 		}
 		return transaction;

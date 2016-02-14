@@ -21,6 +21,7 @@ public class BrokersOfficeSettings {
 	private static final double DEFAULT_BO_PROVISION = 0.005d;
 	private static final Pair<Currency, Double> DEFAULT_MIN_BO_PROVISION = Pair
 			.of(Currency.PLN, 5d);
+	private static final String DEFAULT_NAME = "DefaultBrokersOffice";
 
 	private double minSellAvailability = DEFAULT_MIN_SELL_AVAILABILITY;
 	private double maxSellAvailability = DEFAULT_MAX_SELL_AVAILABILITY;
@@ -32,6 +33,7 @@ public class BrokersOfficeSettings {
 	private double maxSellOffer = DEFAULT_MAX_SELL_OFFER;
 	private double boProvision = DEFAULT_BO_PROVISION;
 	private Pair<Currency, Double> minProvision = DEFAULT_MIN_BO_PROVISION;
+	private String name = DEFAULT_NAME;
 
 	public double getMinSellAvailability() {
 		return minSellAvailability;
@@ -111,6 +113,14 @@ public class BrokersOfficeSettings {
 
 	public void setMinProvision(Pair<Currency, Double> minProvision) {
 		this.minProvision = minProvision;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

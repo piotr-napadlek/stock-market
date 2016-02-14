@@ -10,7 +10,7 @@ import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
 
 @Component
-final public class BankValidator implements Validator {
+final public class BankValidator implements MoneyValidator {
 	private Map<String, Money> validMoney = new ConcurrentHashMap<>();
 	
 	@Override

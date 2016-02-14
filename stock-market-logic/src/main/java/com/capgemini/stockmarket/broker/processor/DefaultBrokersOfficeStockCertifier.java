@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.capgemini.stockmarket.banking.account.validator.Validator;
+import com.capgemini.stockmarket.banking.account.validator.MoneyValidator;
 import com.capgemini.stockmarket.broker.BrokersOfficeException;
 import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
@@ -22,10 +22,10 @@ import com.capgemini.stockmarket.dto.transactions.Stock;
 public class DefaultBrokersOfficeStockCertifier implements StockCertifier{
 	private Map<String, Stock> stocksReleased = new HashMap<>();
 	private DateInfo dateInfo;
-	private Validator validator;
+	private MoneyValidator validator;
 
 	@Inject
-	public DefaultBrokersOfficeStockCertifier(DateInfo dateInfo, Validator validator) {
+	public DefaultBrokersOfficeStockCertifier(DateInfo dateInfo, MoneyValidator validator) {
 		this.dateInfo = dateInfo;
 		this.validator = validator;
 	}

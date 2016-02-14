@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.stockmarket.banking.BankOperationException;
-import com.capgemini.stockmarket.banking.account.validator.Validator;
+import com.capgemini.stockmarket.banking.account.validator.MoneyValidator;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
 
@@ -18,10 +18,10 @@ import com.capgemini.stockmarket.dto.Money;
 @Scope("prototype")
 public class NationalBankAccountBalanceCaretaker implements AccountBalanceCaretaker{
 	private Map<Currency, Double> balances = new ConcurrentHashMap<>();
-	private Validator validator;
+	private MoneyValidator validator;
 	
 	@Inject
-	public NationalBankAccountBalanceCaretaker(Validator validator) {
+	public NationalBankAccountBalanceCaretaker(MoneyValidator validator) {
 		this.validator = validator;
 	}
 	

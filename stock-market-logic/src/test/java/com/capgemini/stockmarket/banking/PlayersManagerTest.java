@@ -21,7 +21,7 @@ import com.capgemini.stockmarket.player.StockMarketPlayer;
 import com.capgemini.stockmarket.player.StockMarketPlayerImpl;
 import com.capgemini.stockmarket.player.strategy.RequestCompositor;
 import com.capgemini.stockmarket.settings.PlayerSettings;
-import com.capgemini.stockmarket.simulation.PlayersManager;
+import com.capgemini.stockmarket.simulation.players.PlayersManager;
 import com.capgemini.stockmarket.simulation.state.SimulationState;
 import com.capgemini.stockmarket.simulation.state.SimulationStateInfo;
 

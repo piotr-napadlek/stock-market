@@ -4,12 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.capgemini.stockmarket.banking.account.validator.BankValidator;
-import com.capgemini.stockmarket.banking.account.validator.Validator;
+import com.capgemini.stockmarket.banking.account.validator.MoneyValidator;
 import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
 
 public class ValidatorTest {
-	private Validator validator= new BankValidator();
+	private MoneyValidator validator= new BankValidator();
 	
 	@Test
 	public void shouldCheckThatMoneyCreatedAreValidOnlyOnce() {
