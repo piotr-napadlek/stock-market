@@ -21,14 +21,14 @@ import com.capgemini.stockmarket.player.StockMarketPlayer;
 import com.capgemini.stockmarket.player.StockMarketPlayerImpl;
 import com.capgemini.stockmarket.player.strategy.RequestCompositor;
 import com.capgemini.stockmarket.settings.PlayerSettings;
-import com.capgemini.stockmarket.simulation.players.PlayersManager;
+import com.capgemini.stockmarket.simulation.players.PlayersManagerImpl;
 import com.capgemini.stockmarket.simulation.state.SimulationState;
 import com.capgemini.stockmarket.simulation.state.SimulationStateInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PlayersManagerTest {
 	@InjectMocks
-	private PlayersManager manager;
+	private PlayersManagerImpl manager;
 	@Mock
 	private SimulationStateInfo stateInfo;
 	@Mock

@@ -1,12 +1,12 @@
 package com.capgemini.stockmarket.initializer;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
-import static org.mockito.Matchers.any;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,18 +27,18 @@ import com.capgemini.stockmarket.dto.StockPriceRecordTo;
 import com.capgemini.stockmarket.initializer.csv.CSVHandler;
 import com.capgemini.stockmarket.service.CompanyService;
 import com.capgemini.stockmarket.service.StockPriceRecordService;
-import com.capgemini.stockmarket.simulation.StockSimulationManagerImpl;
+import com.capgemini.stockmarket.simulation.StockSimulationManager;
 import com.capgemini.stockmarket.simulation.state.SimulationState;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimulationInitializerTest {
 	@InjectMocks
-	private SimulationInitializer initializer;
+	private SimulationInitializerImpl initializer;
 	@Mock
 	private CSVHandler csvHandler;
 	@Mock
-	private StockSimulationManagerImpl simulationManager;
+	private StockSimulationManager simulationManager;
 	@Mock
 	private StockPriceRecordService sprService;
 	@Mock
