@@ -18,7 +18,7 @@ public class ApacheCSVHandlerTest {
 	@Before
 	public void initHandler() {
 		csvHandler = new ApacheCSVHandler();
-		csvHandler.setCsvFormatDelimeter(',');
+		csvHandler.setDelimeter(",");
 		csvHandler.setDateFormat("yyyyMMdd");
 		csvHandler.setHeaders("company,date,price");
 	}

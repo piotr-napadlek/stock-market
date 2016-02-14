@@ -161,4 +161,9 @@ public class CalendarManagerImpl implements CalendarManager {
 		setStartDate(null);
 		simulationStateSetter.setSimualtionState(SimulationState.NOT_INITIALIZED);
 	}
+
+	@Override
+	public DateTime getCurrentDate() {
+		return new DateTime(calendar.getCurrentDate().getTime());
+	}
 }

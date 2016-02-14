@@ -16,5 +16,7 @@ public interface StockMarketPlayer extends DateAware {
 	void setState(PlayerState state);
 
 	String getName();
+	
+	double estimateDefaultCurrencyWorth();
 
 }

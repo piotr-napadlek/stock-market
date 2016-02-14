@@ -1,5 +1,7 @@
 package com.capgemini.stockmarket.simulation;
 
+import java.util.Set;
+
 import org.joda.time.DateTime;
 
 import com.capgemini.stockmarket.broker.BrokersOffice;
@@ -18,6 +20,8 @@ public interface StockSimulationManager {
 	StockMarketPlayer addPlayer(PlayerSettings settings);
 
 	StockMarketPlayer addPlayer(PlayerSettings settings, RequestCompositor strategy);
+	
+	StockMarketPlayer addPlayer(String playerName, String strategy);
 
 	StockMarketPlayer setPlayerSettings(String playerName, PlayerSettings settings);
 
@@ -26,6 +30,8 @@ public interface StockSimulationManager {
 	boolean setPlayerStrategy(String playerName, RequestCompositor strategy);
 
 	boolean setPlayerStrategy(String playerName, String strategyName);
+	
+	Set<String> getAvailableStrategies();
 
 	void nextDay();
 
@@ -48,5 +54,7 @@ public interface StockSimulationManager {
 	void setStartDate(DateTime dateTime);
 
 	void setFinishDate(DateTime finishDateTime);
+	
+	DateTime getCurrentDate();
 
 }

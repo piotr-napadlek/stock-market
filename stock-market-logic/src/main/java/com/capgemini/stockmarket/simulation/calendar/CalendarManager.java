@@ -33,5 +33,7 @@ public interface CalendarManager extends PlayersActionListener {
 	void addDateListeners(Collection<? extends DateAware> listeners);
 
 	void reset();
+	
+	DateTime getCurrentDate();
 
 }

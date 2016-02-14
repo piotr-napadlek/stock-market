@@ -142,19 +142,28 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 			toStr.append("Waluta: " + currency.toString() + ", Ilość: "
 					+ df.format(account.getBalanceFor(currency)) + ", ");
 		});
-		double totalWorth = account.getBalanceFor(Currency.PLN);
 		toStr.append("\nAkcje w koszyku:\n");
 
 		for (CompanyTo company : account.getAvailableStockCompanies()) {
 			double worth = (account.getStockInfos(company).size()
 					* brokersOfficeDesk.getTodaysPriceFor(company));
-			totalWorth += worth;
 			toStr.append("Company: ").append(company.getName()).append(", amount: ")
 					.append(account.getStockInfos(company).size()).append(" o wartości ")
 					.append(df.format(worth)).append("\n");
 		}
-		toStr.append("\nCałkowita wartość konta gracza to ").append(df.format(totalWorth))
-				.append("PLN\n\n");
+		toStr.append("\nCałkowita wartość konta gracza to ")
+				.append(df.format(estimateDefaultCurrencyWorth())).append("PLN\n\n");
 		return toStr.toString();
+	}
+
+	@Override
+	public double estimateDefaultCurrencyWorth() {
+		double totalWorth = account.getBalanceFor(Currency.PLN);
+		for (CompanyTo company : account.getAvailableStockCompanies()) {
+			double worth = (account.getStockInfos(company).size()
+					* brokersOfficeDesk.getTodaysPriceFor(company));
+			totalWorth += worth;
+		}
+		return totalWorth;
 	}
 }

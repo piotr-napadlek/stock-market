@@ -170,4 +170,19 @@ public class StockSimulationManagerImpl implements StockSimulationManager {
 		LOG.info("Finish date set to: " + finishDateTime.toString());
 	}
 
+	@Override
+	public DateTime getCurrentDate() {
+		return calendarManager.getCurrentDate();
+	}
+
+	@Override
+	public Set<String> getAvailableStrategies() {
+		return playersManager.getAvailableStrategies();
+	}
+
+	@Override
+	public StockMarketPlayer addPlayer(String playerName, String strategy) {
+		return playersManager.addPlayerWithStrategy(playerName, strategy);
+	}
+
 }

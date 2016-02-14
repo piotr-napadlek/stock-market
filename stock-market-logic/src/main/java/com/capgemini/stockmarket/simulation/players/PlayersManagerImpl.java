@@ -3,6 +3,7 @@ package com.capgemini.stockmarket.simulation.players;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -27,7 +28,7 @@ public class PlayersManagerImpl implements PlayersManager {
 		this.stateInfo = stateInfo;
 		this.applicationContext = appContext;
 	}
-	
+
 	@Override
 	public StockMarketPlayer addDefaultPlayer() {
 		return addPlayer(null, null);
@@ -50,7 +51,7 @@ public class PlayersManagerImpl implements PlayersManager {
 		players.put(newPlayer.getName(), newPlayer);
 		return newPlayer;
 	}
-	
+
 	@Override
 	public StockMarketPlayer addPlayer(String playerName) {
 		PlayerSettings settings = applicationContext.getBean(PlayerSettings.class);
@@ -66,6 +67,17 @@ public class PlayersManagerImpl implements PlayersManager {
 		getPlayer(playerName).setCompositor(compositor);
 		return true;
 	}
+
+	@Override
+	public StockMarketPlayer addPlayerWithStrategy(String playerName, String strategy) {
+		if (getAvailableStrategies().contains(strategy)) {
+			StockMarketPlayer player = addPlayer(playerName);
+			setPlayerStrategy(playerName, strategy);
+			return player;
+		} else {
+			throw new IllegalArgumentException("No such strategy.");
+		}
+	};
 
 	@Override
 	public boolean setPlayerStrategy(String playerName, String strategyName) {
@@ -130,5 +142,10 @@ public class PlayersManagerImpl implements PlayersManager {
 	@Override
 	public void activatePlayers() {
 		players.values().forEach(player -> player.setState(PlayerState.READY));
+	}
+
+	@Override
+	public Set<String> getAvailableStrategies() {
+		return applicationContext.getBeansOfType(RequestCompositor.class).keySet();
 	}
 }

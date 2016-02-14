@@ -1,4 +1,4 @@
-package com.capgemini.stockmarket.banking;
+package com.capgemini.stockmarket.simulation.players;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -77,7 +77,9 @@ public class ApacheCSVHandler implements CSVHandler {
 		this.dateFormat = dateFormat;
 	}
 
-	public void setCsvFormatDelimeter(char csvFormatDelimeter) {
-		this.csvFormatDelimeter = String.valueOf(csvFormatDelimeter);
+	public void setDelimeter(String csvFormatDelimeter) {
+		this.csvFormatDelimeter = csvFormatDelimeter;
 	}
+
+
 }

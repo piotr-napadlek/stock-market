@@ -12,7 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -90,5 +92,37 @@ public class CalendarManagerTest {
 		assertEquals(finishDate.toDate(), calendar.getCurrentDate());
 		verify(calendar, times(3)).plusDays(2);
 		verify(listener, times(3)).dateChanged();
+	}
+	
+	@Test
+	public void shouldNotMoveWhenPlayersAreNotReady() {
+		// given
+		when(playerStateInfo.allPlayersAreReady()).thenReturn(false);
+		DateTime startDate = DateTime.parse("20150101", DateTimeFormat.forPattern("yyyyMMdd"));
+		DateTime finishDate = DateTime.parse("20150107", DateTimeFormat.forPattern("yyyyMMdd"));
+		manager.setStartDate(startDate);
+		manager.setFinishDate(finishDate);
+		// when
+		manager.processToDateTime(finishDate);
+		// then
+		assertEquals(startDate, manager.getCurrentDate());
+		verify(calendar, times(1)).plusDays(Matchers.anyInt());
+		verify(listener, times(1)).dateChanged();
+	}
+	
+	@Test
+	public void shouldNotMoveWhenGameStateIsNotInProgress() {
+		// given
+		when(stateInfo.isSimulationInProgress()).thenReturn(false);
+		DateTime startDate = DateTime.parse("20150101", DateTimeFormat.forPattern("yyyyMMdd"));
+		DateTime finishDate = DateTime.parse("20150107", DateTimeFormat.forPattern("yyyyMMdd"));
+		manager.setStartDate(startDate);
+		manager.setFinishDate(finishDate);
+		// when
+		manager.processToDateTime(finishDate);
+		// then
+		assertEquals(startDate.minusDays(1), manager.getCurrentDate());
+		verify(calendar, Mockito.never()).plusDays(Matchers.anyInt());
+		verify(listener, Mockito.never()).dateChanged();
 	}
 }
