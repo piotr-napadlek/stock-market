@@ -13,7 +13,6 @@ import com.capgemini.stockmarket.banking.account.validator.MoneyValidator;
 import com.capgemini.stockmarket.broker.BrokersOfficeException;
 import com.capgemini.stockmarket.common.DateInfo;
 import com.capgemini.stockmarket.dto.CompanyTo;
-import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
 import com.capgemini.stockmarket.dto.transactions.Stock;
 
@@ -31,9 +30,9 @@ public class DefaultBrokersOfficeStockCertifier implements StockCertifier{
 	}
 
 	@Override
-	public Stock provideCertifiedStock(CompanyTo ofCompany, double price, Currency currency) {
+	public Stock provideCertifiedStock(CompanyTo ofCompany, double price) {
 		Stock newStock = Stock.createStock(generateSignature(), ofCompany, dateInfo.getCurrentDate(),
-				price, currency);
+				price, ofCompany.stockCurrency());
 		stocksReleased.put(newStock.getSignature(), newStock);
 		return newStock;
 	}
@@ -57,5 +56,10 @@ public class DefaultBrokersOfficeStockCertifier implements StockCertifier{
 		} else {
 			throw new BrokersOfficeException("Invalid stock was provided to cash!");
 		}
+	}
+
+	@Override
+	public boolean validateMoney(Money money) {
+		return validator.validate(money);
 	}
 }
