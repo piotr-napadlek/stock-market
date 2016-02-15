@@ -122,4 +122,9 @@ final public class NationalBankAccount implements BankAccount {
 		return fromPlayer;
 	}
 
+	@Override
+	public Currency getDefaultCurrency() {
+		return balanceCaretaker.getDefaultCurrency();
+	}
+
 }

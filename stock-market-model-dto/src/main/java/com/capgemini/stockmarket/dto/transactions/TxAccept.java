@@ -32,4 +32,10 @@ public class TxAccept {
 	public Map<CompanyTo, NumPair<Integer, Double>> getSellAccepts() {
 		return sellAccepts;
 	}
+	
+	public TxAccept acceptWholeOffer(TxOffer offer) {
+		this.buyAccepts.putAll(offer.getSellOffers());
+		this.sellAccepts.putAll(offer.getBuyOffers());
+		return this;
+	}
 }

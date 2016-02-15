@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,8 @@ import com.capgemini.stockmarket.dto.Money;
 public class NationalBankAccountBalanceCaretaker implements AccountBalanceCaretaker{
 	private Map<Currency, Double> balances = new ConcurrentHashMap<>();
 	private MoneyValidator validator;
+	@Value("${bank.defaultCurrency}")
+	private String defaultCurrency = "PLN";
 	
 	@Inject
 	public NationalBankAccountBalanceCaretaker(MoneyValidator validator) {
@@ -30,6 +33,9 @@ public class NationalBankAccountBalanceCaretaker implements AccountBalanceCareta
 		checkMoneyAmount(money);
 		if (validator.validate(money) == false) {
 			throw new BankOperationException("These money are illegal!");
+		}
+		if (balances.size() == 0) {
+			defaultCurrency = money.getCurrency().toString();
 		}
 		if (balances.containsKey(money.getCurrency()) == false) {
 			balances.put(money.getCurrency(), 0d);
@@ -86,5 +92,10 @@ public class NationalBankAccountBalanceCaretaker implements AccountBalanceCareta
 	@Override
 	public void clearAccount() {
 		this.balances.clear();
+	}
+
+	@Override
+	public Currency getDefaultCurrency() {
+		return Currency.valueOf(defaultCurrency);
 	}
 }

@@ -33,6 +33,7 @@ public class ConsoleRunner {
 		PlayerSettings settings = context.getBean(PlayerSettings.class);
 		settings.setPlayerName("Piotr");
 		manager.setPlayerSettings("DefaultPlayer", settings);
+		manager.setPlayerStrategy("Piotr", "quickBuyer");
 		
 		PlayerSettings otherSettings = context.getBean(PlayerSettings.class);
 		otherSettings.setBaseBalance(50000d);
@@ -40,8 +41,8 @@ public class ConsoleRunner {
 		otherSettings.setPlayerName("Krystian");
 		manager.addPlayer(otherSettings);
 
-		manager.addPlayer("Bierny Maciek");
-		manager.setPlayerStrategy("Bierny Maciek", "passive");
+		manager.addPlayer("Maciej");
+		manager.setPlayerStrategy("Maciej", "passive");
 		manager.start();
 		
 		String input;

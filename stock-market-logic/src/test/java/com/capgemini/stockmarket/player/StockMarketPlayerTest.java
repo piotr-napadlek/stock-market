@@ -1,13 +1,17 @@
 package com.capgemini.stockmarket.player;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.mockito.Matchers.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
 
 import com.capgemini.stockmarket.banking.account.BankAccount;
 import com.capgemini.stockmarket.broker.BrokersOfficeDesk;
@@ -28,7 +31,6 @@ import com.capgemini.stockmarket.dto.Currency;
 import com.capgemini.stockmarket.dto.Money;
 import com.capgemini.stockmarket.dto.transactions.StockInfo;
 import com.capgemini.stockmarket.dto.transactions.TxAccept;
-import com.capgemini.stockmarket.dto.transactions.TxFromBO;
 import com.capgemini.stockmarket.dto.transactions.TxOffer;
 import com.capgemini.stockmarket.dto.transactions.TxRequest;
 import com.capgemini.stockmarket.player.strategy.RequestCompositor;
@@ -61,7 +63,7 @@ public class StockMarketPlayerTest {
 	@Test
 	public void shouldCalculatePlayersWorthWhenNoStocks() {
 		// given
-		when(account.getBalanceFor(Currency.PLN)).thenReturn(8000d);
+		when(account.getBalanceFor(any())).thenReturn(8000d);
 		when(account.getAvailableStockCompanies()).thenReturn(new ArrayList<>());
 		// when
 		double worth = player.estimateDefaultCurrencyWorth();
@@ -76,10 +78,11 @@ public class StockMarketPlayerTest {
 		List<CompanyTo> companies = new ArrayList<>();
 		companies.add(new CompanyTo(1L, "1"));
 		companies.add(new CompanyTo(2L, "2"));
+		@SuppressWarnings("unchecked")
 		List<StockInfo> mockList = Mockito.mock(List.class);
 
 		when(mockList.size()).thenReturn(2);
-		when(account.getBalanceFor(Currency.PLN)).thenReturn(8000d);
+		when(account.getBalanceFor(any())).thenReturn(8000d);
 		when(account.getAvailableStockCompanies()).thenReturn(companies);
 		when(account.getStockInfos(any())).thenReturn(mockList);
 		when(brokersOfficeDesk.getTodaysPriceFor(new CompanyTo(1L, "1"))).thenReturn(20d);

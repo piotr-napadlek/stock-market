@@ -11,4 +11,5 @@ public interface AccountBalanceCaretaker {
 	void clearAccount();
 	double getBalanceFor(Currency currency);
 	Set<Currency> getAvailableCurrencies();
+	Currency getDefaultCurrency();
 }

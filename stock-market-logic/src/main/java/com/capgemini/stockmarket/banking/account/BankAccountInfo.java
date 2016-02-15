@@ -17,5 +17,7 @@ public interface BankAccountInfo {
 	List<CompanyTo> getAvailableStockCompanies();
 
 	Collection<StockInfo> getStockInfos(CompanyTo company);
+	
+	Currency getDefaultCurrency();
 
 }

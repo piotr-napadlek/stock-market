@@ -158,7 +158,7 @@ public class StockMarketPlayerImpl implements StockMarketPlayer {
 
 	@Override
 	public double estimateDefaultCurrencyWorth() {
-		double totalWorth = account.getBalanceFor(Currency.PLN);
+		double totalWorth = account.getBalanceFor(account.getDefaultCurrency());
 		for (CompanyTo company : account.getAvailableStockCompanies()) {
 			double worth = (account.getStockInfos(company).size()
 					* brokersOfficeDesk.getTodaysPriceFor(company));
